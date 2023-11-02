@@ -80,9 +80,12 @@ function init(){
             var real = a
             var imag = b
 
+            //Caucula o angulo no HSL
             var hue = (Math.PI - Math.atan2(imag, real)) / (2 * Math.PI);
+            //Caucula a distancia do ponto até o centro
+            var dist = Math.sqrt(real * real + imag * imag);
 
-            var theClr = HSLtoRGB(hue, 1, 0.5);
+            var theClr = HSLtoRGB(hue, 1, dist / 1000);
             
             var px = (x + y * width) * 4;
             data[px] = theClr[0];
