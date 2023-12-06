@@ -68,14 +68,16 @@ function init(){
     do pixel, no formato RGBA.*/
     //Pinta o canvas de vermelho
     var x, y, index;
+    var centroX = 1500;
+    var centroY = 1500;
     //F(C) Numeros complexos:
     
     for (x = 0; x < width; x++){
         for (y = 0; y < height; y++){
             
             
-            var a = map(x, 0, width, -1000, 1000);
-            var b = map(y, 0, height, -1000, 1000);
+            var a = x - centroX;
+            var b = y - centroY;
             //f(z) -> z
             //f(a + bi) -> a + bi
             //f(z) -> z+1
@@ -90,8 +92,14 @@ function init(){
 
             //Caucula a distancia do ponto até o centro
             var dist = Math.sqrt(real * real + imag * imag);
+            var maxDist = 2 * Math.sqrt(centroX * centroX + centroY * centroY);
 
-            var theClr = HSLtoRGB(hue, 1, (dist / 1000));
+            var nextNumIntX = Math.ceil(real/100) * 100;
+            var lastNumIntX = Math.floor(real/100) * 100;
+            var moduloX = ((real - lastNumIntX) / 200) +0.5;
+
+
+            var theClr = HSLtoRGB(hue, 1, (dist / maxDist)+0.5);
             
             var px = (x + y * width) * 4;
 
