@@ -39,8 +39,11 @@ function map(value, start1, stop1, start2, stop2) {
 function init(){
     var canvasElement = document.getElementById("domainColorCanvas");
     var canvas = canvasElement.getContext("2d");
+
+
     var tudo = document.getElementById("tudo");
     var cor= document.getElementById("cor");
+
     canvasElement.addEventListener('mousemove', function(event) {
         const x = event.offsetX;
         const y = event.offsetY;
@@ -49,6 +52,8 @@ function init(){
         cor.style.backgroundColor = `rgba(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]}, ${pixelData[3]})`;
         
     });
+
+
     /*Isso permite que façamos manipulação de pixels no campo 2d do canvas, 
     para a criação de graficos, etc.*/
 
@@ -82,12 +87,14 @@ function init(){
 
             //Caucula o angulo no HSL
             var hue = (Math.atan2(imag, real)) / (2 * Math.PI);
+
             //Caucula a distancia do ponto até o centro
             var dist = Math.sqrt(real * real + imag * imag);
 
-            var theClr = HSLtoRGB(hue, 1, 0.5);
+            var theClr = HSLtoRGB(hue, 1, (dist / 1000));
             
             var px = (x + y * width) * 4;
+
             data[px] = theClr[0];
             data[px + 1] = theClr[1];
             data[px + 2] = theClr[2];
