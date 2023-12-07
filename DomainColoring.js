@@ -36,14 +36,151 @@ function map(value, start1, stop1, start2, stop2) {
     return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
 }
 
+function Comlexo_1(canvasElement, numeroInteiro)
+{
+    
+    width = canvasElement.width;
+    height = canvasElement.height;
+
+    canvas = canvasElement.getContext("2d");
+
+    var imageData = canvas.createImageData(width, height);
+    /*Cria um array de pixels, com a largura e altura do canvas,
+    para que possamos manipular os pixels individualmente.*/
+    var data = imageData.data;
+    /*Acessamos o array de pixels, que é um array de 4 bytes,
+    onde cada 4 bytes representa um pixel, sendo cada byte a cor
+    do pixel, no formato RGBA.*/
+    //Pinta o canvas de vermelho
+    var x, y, index;
+    var centro = width/2;
+    //F(C) Numeros complexos:
+
+    //var maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
+
+    centro = 250 * 2;
+    var maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
+    console.log("maxdist:" + maxDist + " Centro: " + centro + " NumeroInt: " + numeroInteiro);
+
+    for (x = 0; x < width; x++){
+        for (y = 0; y < height; y++){
+            
+            
+            var a = x - centro;
+            var b = y - centro;
+            //f(z) -> z
+            //f(a + bi) -> a + bi
+            //f(z) -> z+1
+            //f(a+bi) -> a+bi+1
+            //f(z) -> 1/z
+            //f(a+bi) -> 1/(a+bi)
+            var real = a
+            var imag = b
+
+            //Caucula o angulo no HSL
+            var hue = (Math.PI - Math.atan2(imag, real)) / (2*Math.PI);
+
+            //Caucula a distancia do ponto até o centro
+            var dist = Math.sqrt(real * real + imag * imag);
+            
+            
+            var lastIntDist = Math.floor(dist);
+            var nextIntDist = Math.ceil(dist);
+
+            var modulo = (dist / 400);
+            //var modulo = ((dist - lastIntDist) / 2*(nextIntDist - lastIntDist)) + 0.5;
+
+
+            var theClr = HSLtoRGB(hue, 1, modulo);
+            
+            var px = (x + y * width) * 4;
+
+            data[px] = theClr[0];
+            data[px + 1] = theClr[1];
+            data[px + 2] = theClr[2];
+            data[px + 3] = 255;
+        }
+    }
+    
+    canvas.putImageData(imageData, 0, 0);
+}
+
+function Eixos (canvasElement){
+    var width = canvasElement.width;
+    var height = canvasElement.height;
+    var centro = width/2;
+
+    var eixosContext2d = canvasElement.getContext("2d");
+    var ImgDataEixos = eixosContext2d.createImageData(width, height);
+    var dataEixos = ImgDataEixos.data;
+
+
+    var qtdInteiros = 2;
+    var numerosInteiros = (Math.floor((centro - 0.1*centro)/(qtdInteiros*100)))*100; //Esses *100 faz com que o numero seja multiplo de 100
+    console.log(numerosInteiros);
+    var posicoesInteiros = [];
+
+    var cont = qtdInteiros * (-1);
+    for (i = 0; i < ((qtdInteiros*2)+1); i++){
+        posicoesInteiros[i] = numerosInteiros*cont;
+        cont++;
+    }
+
+    console.log(posicoesInteiros);    
+
+    var tamanhoEixo = 2;
+    for (x = 0; x < width; x++){
+        for (y = 0; y < height; y++){
+            var px = (x + y * width) * 4;
+            if ((x > centro-tamanhoEixo && x < centro+tamanhoEixo) || 
+            (y > centro-tamanhoEixo && y < centro+tamanhoEixo)){
+                dataEixos[px] = 100;
+                dataEixos[px + 1] = 100;
+                dataEixos[px + 2] = 100;
+                dataEixos[px + 3] = 255;
+            }
+            else{
+                //Coloca transparente
+                dataEixos[px + 3] = 0;
+            }
+
+            posicoesInteiros.forEach(posicao => {
+                var xCentro = x-centro;
+                if ((xCentro > posicao-tamanhoEixo && xCentro < posicao+tamanhoEixo) && (y > centro-10 && y < centro+10)){
+                    dataEixos[px] = 100;
+                    dataEixos[px + 1] = 100;
+                    dataEixos[px + 2] = 100;
+                    dataEixos[px + 3] = 255;
+                    console.log("Posção em: " + posicao + "px");
+                }
+
+                var yCentro = y-centro;
+                if ((yCentro > posicao-tamanhoEixo && yCentro < posicao+tamanhoEixo) && (x > centro-10 && x < centro+10)){
+                    dataEixos[px] = 100;
+                    dataEixos[px + 1] = 100;
+                    dataEixos[px + 2] = 100;
+                    dataEixos[px + 3] = 255;
+                    console.log("Posção em: " + posicao + "px");
+                }
+            });
+        }
+    }
+
+
+    //Coloca uma barra vertical de 10px de altura em cada numero inteiro
+
+
+    eixosContext2d.putImageData(ImgDataEixos, 0, 0);
+
+    console.log("Eixos desenhados: " + numerosInteiros);
+    return numerosInteiros;
+}
+
 function init(){
     var canvasElement = document.getElementById("domainColorCanvas");
-    var canvas = canvasElement.getContext("2d");
-
 
     var tudo = document.getElementById("tudo");
     var cor= document.getElementById("cor");
-
     canvasElement.addEventListener('mousemove', function(event) {
         const x = event.offsetX;
         const y = event.offsetY;
@@ -57,58 +194,14 @@ function init(){
     /*Isso permite que façamos manipulação de pixels no campo 2d do canvas, 
     para a criação de graficos, etc.*/
 
-    width = canvasElement.width;
-    height = canvasElement.height;
-    var imageData = canvas.createImageData(width, height);
-    /*Cria um array de pixels, com a largura e altura do canvas,
-    para que possamos manipular os pixels individualmente.*/
-    var data = imageData.data;
-    /*Acessamos o array de pixels, que é um array de 4 bytes,
-    onde cada 4 bytes representa um pixel, sendo cada byte a cor
-    do pixel, no formato RGBA.*/
-    //Pinta o canvas de vermelho
-    var x, y, index;
-    var centroX = 1500;
-    var centroY = 1500;
-    //F(C) Numeros complexos:
+    const eixos = document.getElementById("eixos");
+    numeroInteiro = Eixos(eixos);
+
+    Comlexo_1(canvasElement, numeroInteiro);
     
-    for (x = 0; x < width; x++){
-        for (y = 0; y < height; y++){
-            
-            
-            var a = x - centroX;
-            var b = y - centroY;
-            //f(z) -> z
-            //f(a + bi) -> a + bi
-            //f(z) -> z+1
-            //f(a+bi) -> a+bi+1
-            //f(z) -> 1/z
-            //f(a+bi) -> 1/(a+bi)
-            var real = a
-            var imag = b
 
-            //Caucula o angulo no HSL
-            var hue = (Math.atan2(imag, real)) / (2 * Math.PI);
-
-            //Caucula a distancia do ponto até o centro
-            var dist = Math.sqrt(real * real + imag * imag);
-            var maxDist = 2 * Math.sqrt(centroX * centroX + centroY * centroY);
-
-            var nextNumIntX = Math.ceil(real/100) * 100;
-            var lastNumIntX = Math.floor(real/100) * 100;
-            var moduloX = ((real - lastNumIntX) / 200) +0.5;
-
-
-            var theClr = HSLtoRGB(hue, 1, (dist / maxDist)+0.5);
-            
-            var px = (x + y * width) * 4;
-
-            data[px] = theClr[0];
-            data[px + 1] = theClr[1];
-            data[px + 2] = theClr[2];
-            data[px + 3] = 255;
-        }
-    }
-    canvas.putImageData(imageData, 0, 0);
+    
+    
+    
 }
 
