@@ -3,25 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="index.css">
     <script src="DomainColoring.js"></script> <!-- Correção aqui -->
-    <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        canvas{
-            border: 1px solid rgba(255, 0, 0, 255);
-        }
-        #cor{
-            width: 100px;
-            height: 100px;
-            background-color: rgba(255, 0, 0, 255);
-        }
-    </style>
     <title>F(Z) Números Complexos</title>  
 </head>
 <body onload="init()">
-    <canvas id="domainColorCanvas" width="2500" height="2500"></canvas>
+    <canvas id="domainColorCanvas" width="1000" height="1000"></canvas>
+    <canvas id="eixos" width="1000" height="1000"></canvas>
     <p id="tudo">Posiçãpo do mouse:</p>
     <div id="cor"></div>
 </body>
