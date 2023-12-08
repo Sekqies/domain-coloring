@@ -14,11 +14,19 @@ section{
     min-height: 100%;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+
+}
+section > *{
+    margin-top: 30px;
 }
 
 #opcoes{
     padding: 15px;
     background-color: rgb(216, 216, 255);
     border-radius: 10px;
+}
+
+#submit > input{
+    margin: 10px 0px;
+    width: 100%;
 }
