@@ -1,5 +1,7 @@
 var canvas, imageData, data, width, height;
-const qtdInteiros = 2;
+const qtdInteiros = 5;
+const centro = 300;
+
 function HSLtoRGB(h, s, l) {
     var r, g, b;
     if (s == 0) {
@@ -32,20 +34,15 @@ function HSLtoRGB(h, s, l) {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-function map(value, start1, stop1, start2, stop2) {
-    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
-}
-
-function getNumeroInteiro(centro, qtdInteiros){
-    var numeroInteiro = (Math.floor((centro - 0.1*centro)/(qtdInteiros*100)))*100; 
+function getNumeroInteiro(){
+    var numeroInteiro = (Math.floor((centro - 0.1*centro)/(qtdInteiros))); 
     //Esses *100 faz com que o numero seja multiplo de 100
     return numeroInteiro;
 }
 
-function Eixos (imgDataEixos, numeroInteiro, centro){
+function Eixos (imgDataEixos, numeroInteiro){
     var dataEixos = imgDataEixos.data;
     
-    console.log(numeroInteiro);
     var posicoesInteiros = [];
 
     var cont = qtdInteiros * (-1);
@@ -118,11 +115,10 @@ function Comlexo_1(canvasElement)
     do pixel, no formato RGBA.*/
     //Pinta o canvas de vermelho
     var x, y, index;
-    var centro = width/2;
     //F(C) Numeros complexos:
 
     //var maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
-    numeroInteiro = getNumeroInteiro(centro, 2);
+    numeroInteiro = getNumeroInteiro();
     var maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
     //console.log("maxdist:" + maxDist + " Centro: " + centro + " NumeroInt: " + numeroInteiro);
 
@@ -134,13 +130,13 @@ function Comlexo_1(canvasElement)
             var a = (x - centro)/numeroInteiro; //conversão de pixel para o plano.
             var b = (y - centro)/numeroInteiro;
             //f(z) -> z
-            //f(a + bi) -> a + bi
-            //f(z) -> z+1
-            //f(a+bi) -> a+bi+1
-            //f(z) -> 1/z
-            //f(a+bi) -> 1/(a+bi)
-            var real = a*a - b*b
-            var imag = 2*a*b
+            
+            var real = a;
+            var imag = b;
+
+            //f(z) -> z^3 - 1
+            //var real = a*a*a - 3*a*b*b - 1;
+            //var imag = 3*a*a*b - b*b*b;
 
             //Caucula o angulo no HSL
             var hue = (Math.PI - Math.atan2(imag, real)) / (2*Math.PI);
@@ -149,6 +145,8 @@ function Comlexo_1(canvasElement)
             var dist = Math.sqrt(real * real + imag * imag);
 
             var modulo;
+
+            //Modo 1 (sem descontinuidade):
             if (dist > 1)
             {
                 modulo = ((dist*2)-1)/(dist*2);
@@ -164,8 +162,21 @@ function Comlexo_1(canvasElement)
             else{
                 modulo = 0.5;
             }
-            //var modulo = ((dist - lastIntDist) / 2*(nextIntDist - lastIntDist)) + 0.5;
 
+            //modo 2 (com descontinuidade):
+
+            if (dist > 1)
+            {
+                modulo = (Math.log2(dist))/(Math.ceil(Math.log2(dist)))-0.2;
+            }
+            else if (dist < 1 && dist > 0)
+            {
+                modulo = dist-0.2;
+            }
+            else{
+                modulo = 0.5;
+            }
+            
 
             var theClr = HSLtoRGB(hue, 1, modulo);
             
@@ -179,7 +190,7 @@ function Comlexo_1(canvasElement)
 
     }
     
-    imageDataEixos = Eixos(imageData, numeroInteiro, centro);
+    imageDataEixos = Eixos(imageData, numeroInteiro);
     canvas.putImageData(imageDataEixos, 0, 0);
 }
 
