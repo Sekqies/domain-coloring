@@ -35,7 +35,7 @@ function HSLtoRGB(h, s, l) {
 }
 
 function getNumeroInteiro(){
-    let numeroInteiro = (Math.floor((centro - 0.1*centro)/(qtdInteiros))); 
+    let numeroInteiro = (Math.floor((centro)/(qtdInteiros))); 
     //Esses *100 faz com que o numero seja multiplo de 100
     return numeroInteiro;
 }
