@@ -3,20 +3,35 @@ body {
     padding: 0;
 }
 canvas{
-    border: 1px solid rgba(255, 0, 0, 255);
+    border: 3px solid black;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
 }
 #cor{
     width: 100px;
     height: 100px;
     background-color: rgba(255, 0, 0, 255);
 }
-#domainColorCanvas{
-    position: relative;
-    rotate: 180deg;
-}
 #eixos{
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 2;
+}
+
+body{
+    background-color: rgb(228, 228, 255);
+}
+
+.container{
+    min-height: 100dvh;
+    min-width: 700px;
+    position: relative;
+}
+.container > *{
+    margin: 50px;
+}
+
+section{
+    display: flex;
 }
