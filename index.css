@@ -1,8 +1,9 @@
 body {
     margin: 0;
     padding: 0;
-    min-width: 100dvw;
-    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 canvas{
     border: 3px solid black;
@@ -10,8 +11,9 @@ canvas{
 }
 
 section{
-    max-width: 100%;
-    min-height: 100%;
+    width: 100%;
+    background-color: rgb(227, 255, 255);
+    border-radius: 10px;
     display: flex;
     justify-content: space-around;
 
@@ -24,9 +26,21 @@ section > *{
     padding: 15px;
     background-color: rgb(216, 216, 255);
     border-radius: 10px;
+    height: fit-content;
 }
 
 #submit > input{
     margin: 10px 0px;
     width: 100%;
+}
+
+@media screen and (max-width: 1440px){
+    .container{
+        max-width: 1024px;
+    }  
+}
+@media screen and (max-width: 1024px){
+    .container{
+        max-width: 768px;
+    }  
 }

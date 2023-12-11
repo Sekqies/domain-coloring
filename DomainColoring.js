@@ -227,15 +227,26 @@ function init(){
 
     //se houver uma letra que não seja Z, dá um alert de erro
     //se houver um simbolo que não seja +, -, *, /, ^, dá um alert de erro
-    let regex = /[^z\+\-\*\/\^\(\)\d\.]/gi;
-
-
+    let regex = /[^z\+\-\*\/\^\(\)\ \d\.]/gi;
 
     if (regex.test(funcao)){
         alert("Erro! Função inválida!");
     }
+    //remove todos os espaços de 'função'
+    funcao = funcao.replace(/\s/g, '');
+    //alert(funcao);
 
-    
+    //checar se, apos alguma letra Z, há um algarismo que não seja:
+    // (+, -, *, /, ^)
+    //se houver, dar um alert de erro
+    regex = /z[^+\-\*\/\^]/gi;
+    if (regex.test(funcao))
+    {
+        alert("ERRO!");
+    }
+
+
+
     Comlexo_1(canvasElement, tipo_grafico);
 }
 
