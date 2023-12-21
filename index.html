@@ -8,10 +8,45 @@
     <title>F(Z) Números Complexos</title>  
 </head>
 <body onload="init()">
-    <canvas id="domainColorCanvas" width="1000" height="1000"></canvas>
-    <canvas id="eixos" width="1000" height="1000"></canvas>
-    <p id="tudo">Posiçãpo do mouse:</p>
-    <div id="cor"></div>
+    <section class="container">
+        <div id="grafico">
+            <canvas id="domainColorCanvas" width="600" height="600"></canvas>
+        </div>
+        <div id="opcoes">
+            <h1>Funções complexas</h1>
+            <form>
+                <div>
+                    <p>Função:  </p>
+                    <input type="text" value="z" id="funcao_complexa"> 
+                </div>
+                <div>
+                    <p>Tipo do Gráfico: </p>
+                    <div style="display: flex;">
+                        <input type="radio" value="1" checked name="tp_g">
+                        <p>Continuo</p>
+                    </div>
+                    <div style="display: flex;">
+                        <input type="radio" value="2" name="tp_g">
+                        <p>Descontinuo</p> 
+                    </div>
+                    
+                    <div>
+                        <p>Numero de inteiros: </p>
+                        <input type="number" id="numero_inteiros" value="2" min="1" max="100">
+                    </div>
+
+                    <div>
+                        <p>Tamanho do gráfico:</p>
+                        <input type="number" id="tamanho_grafico" value="500" min="100" max="4000" step="100">
+                    </div>
+                    <div id="submit">
+                        <input type="button" value="Desenhar" onclick="init()">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    
 </body>
 </html>
 

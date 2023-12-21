@@ -1,22 +1,46 @@
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 canvas{
-    border: 1px solid rgba(255, 0, 0, 255);
+    border: 3px solid black;
+    border-radius: 10px;
 }
-#cor{
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 0, 0, 255);
+
+section{
+    width: 100%;
+    background-color: rgb(227, 255, 255);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+
 }
-#domainColorCanvas{
-    position: relative;
-    rotate: 180deg;
+section > *{
+    margin-top: 30px;
 }
-#eixos{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
+
+#opcoes{
+    padding: 15px;
+    background-color: rgb(216, 216, 255);
+    border-radius: 10px;
+    height: fit-content;
+}
+
+#submit > input{
+    margin: 10px 0px;
+    width: 100%;
+}
+
+@media screen and (max-width: 1440px){
+    .container{
+        max-width: 1024px;
+    }  
+}
+@media screen and (max-width: 1024px){
+    .container{
+        max-width: 768px;
+    }  
 }
