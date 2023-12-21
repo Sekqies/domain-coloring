@@ -1,7 +1,6 @@
 let canvas, imageData, data, width, height;
 var qtdInteiros = 10;
 var centro = 300;
-
 function HSLtoRGB(h, s, l) {
     let r, g, b;
     if (s == 0) {
@@ -98,7 +97,7 @@ function Eixos (imgDataEixos, numeroInteiro){
     return imgDataEixos;
 }
 
-function Comlexo_1(canvasElement, tipo_grafico)
+function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_imag)
 {
     
     width = canvasElement.width;
@@ -131,8 +130,8 @@ function Comlexo_1(canvasElement, tipo_grafico)
             let b = (y - centro)/numeroInteiro;
             //f(z) -> z
             
-            let real = a;
-            let imag = b;
+            let real = eval(resultado_real);
+            let imag = eval(resultado_imag);
 
             //f(z) -> z^3 - 1
             //let real = a*a*a - 3*a*b*b - 1;
@@ -201,7 +200,16 @@ function Comlexo_1(canvasElement, tipo_grafico)
     canvas.putImageData(imageDataEixos, 0, 0);
 }
 
-
+function simplificarExponencial(inputFunction) {
+    //Transforma uma função em formato de a^b em a*a*a...*a (b vezes)
+    var funcaoOutput = inputFunction.replace(/(\w+)\s*\^\s*(\w+)/g, function(match, base, exponent) {
+      
+      var retornolambda = Array.from({ length: parseInt(exponent, 10) }, () => base).join('*');
+      return retornolambda;
+    });
+  
+    return funcaoOutput;
+  }
 
 function init(){
     let canvasElement = document.getElementById("domainColorCanvas");
@@ -223,11 +231,12 @@ function init(){
 
     //Função:
     let funcao = document.getElementById('funcao_complexa').value;
+    let operacao = "z = a + b*i \n" + funcao;
     //alert(funcao);
 
-    //se houver uma letra que não seja Z, dá um alert de erro
+    //se houver uma letra que não seja Z (ou i), dá um alert de erro
     //se houver um simbolo que não seja +, -, *, /, ^, dá um alert de erro
-    let regex = /[^z\+\-\*\/\^\(\)\ \d\.]/gi;
+    let regex = /[^z\^i\+\-\*\/\^\(\)\ \d\.]/gi;
 
     if (regex.test(funcao)){
         alert("Erro! Função inválida!");
@@ -239,14 +248,28 @@ function init(){
     //checar se, apos alguma letra Z, há um algarismo que não seja:
     // (+, -, *, /, ^)
     //se houver, dar um alert de erro
+
     regex = /z[^+\-\*\/\^]/gi;
     if (regex.test(funcao))
     {
         alert("ERRO!");
+    } 
+    else {
+    let resultado = Algebrite.run(operacao);
+    console.log("Função final: " + resultado);
+
+    let resultado_real = Algebrite.real(resultado).toString();
+    let resultado_imag = Algebrite.imag(resultado).toString();
+    console.log("Parte real antes do processamento: " + resultado_real);
+    console.log("Parte imaginária antes do processamento: " + resultado_imag)
+
+    //Substitui ^ para vários * para que o eval possa entender
+    resultado_real = simplificarExponencial(resultado_real);
+    resultado_imag = simplificarExponencial(resultado_imag);
+    console.log("Parte real após o processamento: " + resultado_real);
+    console.log("Parte imaginária após o processamento: " + resultado_imag)
+
+    Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag);
     }
-
-
-
-    Comlexo_1(canvasElement, tipo_grafico);
 }
 
