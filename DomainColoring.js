@@ -138,7 +138,7 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
             //let imag = 3*a*a*b - b*b*b;
 
             //Caucula o angulo no HSL
-            let hue = (Math.PI - Math.atan2(imag, real)) / (2*Math.PI);
+            let hue = -(Math.atan2(imag, real)) / (2*Math.PI);
 
             //Caucula a distancia do ponto até o centro
             let dist = Math.sqrt(real * real + imag * imag);
@@ -148,21 +148,7 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
             //Modo 1 (sem descontinuidade):
             if (tipo_grafico == 1)
             {
-                if (dist > 1)
-                {
-                    modulo = ((dist*2)-1)/(dist*2);
-                    //console.log(modulo);
-                }
-                else if (dist < 1 && dist > 0)
-                {
-                    modulo = dist * 0.5;
-                }
-                else if (dist == 0){
-                    modulo = 0;
-                }
-                else{
-                    modulo = 0.5;
-                }
+                modulo = (2/Math.PI) * Math.atan(dist);
             }
             else if (tipo_grafico == 2)
             {
@@ -202,13 +188,24 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
 
 function simplificarExponencial(inputFunction) {
     //Transforma uma função em formato de a^b em a*a*a...*a (b vezes)
+    
+    //divide a função em base e expoente onde houver o '^'
+
+    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+)/g, function(match, base, exponent) {
+        return 'Math.pow(' + base + ', ' + exponent + ')';
+    });
+
+    return outputFunction;
+    
+    /*
     var funcaoOutput = inputFunction.replace(/(\w+)\s*\^\s*(\w+)/g, function(match, base, exponent) {
       
       var retornolambda = Array.from({ length: parseInt(exponent, 10) }, () => base).join('*');
       return retornolambda;
+      
     });
   
-    return funcaoOutput;
+    return funcaoOutput;*/
   }
 
 function init(){
@@ -254,6 +251,7 @@ function init(){
     {
         alert("ERRO!");
     } 
+    
     else {
     let resultado = Algebrite.run(operacao);
     console.log("Função final: " + resultado);
@@ -261,14 +259,12 @@ function init(){
     let resultado_real = Algebrite.real(resultado).toString();
     let resultado_imag = Algebrite.imag(resultado).toString();
     console.log("Parte real antes do processamento: " + resultado_real);
-    console.log("Parte imaginária antes do processamento: " + resultado_imag)
-
+    console.log("Parte imaginária antes do processamento: " + resultado_imag);
     //Substitui ^ para vários * para que o eval possa entender
     resultado_real = simplificarExponencial(resultado_real);
     resultado_imag = simplificarExponencial(resultado_imag);
     console.log("Parte real após o processamento: " + resultado_real);
-    console.log("Parte imaginária após o processamento: " + resultado_imag)
-
+    console.log("Parte imaginária após o processamento: " + resultado_imag);
     Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag);
     }
 }
