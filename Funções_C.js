@@ -35,23 +35,14 @@ function limparFuncao(funcaoOriginal) {
     funcaoLimpa = funcaoLimpa.replace(/\bsqrt\(/g, 'Math.sqrt(');
     funcaoLimpa = funcaoLimpa.replace(/\bcosh\(/g, 'Math.cosh(');
     funcaoLimpa = funcaoLimpa.replace(/\bsinh\(/g, 'Math.sinh(');
-    funcaoLimpa = funcaoLimpa.replace(/(\w+)\s*\^\s*(\w+)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/(\w+)\s*\^\s*\((.*?)\)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/\((.*?)\)\^(\w+)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/(\w+)\^(\w+)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/(.*?)\^(-?\d+(\.\d+)?)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/\babs\(/g, 'Math.abs(');
     funcaoLimpa = funcaoLimpa.replace(/\bexp\(/g, 'Math.exp(');
     
     return funcaoLimpa;
-}
-
-function real(funcao) {
-    const regex = /(\b[a-zA-Z]+\b|\d+(?:\.\d+)?)(?!\*)/g;
-    let matches = "";
-    matches += funcao.match(regex);
-    return matches;
-}
-function imag(expression) {
-    const regex = /(\b[a-zA-Z]+\b|\d+(?:\.\d+)?)(?=\*i)/g;
-    let matches = "";
-    matches += funcao.match(regex);
-    return matches;
 }
 
 function espalhar_exp(funcao) {
@@ -77,25 +68,34 @@ function transformar_exp(funcao) {
     return outputString;
 }
 
-function comp_exp(funcao) {
-    var outputString = funcao.replace(/e\^\((.*?)\*i\)/g, function(match, exponent) {
-        return "sin(" + exponent + ") + i*cos(" + exponent + ")";
+function transformar_div(funcao) {
+    var outputString = funcao.replace(/(\w+)\/\((.*?)\)\^(\w+)/g, function(match, k, denominator, exponent) {
+        return k + '*(' + denominator + ')^(-' + exponent + ')';
     });
+    
+    outputString = outputString.replace(/(\w+)\/\((.*?)\)/g, function(match, k, denominator) {
+        return k + '*(' + denominator + ')^(-1)';
+    });
+    
     return outputString;
+}
+
+function comp_exp(expoente) {
+    return "(cos(" + expoente + ") + i*sin(" + expoente + ") )";
 }
 
 function comp_log (funcao)
 {
     let real = Algebrite.real(funcao);
     let imag = Algebrite.imag(funcao);
-    return "ln( sqrt(" + real + "^2 + " + imag + "^2 )) + i*atan2(" + imag + "," + real + ")";
+    return "(ln( sqrt(" + real + "^2 + " + imag + "^2 )) + i*atan2(" + imag + "," + real + "))";
 }
 
 function comp_sen(funcao)
 {
     let real = Algebrite.real(funcao);
     let imag = Algebrite.imag(funcao);
-    return "sin(" + real + ")*cosh(" + imag + ") + i*cos(" + real + ")*sinh(" + imag + ")";
+    return "(sin(" + real + ")*cosh(" + imag + ") + i*cos(" + real + ")*sinh(" + imag + "))";
 }
 
 function comp_cos(funcao)
@@ -103,11 +103,11 @@ function comp_cos(funcao)
     console.log(funcao);
     let real = Algebrite.real(funcao);
     let imag = Algebrite.imag(funcao);
-    return "cos(" + real + ")*cosh(" + imag + ") - i*sin(" + real + ")*sinh(" + imag + ")";
+    return "(cos(" + real + ")*cosh(" + imag + ") - i*sin(" + real + ")*sinh(" + imag + "))";
 }
 function comp_pol(expoente)
 {
-    return "(a^2 + b^2)^" + expoente/2 + "*(cos(" + expoente + "*atan2(b,a)) + i*sin(" + expoente + "*atan2(b,a)))";
+    return "(a^2 + b^2)^(" + expoente/2 + ")*(cos(" + expoente + "*atan2(b,a)) + i*sin(" + expoente + "*atan2(b,a)))";
 }
 
 
@@ -117,11 +117,16 @@ function simplificarAntesAlgebrite(funcao) {
     funcaoFinal = funcaoFinal.replace(/z/g, '(a+b*i)');
     funcaoFinal = espalhar_exp(funcaoFinal);
     funcaoFinal = transformar_exp(funcaoFinal);
+    funcaoFinal = transformar_div(funcaoFinal);
+    
     funcaoFinal = funcaoFinal.replace(/ln\((z|\(.*?\+.*?i\)|a\+b\*i)\)/g, (match, p1) => comp_log(`${p1}`));
     funcaoFinal = funcaoFinal.replace(/sen\((z|\(.*?\+.*?i\)|a\+b\*i)\)/g, (match, p1) => comp_sen(`${p1}`));
     funcaoFinal = funcaoFinal.replace(/cos\((z|\(.*?\+.*?i\)|a\+b\*i)\)/g, (match, p1) => comp_cos(`${p1}`));
-    funcaoFinal = funcaoFinal.replace(/(\w+\+\w+\*i)\^(\w+)/g, (match, p1, p2) => comp_pol(`${p2}`));
-    
+    funcaoFinal = funcaoFinal.replace(/e\^\((.*?)\*i\)/g, (match, p1) => comp_exp(`${p1}`));
+    funcaoFinal = funcaoFinal.replace(/\((a\+b\*i)\)\^\((-?\w+)\)/g, (match, base, exponent) => comp_pol(`${exponent}`));
+    funcaoFinal = funcaoFinal.replace(/\((a\+b\*i)\)\^(\w+)/g, (match, base, exponent) => comp_pol(`${exponent}`));
+
+
     return funcaoFinal;
 }
 
