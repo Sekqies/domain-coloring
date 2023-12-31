@@ -99,7 +99,7 @@ function Eixos (imgDataEixos, numeroInteiro){
     return imgDataEixos;
 }
 
-function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_imag)
+function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_imag, tempoInicial)
 {
     
     width = canvasElement.width;
@@ -185,58 +185,13 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
     
     imageDataEixos = Eixos(imageData, numeroInteiro);
     canvas.putImageData(imageDataEixos, 0, 0);
+    var tempoFinal = performance.now();
+    var tempoTotal = tempoFinal - tempoInicial;
+    console.log(tempoTotal);
 }
-
-function simplificarExponencial(inputFunction) {
-    //Transforma uma função em formato de a^b em Math.pow(a,b)
-
-    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+)/g, function(match, base, exponent) {
-        return 'Math.pow(' + base + ', ' + exponent + ')';
-    });
-
-    return outputFunction;
-  }
-
-  function simplificarExpoenteImaginario(funcaoOriginal) {
-    // Um expoente no formato de i^1 = i^5 = i^9. Ou seja, i^x, onde x é um número inteiro, é sempre igual a i^x%4
-    // Além disso, o Algebrite não sabe fazer operações com i elevado a potências maiores que 5.
-
-    const regex = /(\bj\b)\^(\w+)/g;
-    const funcaoSimplificada = funcaoOriginal.replace(regex, function(match, base, expoente) {
-      // Replace b with the value of the expression b%4
-      return base + "^(" + eval(expoente + " % 4") + ")";
-    });
-    return funcaoSimplificada;
-  }
-
-
-function identificarExpoenteComplexo(inputString) {
-    var outputString = inputString.replace(/(\w+)\^z/g, function(match, base) {
-        return `${base}^a * (cos(b*ln(${base})) + i*sin(b*ln(${base})))`
-    });
-    return outputString;
-}
-
-function limparFuncao(funcaoOriginal) {
-    var funcaoLimpa = funcaoOriginal.replace(/sin\((.*?)\)/g, 'Math.sin($1)');
-    funcaoLimpa = funcaoLimpa.replace(/cos\((.*?)\)/g, 'Math.cos($1)');
-    funcaoLimpa = funcaoLimpa.replace(/log\((.*?)\)/g, 'Math.log($1)');
-    funcaoLimpa = funcaoLimpa.replace(/abs\((.*?)\)/g, 'Math.abs($1)');
-    funcaoLimpa = funcaoLimpa.replace(/tan\((.*?)\)/g, 'Math.tan($1)');
-    funcaoLimpa = funcaoLimpa.replace(/asin\((.*?)\)/g, 'Math.asin($1)');
-    funcaoLimpa = funcaoLimpa.replace(/acos\((.*?)\)/g, 'Math.acos($1)');
-    funcaoLimpa = funcaoLimpa.replace(/atan\((.*?)\)/g, 'Math.atan($1)');
-    funcaoLimpa = funcaoLimpa.replace(/sqrt\((.*?)\)/g, 'Math.sqrt($1)');
-    funcaoLimpa = funcaoLimpa.replace(/exp\((.*?)\)/g, 'Math.exp($1)');
-    funcaoLimpa = funcaoLimpa.replace(/arg\((.*?)\)/g, 'Math.arg($1)');
-    funcaoLimpa = funcaoLimpa.replace(/pi/g, 'Math.PI');
-    funcaoLimpa = funcaoLimpa.replace(/e/g, 'Math.E');
-    return funcaoLimpa;
-}
-
-
 
 function init(){
+    var tempoInicial = performance.now();
     let canvasElement = document.getElementById("domainColorCanvas");
 
     let tamanho_grafico = document.getElementById('tamanho_grafico').value;
@@ -256,14 +211,13 @@ function init(){
 
     //Função:
     let funcao = document.getElementById('funcao_complexa').value;
-    let operacao = "z = a + b*j \n" + identificarExpoenteComplexo(funcao);
-    //alert(funcao);
+    let operacao = simplificarAntesAlgebrite(funcao);
 
     //se houver uma letra que não seja Z (ou i), dá um alert de erro
     //se houver um simbolo que não seja +, -, *, /, ^, dá um alert de erro
     let regex = /[^z\^i\+\-\*\/\^\(\)\ \d\.]/gi;
 
-    if (regex.test(funcao)){
+    if (regex.test(funcao) && false){
         alert("Erro! Função inválida!");
     }
     //remove todos os espaços de 'função'
@@ -275,19 +229,16 @@ function init(){
     //se houver, dar um alert de erro
 
     regex = /z[^+\-\*\/\^]/gi;
-    if (regex.test(funcao))
+    if (regex.test(funcao) &&false)
     {
         alert("ERRO!");
     } 
     
     else {
-    let resultado = Algebrite.run(operacao);
-    resultado= simplificarExpoenteImaginario(resultado);
-    resultado = Algebrite.subst("i","j",resultado);
-    resultado = Algebrite.run(resultado.toString());
+        resultado = operacao;
     console.log("Função final: " + resultado);
-    let resultado_real = Algebrite.simplify(Algebrite.real(resultado).toString()).toString();
-    let resultado_imag = Algebrite.simplify(Algebrite.imag(resultado).toString()).toString();
+    let resultado_real = Algebrite.real(resultado).toString();
+    let resultado_imag = Algebrite.imag(resultado).toString();
     console.log("Parte real antes do processamento: " + resultado_real);
     console.log("Parte imaginária antes do processamento: " + resultado_imag);
     //Substitui ^ para vários * para que o eval possa entender
@@ -297,7 +248,7 @@ function init(){
     resultado_imag = simplificarExponencial(resultado_imag);
     console.log("Parte real após o processamento: " + resultado_real);
     console.log("Parte imaginária após o processamento: " + resultado_imag);
-    Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag);
+    Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag, tempoInicial);
     }
 }
 

@@ -39,7 +39,7 @@ function Newton(funcao,potencia)
     console.log(termo1 + " " + termo2)
     for (let i=0; i<=potencia; i++)
     {
-       stringbuilder += replaceBinomial(Combinacao(potencia,i) + "*" + termo1 + "^" + (potencia-i) + "*" + termo2 + "^" + i + " + ");
+       stringbuilder += Combinacao(potencia,i) + "*" + termo1 + "^" + (potencia-i) + "*" + termo2 + "^" + i + " + ";
     }
     stringbuilder += '0';
     return stringbuilder;
