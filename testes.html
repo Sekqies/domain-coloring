@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="bignumber.js"></script>
+    <script src="testebinomio.js"></script>
+    <script src="algebritebundle.js"></script>
+    <script>
+        function calcularBinomial() {
+                        let funcao = document.getElementById("funcao").value;
+                        let x = parseInt(document.getElementById("x").value);
+                        let inicioNewton = performance.now();
+                        let resultNewton = Newton(funcao, x);
+                        let fimNewton = performance.now();
+                        let tempoNewton = fimNewton - inicioNewton;
+                        let inicioAlgebrite = performance.now();
+                        let resultAlgebrite = Algebrite.run("(" + funcao + ")^"+x);
+                        let fimAlgebrite = performance.now();
+                        let tempoAlgebrite = fimAlgebrite - inicioAlgebrite;
+                        console.log("Resultado Newton: " + resultNewton + " Tempo: " + tempoNewton);
+                        console.log("Resultado Algebrite: " + resultAlgebrite + " Tempo: " + tempoAlgebrite);
+
+                        // Print the result and time in the HTML
+                        document.getElementById("resultNewton").innerHTML = "Resultado Newton: " + resultNewton + " Tempo: " + tempoNewton;
+                        document.getElementById("resultAlgebrite").innerHTML = "Resultado Algebrite: " + resultAlgebrite + " Tempo: " + tempoAlgebrite;
+                    }
+                </script>
+                <label for="funcao">Digite a função: </label>
+                <input type="text" id="funcao" name="funcao">
+                <br>
+                <label for="x">Exponencial</label>
+                <input type="text" id="x" name="x">
+                <br>
+                <button onclick="calcularBinomial()">Teste!!</button>
+                <br>
+                <p id="resultNewton"></p>
+                <p id="resultAlgebrite"></p>
+            </body>
+            </html>
+    <br>
+</body>
+</html>
