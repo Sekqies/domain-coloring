@@ -228,28 +228,30 @@ function init(){
 
     //Função:
     let funcao = document.getElementById('funcao_complexa').value;
-    let operacao = simplificarAntesAlgebrite(funcao);
+
 
     //remove todos os espaços de 'função'
-    funcao = funcao.replace(/\s/g, '');
+    //funcao = funcao.replace(/\s/g, '');
     //alert(funcao);
+    let operacao = simplificarAntesAlgebrite(funcao);
 
     //checar se, apos alguma letra Z, há um algarismo que não seja:
     // (+, -, *, /, ^)
     //se houver, dar um alert de erro
-
-    resultado = operacao;
+    const teste = iniciarGambiarra(operacao);
+    console.log ("Função inicial: " + teste[0]);
+    const resultado = teste[0];
+    const originais = teste[1];
     console.log("Função final: " + resultado);
-    let resultado_real = Algebrite.real(resultado).toString();
-    let resultado_imag = Algebrite.imag(resultado).toString();
+    let resultado_real = reverterGambiarra(Algebrite.real(resultado).toString(),originais);
+    let resultado_imag = reverterGambiarra(Algebrite.imag(resultado).toString(),originais);
+
     console.log("Parte real antes do processamento: " + resultado_real);
     console.log("Parte imaginária antes do processamento: " + resultado_imag);
     //Substitui ^ para vários * para que o eval possa entender
-    resultado_real = simplificarExponencial(resultado_real);
+
     resultado_real = limparFuncao(resultado_real);
-    
     resultado_imag = limparFuncao(resultado_imag);
-    resultado_imag = simplificarExponencial(resultado_imag);
     console.log("Parte real após o processamento: " + resultado_real);
     console.log("Parte imaginária após o processamento: " + resultado_imag);
     Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag, tempoInicial);
