@@ -1,25 +1,22 @@
 function simplificarExponencial(inputFunction) {
     //Transforma uma função em formato de a^b em Math.pow(a,b)
-
-    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+)/g, function(match, base, exponent) {
+    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+\.\w+)/g, function(match, base, exponent) {
         return 'Math.pow(' + base + ', ' + exponent + ')';
     });
 
     return outputFunction;
   }
 
-  function simplificarExpoenteImaginario(funcaoOriginal) {
-    // Um expoente no formato de i^1 = i^5 = i^9. Ou seja, i^x, onde x é um número inteiro, é sempre igual a i^x%4
-    // Além disso, o Algebrite não sabe fazer operações com i elevado a potências maiores que 5.
+function simplificarExpoenteImaginario(funcaoOriginal) {
+// Um expoente no formato de i^1 = i^5 = i^9. Ou seja, i^x, onde x é um número inteiro, é sempre igual a i^x%4
+// Além disso, o Algebrite não sabe fazer operações com i elevado a potências maiores que 5.
 
-    const regex = /(\bj\b)\^(\w+)/g;
-    const funcaoSimplificada = funcaoOriginal.replace(regex, function(match, base, expoente) {
-      return base + "^(" + eval(expoente + " % 4") + ")";
-    });
-    return funcaoSimplificada;
-  }
-
-
+const regex = /(\bj\b)\^(\w+)/g;
+const funcaoSimplificada = funcaoOriginal.replace(regex, function(match, base, expoente) {
+    return base + "^(" + eval(expoente + " % 4") + ")";
+});
+return funcaoSimplificada;
+}
 
 
 function limparFuncao(funcaoOriginal) {
@@ -35,10 +32,9 @@ function limparFuncao(funcaoOriginal) {
     funcaoLimpa = funcaoLimpa.replace(/\bsqrt\(/g, 'Math.sqrt(');
     funcaoLimpa = funcaoLimpa.replace(/\bcosh\(/g, 'Math.cosh(');
     funcaoLimpa = funcaoLimpa.replace(/\bsinh\(/g, 'Math.sinh(');
-    funcaoLimpa = funcaoLimpa.replace(/(\w+)\s*\^\s*\((.*?)\)/g, 'Math.pow($1, $2)');
-    funcaoLimpa = funcaoLimpa.replace(/\((.*?)\)\^(\w+)/g, 'Math.pow($1, $2)');
-    funcaoLimpa = funcaoLimpa.replace(/(\w+)\^(\w+)/g, 'Math.pow($1, $2)');
-    funcaoLimpa = funcaoLimpa.replace(/(.*?)\^(-?\d+(\.\d+)?)/g, 'Math.pow($1, $2)');
+
+    funcaoLimpa = funcaoLimpa.replace(/\((.*?)\)\^(\w+\.\w+)/g, 'Math.pow($1, $2)');
+
     funcaoLimpa = funcaoLimpa.replace(/\babs\(/g, 'Math.abs(');
     funcaoLimpa = funcaoLimpa.replace(/\bexp\(/g, 'Math.exp(');
     

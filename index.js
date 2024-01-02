@@ -1,11 +1,11 @@
 function changeActiveClass() {
-    const radioDivs = document.querySelectorAll("#options .tipo div");
+    const radioDivs = document.querySelectorAll("#options .tipo div input");
     radioDivs.forEach(div => {
         div.addEventListener("click", () => {
             radioDivs.forEach(div => {
-                div.classList.remove("active");
+                div.parentElement.classList.remove("active");
             });
-            div.classList.add("active");
+            div.parentElement.classList.add("active");
         });
     });
 }

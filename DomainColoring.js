@@ -35,7 +35,6 @@ function HSLtoRGB(h, s, l) {
 
 function getNumeroInteiro(){
     let numeroInteiro = (Math.floor((centro)/(qtdInteiros))); 
-    //Esses *100 faz com que o numero seja multiplo de 100
     return numeroInteiro;
 }
 
@@ -99,6 +98,21 @@ function Eixos (imgDataEixos, numeroInteiro){
     return imgDataEixos;
 }
 
+
+function getZvalue(x, y, resultado_real, resultado_imag){
+    let numeroInteiro = getNumeroInteiro();
+
+    let a = (x - centro)/numeroInteiro; //conversão de pixel para o plano.
+    let b = (y - centro)/numeroInteiro;
+    //f(z) -> z
+    
+    let real = eval(resultado_real);
+    let imag = eval(resultado_imag);
+
+    let z = [real, imag];
+    return z;
+}
+
 function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_imag, tempoInicial)
 {
     
@@ -120,7 +134,6 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
 
     //let maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
     numeroInteiro = getNumeroInteiro();
-    let maxDist = Math.floor(Math.sqrt(centro * centro + centro * centro));
     //console.log("maxdist:" + maxDist + " Centro: " + centro + " NumeroInt: " + numeroInteiro);
 
     
@@ -128,12 +141,16 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
         for (y = 0; y < height; y++){
             
             
-            let a = (x - centro)/numeroInteiro; //conversão de pixel para o plano.
-            let b = (y - centro)/numeroInteiro;
+            //let a = (x - centro)/numeroInteiro; //conversão de pixel para o plano.
+            //let b = (y - centro)/numeroInteiro;
             //f(z) -> z
             
-            let real = eval(resultado_real);
-            let imag = eval(resultado_imag);
+            //let real = eval(resultado_real);
+            //let imag = eval(resultado_imag);
+
+            let z = getZvalue(x, y, resultado_real, resultado_imag);
+            let real = z[0];
+            let imag = z[1];
             //f(z) -> z^3 - 1
             //let real = a*a*a - 3*a*b*b - 1;
             //let imag = 3*a*a*b - b*b*b;
@@ -213,13 +230,6 @@ function init(){
     let funcao = document.getElementById('funcao_complexa').value;
     let operacao = simplificarAntesAlgebrite(funcao);
 
-    //se houver uma letra que não seja Z (ou i), dá um alert de erro
-    //se houver um simbolo que não seja +, -, *, /, ^, dá um alert de erro
-    let regex = /[^z\^i\+\-\*\/\^\(\)\ \d\.]/gi;
-
-    if (regex.test(funcao) && false){
-        alert("Erro! Função inválida!");
-    }
     //remove todos os espaços de 'função'
     funcao = funcao.replace(/\s/g, '');
     //alert(funcao);
@@ -228,14 +238,7 @@ function init(){
     // (+, -, *, /, ^)
     //se houver, dar um alert de erro
 
-    regex = /z[^+\-\*\/\^]/gi;
-    if (regex.test(funcao) &&false)
-    {
-        alert("ERRO!");
-    } 
-    
-    else {
-        resultado = operacao;
+    resultado = operacao;
     console.log("Função final: " + resultado);
     let resultado_real = Algebrite.real(resultado).toString();
     let resultado_imag = Algebrite.imag(resultado).toString();
@@ -244,11 +247,11 @@ function init(){
     //Substitui ^ para vários * para que o eval possa entender
     resultado_real = simplificarExponencial(resultado_real);
     resultado_real = limparFuncao(resultado_real);
+    
     resultado_imag = limparFuncao(resultado_imag);
     resultado_imag = simplificarExponencial(resultado_imag);
     console.log("Parte real após o processamento: " + resultado_real);
     console.log("Parte imaginária após o processamento: " + resultado_imag);
     Complexo_1(canvasElement, tipo_grafico,resultado,resultado_real, resultado_imag, tempoInicial);
-    }
 }
 
