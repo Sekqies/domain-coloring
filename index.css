@@ -2,6 +2,7 @@
 
 :root{
     font-family: 'Jaldi', sans-serif;
+    font-size: 25px;
 }
 
 *{
@@ -49,6 +50,7 @@ section{
 .funcao{
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 }
 .funcao p{
     font-size: 1.2rem;
@@ -62,7 +64,7 @@ section{
     font-size: 1rem;
     font-weight: 100;
     color: rgb(82, 82, 82);
-    margin-bottom: 15px;
+    
 
 }
 
@@ -109,11 +111,22 @@ section{
     width: 100%;
 }
 
+.funcao h2{
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: red;
+}
+
 #submit input:hover{
     background-color: rgb(82, 82, 82);
     color: white;
 }
 
+@media screen and (max-width: 1920px){
+    .container{
+        max-width: 1440px;
+    }  
+}
 @media screen and (max-width: 1440px){
     .container{
         max-width: 1024px;
