@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaldi&display=swap');
+
+:root{
+    font-family: 'Jaldi', sans-serif;
+    font-size: 25px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -8,32 +20,113 @@ body {
 canvas{
     border: 3px solid black;
     border-radius: 10px;
+    width: 100%;
+    aspect-ratio: 1;
 }
 
 section{
     width: 100%;
-    background-color: rgb(227, 255, 255);
     border-radius: 10px;
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
 
 }
-section > *{
+section{
     margin-top: 30px;
 }
 
 #opcoes{
     padding: 15px;
-    background-color: rgb(216, 216, 255);
     border-radius: 10px;
     height: fit-content;
+    font-size: 1rem;
+}
+#opcoes > h1{
+    width: 100%;
+    text-align: center;
 }
 
-#submit > input{
-    margin: 10px 0px;
+.funcao{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.funcao p{
+    font-size: 1.2rem;
+    font-weight: 100;
+    color: rgb(82, 82, 82);
+}
+.funcao input{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(82, 82, 82);
+    font-size: 1rem;
+    font-weight: 100;
+    color: rgb(82, 82, 82);
+    
+
+}
+
+#options{
+    padding: 15px;
+    border: 1px solid rgb(82, 82, 82);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#options > .tipo{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+#options > .tipo > div{
+    display: flex;
+    gap: 3px;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+#options > .tipo > div.active{
+    background-color: rgb(181, 249, 181);
+}
+
+#options .funcao p{
+    font-size: 1rem !important;
+}
+#options .funcao input{
+    font-size: 0.8rem !important;
+}
+
+#submit input{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(82, 82, 82);
+    font-size: 1rem;
+    font-weight: 100;
+    color: rgb(82, 82, 82);
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.3s;
     width: 100%;
 }
 
+.funcao h2{
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: red;
+}
+
+#submit input:hover{
+    background-color: rgb(82, 82, 82);
+    color: white;
+}
+
+@media screen and (max-width: 1920px){
+    .container{
+        max-width: 1440px;
+    }  
+}
 @media screen and (max-width: 1440px){
     .container{
         max-width: 1024px;
@@ -42,5 +135,17 @@ section > *{
 @media screen and (max-width: 1024px){
     .container{
         max-width: 768px;
+    }  
+}
+
+@media screen and (max-width: 768px){
+    .container{
+        max-width: 480px;
+    }  
+}
+
+@media screen and (max-width: 480px){
+    .container{
+        max-width: 320px;
     }  
 }
