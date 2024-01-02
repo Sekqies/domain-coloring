@@ -1,6 +1,6 @@
 function simplificarExponencial(inputFunction) {
     //Transforma uma função em formato de a^b em Math.pow(a,b)
-    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+\.\w+)/g, function(match, base, exponent) {
+    var outputFunction = inputFunction.replace(/(\w+)\s*\^\s*(\w+(\.\w+)?)/g, function(match, base, exponent) {
         return 'Math.pow(' + base + ', ' + exponent + ')';
     });
 
@@ -33,7 +33,7 @@ function limparFuncao(funcaoOriginal) {
     funcaoLimpa = funcaoLimpa.replace(/\bcosh\(/g, 'Math.cosh(');
     funcaoLimpa = funcaoLimpa.replace(/\bsinh\(/g, 'Math.sinh(');
 
-    funcaoLimpa = funcaoLimpa.replace(/\((.*?)\)\^(\w+\.\w+)/g, 'Math.pow($1, $2)');
+    funcaoLimpa = funcaoLimpa.replace(/\((.*?)\)\^(\w+(\.\w+)?)/g, 'Math.pow($1, $2)');
 
     funcaoLimpa = funcaoLimpa.replace(/\babs\(/g, 'Math.abs(');
     funcaoLimpa = funcaoLimpa.replace(/\bexp\(/g, 'Math.exp(');
