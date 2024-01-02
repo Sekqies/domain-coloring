@@ -194,10 +194,10 @@ function init(){
     var tempoInicial = performance.now();
     let canvasElement = document.getElementById("domainColorCanvas");
 
-    let tamanho_grafico = document.getElementById('tamanho_grafico').value;
-    canvasElement.width = tamanho_grafico;
-    canvasElement.height = tamanho_grafico;
-    centro = tamanho_grafico/2;
+    //let tamanho_grafico = document.getElementById('tamanho_grafico').value;
+    //canvasElement.width = tamanho_grafico;
+    //canvasElement.height = tamanho_grafico;
+    centro = canvasElement.width/2;
     //Checa qual o checkbox selecionado (nome = 'tp_g')
     let tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
