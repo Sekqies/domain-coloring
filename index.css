@@ -124,6 +124,23 @@ section{
     color: white;
 }
 
+#numeroreal{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+#numeroreal #checkbox{
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#numeroreal #checkbox.active{
+    background-color: rgb(181, 249, 181);
+}
+
 @media screen and (max-width: 1920px){
     .container{
         max-width: 1440px;
