@@ -17,20 +17,22 @@ body {
     flex-direction: column;
     align-items: center;
 }
-canvas{
+#grafico canvas{
     border: 3px solid black;
     border-radius: 10px;
-    width: 100%;
+    width: calc(100% - 70px);
     aspect-ratio: 1;
 }
-
+#grafico p{
+    width: calc(100% - 70px);
+    text-align: center;
+}
 section{
     width: 100%;
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
-
 }
 section{
     margin-top: 30px;

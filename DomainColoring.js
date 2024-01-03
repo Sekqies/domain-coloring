@@ -225,7 +225,7 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
 function init(){
     var tempoInicial = performance.now();
     let canvasElement = document.getElementById("domainColorCanvas");
-
+    
     //let tamanho_grafico = document.getElementById('tamanho_grafico').value;
     //canvasElement.width = tamanho_grafico;
     //canvasElement.height = tamanho_grafico;
@@ -260,6 +260,19 @@ function init(){
     console.log("Função final: " + resultado);
     let resultado_real = reverterGambiarra(Algebrite.real(resultado).toString(),originais);
     let resultado_imag = reverterGambiarra(Algebrite.imag(resultado).toString(),originais);
+
+
+    const tudo = document.getElementById('tudo');
+    canvasElement.addEventListener('mousemove', function(event) {
+        const num_inteiro = getNumeroInteiro();
+        const x = ((event.offsetX - centro)/num_inteiro).toFixed(3);
+        const y = ((event.offsetY - centro)/num_inteiro).toFixed(3);
+        let z = getZvalue(x, y, resultado_real, resultado_imag);
+        let real = (z[0]).toFixed(3);
+        let imag = (z[1]).toFixed(3);
+        tudo.innerHTML = (`<i>F( ${x} + ${y}i ) = ${real} + ${imag}i</i>`);
+    });
+
 
     console.log("Parte real antes do processamento: " + resultado_real);
     console.log("Parte imaginária antes do processamento: " + resultado_imag);
