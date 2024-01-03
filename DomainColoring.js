@@ -121,6 +121,9 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
 
     canvas = canvasElement.getContext("2d");
 
+
+
+
     let imageData = canvas.createImageData(width, height);
     /*Cria um array de pixels, com a largura e altura do canvas,
     para que possamos manipular os pixels individualmente.*/
@@ -166,7 +169,8 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
             //Modo 1 (sem descontinuidade):
             if (tipo_grafico == 1)
             {
-                modulo = (2/Math.PI) * Math.atan(dist);
+                //modulo = (2/Math.PI) * Math.atan(dist);
+                modulo = (dist**0.4)/((dist**0.4)+1);
             }
             else if (tipo_grafico == 2)
             {
@@ -185,6 +189,17 @@ function Complexo_1(canvasElement, tipo_grafico,funcao,resultado_real,resultado_
                 }
             }
 
+            
+            //let theta = (Math.atan(imag/real)) + (2*Math.PI);
+            //if (real < 0)
+            //{
+            //    theta = theta + Math.PI;
+            //}
+            //theta *= 180/Math.PI;
+            //const hue = theta % 360;
+            
+            //canvas.fillStyle = "hsl(" + hue + ", 100%, " + modulo*100 + "%)";
+            //canvas.fillRect(x,y, 1,1);
             
             
 
