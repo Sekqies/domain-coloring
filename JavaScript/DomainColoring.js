@@ -258,7 +258,7 @@ function init(){
         let z = getZvalue(realAntes, imagAntes);
         let real = Number(z[0]).toFixed(3);
         let imag = Number(z[1]).toFixed(3);
-        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3)}i ) = ${real} + ${imag}i</i>`);
+        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
 
