@@ -20,7 +20,6 @@ body {
 #grafico canvas{
     border: 3px solid black;
     border-radius: 10px;
-    width: calc(100% - 70px);
     aspect-ratio: 1;
 }
 #grafico p{

@@ -120,7 +120,7 @@ function getNumeroInteiro(x, y){
     let height = canvas.height;
     let centro = width/2;
 
-    let pixelPorInteiro = (width/2)/qtndInteiros;
+    let pixelPorInteiro = (width/2)/Number(qtndInteiros);
     let real = (x-centro)/pixelPorInteiro;
     let imag = (y-centro)/pixelPorInteiro;
 
@@ -210,25 +210,17 @@ function Plotter(){
 function init(){
     abi = document.getElementById("abi").style.display === "none" ? false : true;
     canvas = document.getElementById("domainColorCanvas");
+
+    let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    canvas.width = tamanhoCanvas;
+    canvas.height = tamanhoCanvas;
     //alert(canvas);
     var tempoInicial = performance.now();
-    let canvasElement = document.getElementById("domainColorCanvas");
-    
-    //let tamanho_grafico = document.getElementById('tamanho_grafico').value;
-    //canvasElement.width = tamanho_grafico;
-    //canvasElement.height = tamanho_grafico;
-    centro = canvasElement.width/2;
-    //Checa qual o checkbox selecionado (nome = 'tp_g')
+
     let tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
-    qtdInteiros = document.getElementById('numero_inteiros').value;
-    //alert(qtdInteiros);
-    //alert(tipo_grafico);
-    /*Isso permite que façamos manipulação de pixels no campo 2d do canvas, 
-    para a criação de graficos, etc.*/
-    
-    //numeroInteiro = Eixos(canvasElement);
-
+    qtndInteiros = document.getElementById('numero_inteiros').value;
+    //alert(qtndInteiros);
     //Função:
     if (!abi){
         let funcao = document.getElementById('funcao_complexa').value;
@@ -255,15 +247,19 @@ function init(){
     }
 
     const tudo = document.getElementById('tudo');
-    /*canvasElement.addEventListener('mousemove', function(event) {
+    canvas.addEventListener('mousemove', function(event) {
         const num_inteiro = getNumeroInteiro();
-        const x = ((event.offsetX - centro)/num_inteiro).toFixed(3);
-        const y = ((event.offsetY - centro)/num_inteiro).toFixed(3);
-        let z = getZvalue(x, y, resultado_real, resultado_imag);
-        let real = (z[0]).toFixed(3);
-        let imag = (z[1]).toFixed(3);
-        tudo.innerHTML = (`<i>F( ${x} + ${y}i ) = ${real} + ${imag}i</i>`);
-    });*/
+        const x = event.offsetX;
+        const y = event.offsetY;
+
+        let realAntes = getNumeroInteiro(x, y)[0];
+        let imagAntes = getNumeroInteiro(x, y)[1];
+
+        let z = getZvalue(realAntes, imagAntes);
+        let real = Number(z[0]).toFixed(3);
+        let imag = Number(z[1]).toFixed(3);
+        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3)}i ) = ${real} + ${imag}i</i>`);
+    });
 
 
     console.log("Parte real antes do processamento: " + resultado_real);
@@ -276,6 +272,6 @@ function init(){
     console.log("Parte imaginária após o processamento: " + resultado_imag);
 
     
-    Plotter();
+    Plotter(qtndInteiros);
 }
 
