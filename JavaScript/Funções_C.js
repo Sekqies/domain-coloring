@@ -283,3 +283,45 @@ var FERNANDO = function() {
     Algebrite.divide();
     Algebrite.restore();
 };
+
+
+/*
+Ideia para algoritmo para resolver exponenciais complexas:
+1. Identifica "z", transforma em a+b*i
+2. Procura por somas em exponenciais, separa em multiplicações
+3. Procura por z^(n), transforma isso em e^(ln(z)*n) [poderia, também, fazer a conversão com o comp_pol]
+4. Realiza expansão de funções (ln, sen, etc)
+5. Procura por e^bi e aplica a identidade de euler
+6. Procura por e^(ln(a)), com "a" real, e transforma novamente em "a"
+7. Se ainda existir qualquer padrão que ativaria as etapas anteriores, volta à etapa 2
+8. Junções de multiplicações repetidas
+9. Separação de real e imaginário
+
+Ex de funcionamento do algoritmo:
+I:
+z^z
+
+z^z, 
+(a+b*i)^(a+b*i) [Conversão de z=>(a+b*i)],
+(a+b*i)^a * (a+b*i)^(b*i) [Separação de expoentes],
+e^(ln(a+b*i)*a) * e^(ln(a+b*i)*b*i) [Transformação em e^ln(z)],
+e^((1/2 * ln(a^2 + b^2) + i*atan2(b,a))*a) * e^((1/2 * ln(a^2 + b^2) + i*atan2(b,a))*b*i) [Expansão de ln(z)],
+e^((1/2 * ln(a^2 + b^2))*a) * e^(i*atan2(b,a)*a) * e^((1/2 * ln(a^2 + b^2))*b*i) * e^(i*atan2(b,a)*b*i) [Separação de expoentes],
+e^((a/2 * ln(a^2 + b^2)) * (cos(atan2(b,a)*a)  + i sen(atan2(b,a)*a)) * (b/2 * ln(a^2 + b^2)) * (cos(atan2(b,a)*b*i)  + i sen(atan2(b,a)*b*i)) [Aplicação da identidade de euler],
+...
+
+Talvez seja melhor achar uma forma mais eficiente de fazer parte dessas transformações?
+z^z é igual a (a^2 + b^2)^(a/2) * e^(-b * atan2(b,a)) * (cos(b/2 * ln(a^2 + b^2) + a * atan2(b,a)) + i sen(b/2 * ln(a^2 + b^2) + a * atan2(b,a))), 
+se for calculado corretamente.
+Isso acontece porque, na etapa em que há a separação de vários expoentes diferentes 
+(que tem 4 e^(algumacoisa) ao mesmo tempo), o certo é comprimir tudo que é imaginário e tudo que é real em duas funções só
+Isso vai ser mais eficiente para o javascript, também. Operações de seno e cosseno demandam mais do processador,
+então é melhor as comprimirem o maior o possível
+
+*/
+
+/* 
+TODO:
+- Criação de uma forma nova de entender funções? A manipulação de string depende muito do regex, e tá dando bastante problema
+- Implementação de algoritmo para solução de funções de maior complexidade (z^z^z^z^20^i^z...)
+*/

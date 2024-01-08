@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="index.css">
-    <script src="algebritebundle.js"></script>
-    <script src="Funções_C.js"></script>
-    <script src="DomainColoring.js" ></script> 
-    <script src="index.js"></script>
+
+    <script src="JavaScript/algebritebundle.js"></script>
+    <script src="JavaScript/Funções_C.js"></script>
+    <script src="JavaScript/DomainColoring.js" ></script> 
+    <script src="JavaScript/index.js"></script>
     <title>F(Z) Números Complexos</title>  
 </head>
 <body onload="init()">
@@ -22,7 +23,19 @@
                     <input type="text" value="z" id="funcao_complexa"> 
                     <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
                 </div>
-
+                <div id="abi" style="display: none;">
+                    <div class="funcao">
+                        <p>Parte real:  </p>
+                        <input type="text" value="a" id="funcao_complexa_real"> 
+                        <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
+                    </div>
+                    <div class="funcao">
+                        <p>Parte imaginaria:  </p>
+                        <input type="text" value="b" id="funcao_complexa_imag"> 
+                        <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
+                    </div>
+                    <p>Favor escrever com termos a e b (b é imaginario)</p>
+                </div>
                 <div id="options"> 
                     <div class="tipo">
                         <p>Tipo do Gráfico: </p>
@@ -45,6 +58,10 @@
                         <p>Tamanho do gráfico:</p>
                         <input type="number" id="tamanho_grafico" value="500" min="100" max="4000" step="100">
                     </div>
+                    <div id="numeroreal">
+                        <div id="checkbox"></div>
+                        <p>Input de função manual (Digitar em função de A e B)</p>
+                    </div>
                 </div>
                 <div id="submit">
                     <input type="button" value="Desenhar" onclick="init()">
@@ -53,6 +70,7 @@
         </div>
         <div id="grafico">
             <canvas id="domainColorCanvas" width="600" height="600"></canvas>
+            <p id="tudo"><i>F ( a + bi ) = a + bi</i></p>
         </div>
         
     </section>

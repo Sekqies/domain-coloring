@@ -31,12 +31,33 @@ function checaFuncao() {
 
 }
 
+function changeABIactive(){
+    const checkbox = document.getElementById("checkbox");
+    const abi = document.getElementById("abi");
+    const func = document.querySelector("form .funcao");
+
+    checkbox.addEventListener("click", () => {
+        if (checkbox.classList.contains("active")) {
+            checkbox.classList.remove("active");
+            abi.style.display = "none";
+            func.style.display = "flex";
+        }
+        else {
+            checkbox.classList.add("active");
+            abi.style.display = "block";
+            func.style.display = "none";
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     changeActiveClass();
+    changeABIactive();
 
     const funcao = document.getElementById("funcao_complexa");
     funcao.addEventListener("input", () =>
     {
         checaFuncao();
     });
+
 });

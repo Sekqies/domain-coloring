@@ -17,20 +17,21 @@ body {
     flex-direction: column;
     align-items: center;
 }
-canvas{
+#grafico canvas{
     border: 3px solid black;
     border-radius: 10px;
-    width: 100%;
     aspect-ratio: 1;
 }
-
+#grafico p{
+    width: calc(100% - 70px);
+    text-align: center;
+}
 section{
     width: 100%;
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
-
 }
 section{
     margin-top: 30px;
@@ -120,6 +121,23 @@ section{
 #submit input:hover{
     background-color: rgb(82, 82, 82);
     color: white;
+}
+
+#numeroreal{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+#numeroreal #checkbox{
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#numeroreal #checkbox.active{
+    background-color: rgb(181, 249, 181);
 }
 
 @media screen and (max-width: 1920px){
