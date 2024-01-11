@@ -143,7 +143,8 @@ function Domain_coloring(real, imag)
     //Modo 1 (sem descontinuidade):
 
     //modulo = (2/Math.PI) * Math.atan(dist);
-    modulo = (dist**0.4)/((dist**0.4)+1);
+    let a = 0.4;
+    modulo = (dist**a)/((dist**a)+1);
 
 
             
@@ -159,7 +160,9 @@ function Domain_coloring(real, imag)
     //canvas.fillRect(x,y, 1,1);
             
             
-
+    if (real =='Infinity' || real == '-Infinity' && imag == 'Infinity' || imag == '-Infinity'){
+        modulo = 1;
+    }
     let color = HSLtoRGB(hue, 1, modulo);
     return color;
     //Array de cores r[0] g[1] b[2]
