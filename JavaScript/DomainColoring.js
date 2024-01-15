@@ -7,6 +7,8 @@ var funcao = 'z';
 var resultado_real = 'a';
 var resultado_imag = 'b';
 
+let tipo_grafico = 1;
+
 var abi = false;
 
 function HSLtoRGB(h, s, l) {
@@ -132,6 +134,12 @@ function getNumeroInteiro(x, y){
 //O cauculo do ponto é feito em outra função.
 function Domain_coloring(real, imag)
 {
+    
+    //Checa se explodiu para o infinito.
+    if (real >= 9e+10 || real <= -9e+10 || imag >= 9e+10 || imag <= -9e+10){
+        return [255,255,255];
+    }
+
     //Angulo
     let hue = -(Math.atan2(imag, real)) / (2*Math.PI);
 
@@ -140,12 +148,30 @@ function Domain_coloring(real, imag)
 
     let modulo;
 
-    //Modo 1 (sem descontinuidade):
+    
 
-    //modulo = (2/Math.PI) * Math.atan(dist);
-    let a = 0.4;
-    modulo = (dist**a)/((dist**a)+1);
+    if (tipo_grafico == 2){
+        //Modo 2 (com descontinuidade):
+        let expoente = Math.log2(dist);
 
+        let expoente_decimal = 0;
+        if (dist > 0){
+            expoente_decimal = (expoente - Math.floor(expoente) -1)*(-1);
+        }
+        else{
+            expoente_decimal = (expoente - Math.floor(expoente));
+        }
+        
+        modulo = 1/((expoente_decimal**0.2) +1)-0.1;
+    }
+    else{
+        //Modo 1 (sem descontinuidade):
+        modulo = (2/Math.PI) * Math.atan(dist);
+        let a = 0.4;
+        modulo = (dist**a)/((dist**a)+1);
+    }
+    
+    
 
             
     //let theta = (Math.atan(imag/real)) + (2*Math.PI);
@@ -220,7 +246,7 @@ function init(){
     //alert(canvas);
     var tempoInicial = performance.now();
 
-    let tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
+    tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
     qtndInteiros = document.getElementById('numero_inteiros').value;
     //alert(qtndInteiros);
