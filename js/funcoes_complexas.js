@@ -84,7 +84,10 @@ function cos(a)
 
 function tg(a)
 {
-    
+    let denominador = Math.cos(2*a.real) + cosh_real(2*a.imag);
+    return {
+        real: Math.sin(2*a.real)/denominador, imag: senh_real(2*a.imag)/denominador
+    }
 }
 
 
@@ -161,14 +164,49 @@ var operacoes = {
             return soma(args[0](vars),args[1](vars))
         }
     },
-    "var":function(args)
-    {
-        return function(vars)
-        {
-            if (args[0]=="i") return {real:0,imag:1};
-            if (args[0]=="e") return {real:Math.E, imag:0};
-            if (args[0]=="pi") return {real:Math.PI, imag:0};
+    "var": function(args) {
+        return function(vars) {
+            if (args[0] == "i") return { real: 0, imag: 1 };
+            if (args[0] == "e") return { real: Math.E, imag: 0 };
+            if (args[0] == "pi") return { real: Math.PI, imag: 0 };
             return vars[args[0]];
         }
+    },
+    "multiply": function(args) {
+        return function(vars) {
+            return multiplicar(args[0](vars), args[1](vars));
+        }
+    },
+    "exponentiation": function(args) {
+        return function(vars) {
+            return exponencial(args[0](vars), args[1](vars));
+        }
+    },
+    "sin": function(args) {
+        return function(vars) {
+            return sen(args[0](vars));
+        }
+    },
+    "log": function(args) {
+        return function(vars) {
+            return log(args[0](vars));
+        }
+    },
+    "tan": function(args) {
+        return function(vars) {
+            return tg(args[0](vars));
+        };
+    },
+    "squareroot": function(args) {
+        return function(vars) {
+            var b = { real: 1/2, imag: 0 };
+            return exponencial(args[0](vars), b);
+        };
+    },
+    "root": function(args) {
+        return function(vars) {
+            var b = { real: 1/args[1](vars).real, imag: 0 };
+            return exponencial(args[0](vars), b);
+        };
     },
 };
