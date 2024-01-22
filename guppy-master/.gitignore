@@ -1,0 +1,9 @@
+OLD
+*~
+\#*
+*.pyc
+*.tmp
+node_modules
+*.o
+*.so
+*.a
