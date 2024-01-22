@@ -6,22 +6,35 @@
     <link type="text/css" rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
 
-    <!--<script src="JavaScript/algebritebundle.js"></script>
-    <script src="JavaScript/Funções_C.js"></script>
-    <script src="JavaScript/DomainColoring.js" ></script> 
-    <script src="JavaScript/index.js"></script>-->
+    <!--<script src="js/algebritebundle.js"></script>
+    <script src="js/Funções_C.js"></script>
+    <script src="js/DomainColoring.js" ></script> 
+    <script src="js/index.js"></script>-->
+    <script src="js/funcoes_template.js"></script>
+    <script src="js/funcoes_complexas.js"></script>
     <script src="guppy-master/build/guppy.js"></script>
+    
     <title>F(Z) Números Complexos</title>  
 </head>
-<body onload="init()">
+<body onload="start()">
     <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
     <script>
+        function start()
+        {
+            var guppy2 = new Guppy('guppy1');
+            guppy2.engine.set_content(funcaoBase);
+            guppy2.activate();
+        }
         function init(){
             var guppy1 = Guppy;
             console.log(guppy1);
 
             var guppy2 = new guppy1('guppy1');
+            //guppy2.engine.set_content(funcaoBase);
             console.log(guppy2);
+            console.log(guppy2.equations())
+            let f = guppy2.func(operacoes)
+            
         }
     </script>
     <section class="container">
