@@ -54,10 +54,4 @@ document.addEventListener("DOMContentLoaded", () => {
     changeActiveClass();
     changeABIactive();
 
-    const funcao = document.getElementById("funcao_complexa");
-    funcao.addEventListener("input", () =>
-    {
-        checaFuncao();
-    });
-
 });

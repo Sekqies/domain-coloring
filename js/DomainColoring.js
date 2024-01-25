@@ -105,13 +105,11 @@ function Eixos (imgDataEixos, numeroInteiro){
 }
 
 
-function getZvalue(a, b){
-   
-
-    let real = eval(resultado_real);
-    let imag = eval(resultado_imag);
-
-    return [real, imag];
+function getZvalue(a, b, f){
+    
+    let ret = {'z':{real: a, imag: b}};
+    ret = {'z': f(ret)};
+    return ret['z'];
 }
 
 
@@ -195,7 +193,13 @@ function Domain_coloring(real, imag)
 }
 
 //Receber o canvas, rodar por todos os pixels e colocar a cor
-function Plotter(){
+function Plotter(guppy){
+    /*alert('Guppy: ' + guppy)
+    const f = guppy.func(operacoes);
+    alert(guppy.engine.get_content('ast'));
+    alert('f: ' + f)
+    f({z: {real: 1, imag: 1}});
+    alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
@@ -213,9 +217,10 @@ function Plotter(){
             let imagAntes = getNumeroInteiro(x, y)[1];
 
             //Passamos os valores real e imag pela função
-            let z = getZvalue(realAntes, imagAntes);
-            real = z[0];
-            imag = z[1];
+            //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
+            let z = guppy.func(operacoes)({'z': {real: realAntes, imag: imagAntes}});
+            real = z.real;
+            imag = z.imag;
 
             //Pega a cor do pixel
             const color = Domain_coloring(real, imag);
@@ -236,7 +241,23 @@ function Plotter(){
     console.log("Imagem desenhada");
 
 }
+
 function init(){
+
+    var guppy = new Guppy('guppy1');
+    //alert(guppy)
+    guppy.engine.set_content(funcaoBase);
+    guppy.activate();
+    
+    document.addEventListener('keydown', function(event) {
+        if (event.key == "Enter") {
+            console.log(guppy.engine.get_content("ast"));
+            console.log(guppy.func(operacoes))
+            console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
+            Plotter(guppy);
+        }
+    });
+
     abi = document.getElementById("abi").style.display === "none" ? false : true;
     canvas = document.getElementById("domainColorCanvas");
 
@@ -244,7 +265,7 @@ function init(){
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
     //alert(canvas);
-    var tempoInicial = performance.now();
+    //var tempoInicial = performance.now();
 
     tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
@@ -252,7 +273,7 @@ function init(){
     //alert(qtndInteiros);
     //Função:
     if (!abi){
-        let funcao = document.getElementById('funcao_complexa').value;
+        /*let funcao = document.getElementById('funcao_complexa').value;
 
         //remove todos os espaços de 'função'
         //funcao = funcao.replace(/\s/g, '');
@@ -268,7 +289,7 @@ function init(){
         const originais = teste[1];
         console.log("Função final: " + resultado);
         resultado_real = reverterGambiarra(Algebrite.real(resultado).toString(),originais);
-        resultado_imag = reverterGambiarra(Algebrite.imag(resultado).toString(),originais);
+        resultado_imag = reverterGambiarra(Algebrite.imag(resultado).toString(),originais);*/
     }
     else{
         resultado_real = document.getElementById('funcao_complexa_real').value;
@@ -291,16 +312,15 @@ function init(){
     });
 
 
-    console.log("Parte real antes do processamento: " + resultado_real);
+    /*console.log("Parte real antes do processamento: " + resultado_real);
     console.log("Parte imaginária antes do processamento: " + resultado_imag);
     //Substitui ^ para vários * para que o eval possa entender
 
     resultado_real = limparFuncao(resultado_real);
     resultado_imag = limparFuncao(resultado_imag);
     console.log("Parte real após o processamento: " + resultado_real);
-    console.log("Parte imaginária após o processamento: " + resultado_imag);
+    console.log("Parte imaginária após o processamento: " + resultado_imag);*/
 
-    
-    Plotter(qtndInteiros);
+
 }
 

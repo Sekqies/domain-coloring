@@ -1,7 +1,7 @@
 //Boolenas
 function isZero(a)
 {
-    return a.real == 0 && b.real == 0;
+    return a.real == 0 && a.imag == 0;
 }
 
 
@@ -164,20 +164,59 @@ var operacoes = {
             return soma(args[0](vars),args[1](vars))
         }
     },
+
+    "-":function(args)
+    {
+        return function(vars)
+        {
+            return subtrair(args[0](vars),args[1](vars))
+        }
+    },
+
+    "/":function(args)
+    {
+        return function(vars)
+        {
+            return dividir(args[0](vars),args[1](vars))
+        }
+    },
+
+    "val":function(args)
+    {
+        return function(vars)
+        {
+            return {real:parseFloat(args[0]), imag:0}
+        }
+    },
+
+    /*EX: x^2 + 2:
+    ["+",
+        [
+            ["exponential",
+                [
+                    ["var",["z"]],
+                    ["val",[2]]
+                ]
+            ],
+            ["val",[2]]
+        ]
+    ]*/
+
     "var": function(args) {
         return function(vars) {
             if (args[0] == "i") return { real: 0, imag: 1 };
             if (args[0] == "e") return { real: Math.E, imag: 0 };
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
-            return vars[args[0]];
+            if (args[0] == "z") return vars.z;
+            //return vars.args[0];
         }
     },
-    "multiply": function(args) {
+    "*": function(args) {
         return function(vars) {
             return multiplicar(args[0](vars), args[1](vars));
         }
     },
-    "exponentiation": function(args) {
+    "exponential": function(args) {
         return function(vars) {
             return exponencial(args[0](vars), args[1](vars));
         }
