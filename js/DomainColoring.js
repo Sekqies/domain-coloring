@@ -3,7 +3,7 @@ let canvas = null;
 let guppy;
 let qtndInteiros = 2;
 
-var funcao = 'z';
+var ploterfunc = () => {};
 var resultado_real = 'a';
 var resultado_imag = 'b';
 
@@ -105,12 +105,12 @@ function Eixos (imgDataEixos, numeroInteiro){
 }
 
 
-function getZvalue(a, b, f){
+/*function getZvalue(a, b, f){
     
     let ret = {'z':{real: a, imag: b}};
     ret = {'z': f(ret)};
     return ret['z'];
-}
+}*/
 
 
 
@@ -139,7 +139,8 @@ function Domain_coloring(real, imag)
     }
 
     //Angulo
-    let hue = -(Math.atan2(imag, real)) / (2*Math.PI);
+    let hue = ((Math.atan2(imag, real)) / (2*Math.PI)) + (135/360);
+    //console.log(hue);
 
     //Caucula a distancia do ponto até o centro (modulo)
     let dist = Math.sqrt(real * real + imag * imag);
@@ -164,7 +165,7 @@ function Domain_coloring(real, imag)
     }
     else{
         //Modo 1 (sem descontinuidade):
-        modulo = (2/Math.PI) * Math.atan(dist);
+        //modulo = (2/Math.PI) * Math.atan(dist);
         let a = 0.4;
         modulo = (dist**a)/((dist**a)+1);
     }
@@ -208,6 +209,7 @@ function Plotter(guppy){
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
     const funcao = guppy.func(operacoes);
+    ploterfunc = funcao;
     //Percorre todos os pixels
     for (let x = 0; x < width; x++){
         for (let y = 0; y < height; y++){
@@ -282,8 +284,8 @@ function init(){
     document.addEventListener('keydown', function(event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
-            console.log(guppy.func(operacoes))
-            console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
+            //console.log(guppy.func(operacoes))
+            //console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
             Plotter(guppy);
         }
     });
@@ -335,9 +337,9 @@ function init(){
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
 
-        let z = getZvalue(realAntes, imagAntes);
-        let real = Number(z[0]).toFixed(3);
-        let imag = Number(z[1]).toFixed(3);
+        let z = ploterfunc({'z': {real: realAntes, imag: imagAntes}});
+        let real = z.real;
+        let imag = z.imag;
         tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
