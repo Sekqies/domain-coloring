@@ -1,6 +1,6 @@
 
 let canvas = null;
-
+let guppy;
 let qtndInteiros = 2;
 
 var funcao = 'z';
@@ -242,13 +242,42 @@ function Plotter(guppy){
     console.log("Imagem desenhada");
 
 }
-
-function init(){
-
-    var guppy = new Guppy('guppy1');
+function carregar()
+{
+    guppy = new Guppy('guppy1');
     //alert(guppy)
     guppy.engine.set_content(funcaoBase);
+    guppy.engine.add_symbol("conj", {"output": {"latex":"\\overline{{$1}}", "text":"conj($1)"}, "attrs": { "type":"conj", "group":"function"}});
+    guppy.engine.add_symbol("re", {"output": {"latex":"\\text{Re}({$1})", "text":"Re($1)"}, "attrs": { "type":"Re", "group":"function"}});
+    guppy.engine.add_symbol("im", {"output": {"latex":"\\text{Im}({$1})", "text":"Re($1)"}, "attrs": { "type":"Im", "group":"function"}});
+    guppy.engine.add_symbol("sen", {
+        "output": {
+            "latex": "\\text{sen}({$1})",
+            "text": "sen($1)"
+        },
+        "attrs": {
+            "type": "sin",
+            "group": "function"
+        }
+    });
+    
+    guppy.engine.add_symbol("tg", {
+        "output": {
+            "latex": "\\text{tg}({$1})",
+            "text": "tg($1)"
+        },
+        "attrs": {
+            "type": "tan",
+            "group": "function"
+        }
+    });
+    console.log("ei")
     guppy.activate();
+    init()
+}
+function init(){
+
+    //alert(guppy)    
     
     document.addEventListener('keydown', function(event) {
         if (event.key == "Enter") {
@@ -258,7 +287,6 @@ function init(){
             Plotter(guppy);
         }
     });
-
     abi = document.getElementById("abi").style.display === "none" ? false : true;
     canvas = document.getElementById("domainColorCanvas");
 
@@ -271,6 +299,7 @@ function init(){
     tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
     qtndInteiros = document.getElementById('numero_inteiros').value;
+    Plotter(guppy);
     //alert(qtndInteiros);
     //Função:
     if (!abi){
