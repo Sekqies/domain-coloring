@@ -140,12 +140,7 @@ function exponencial(a,b)
     }
 
     
-    if (a.imag===0) // n^z
-    {
-        let interior = Math.log(a.real)*b.imag;
-        let exterior = Math.pow(a.real,b.real);
-        return {real: exterior * Math.cos(interior), imag: exterior * Math.cos(interior)}
-    }
+
     let logreal = log(a).real;
     let arga = arg(a)
     let x = Math.exp(b.real * logreal - b.imag * arga ); //A operação pode ser reescrita como logreal ^ b.real / e^b.imag*arga, mas é mais eficiente nessa forma de exponencial
@@ -276,7 +271,7 @@ var operacoes = {
     {
         return function(vars)
         {
-            return {real: -args[0](vars).real, imag: -args[0](vars).real}
+            return {real: -args[0](vars).real, imag: -args[0](vars).imag}
         }
     }
     
