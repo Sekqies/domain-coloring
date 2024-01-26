@@ -267,5 +267,12 @@ var operacoes = {
           return conjugar(args[0](vars));
         }
       },
+    "neg":function(args)
+    {
+        return function(vars)
+        {
+            return {real: -args[0](vars).real, imag: -args[0](vars).real}
+        }
+    }
     
 };
