@@ -3,7 +3,7 @@ let canvas = null;
 let guppy;
 let qtndInteiros = 2;
 
-var funcao = 'z';
+var funcaoHover;
 var resultado_real = 'a';
 var resultado_imag = 'b';
 
@@ -139,7 +139,7 @@ function Domain_coloring(real, imag)
     }
 
     //Angulo
-    let hue = -(Math.atan2(imag, real)) / (2*Math.PI);
+    let hue = (Math.atan2(imag, real)) / (2*Math.PI) + 0.375;
 
     //Caucula a distancia do ponto até o centro (modulo)
     let dist = Math.sqrt(real * real + imag * imag);
@@ -208,6 +208,7 @@ function Plotter(guppy){
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
     const funcao = guppy.func(operacoes);
+    funcaoHover = funcao;
     //Percorre todos os pixels
     for (let x = 0; x < width; x++){
         for (let y = 0; y < height; y++){
@@ -335,10 +336,10 @@ function init(){
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
 
-        let z = getZvalue(realAntes, imagAntes);
-        let real = Number(z[0]).toFixed(3);
-        let imag = Number(z[1]).toFixed(3);
-        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
+        let z = funcaoHover({'z' : {real: realAntes, imag: imagAntes}});
+        let real = z.real; 
+        let imag = z.imag;
+        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real.toFixed(3)} + ${imag.toFixed(3) * (-1)}i</i>`);
     });
 
 
