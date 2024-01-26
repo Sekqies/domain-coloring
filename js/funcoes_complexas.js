@@ -173,7 +173,7 @@ var operacoes = {
         }
     },
 
-    "/":function(args)
+    "fraction":function(args)
     {
         return function(vars)
         {
@@ -248,4 +248,24 @@ var operacoes = {
             return exponencial(args[0](vars), b);
         };
     },
+    "Re": function(args)
+    {
+        return function(vars)
+        {
+            return {real: args[0](vars).real, imag: 0}
+        }
+    },
+    "Im": function(args)
+    {
+        return function(vars)
+        {
+            return {real: 0, imag: args[0](vars).real}
+        }
+    },
+    "conj":function(args){
+        return function(vars){
+          return conjugar(args[0](vars));
+        }
+      },
+    
 };
