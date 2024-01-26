@@ -105,13 +105,13 @@ function exponencial(a,b)
     
 
     //Assumindo um b completamente real, formato a^n 
-    if (b.imag ===0)
+    if (b.imag === 0)
     {
         //Se a e b forem reais, simplesmente retorna a^b como parte real, e nada como imaginário.
         //NOTA: a tem que ser positivo, já que, por exemplo (-1)^1/2 iria ser uma operação que retorna um número imaginário
         if (a.imag===0 && a.real>=0)
         {
-            return Math.pow(a.real,b.real);
+            return {real: Math.pow(a.real,b.real), imag: 0};
         }
         //Se a for somente imaginário, no formato n*i...
         if(a.real===0)
