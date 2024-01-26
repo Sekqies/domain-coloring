@@ -226,6 +226,11 @@ var operacoes = {
             return sen(args[0](vars));
         }
     },
+    "cos": function(args) {
+        return function(vars) {
+            return cos(args[0](vars));
+        }
+    },
     "log": function(args) {
         return function(vars) {
             return log(args[0](vars));

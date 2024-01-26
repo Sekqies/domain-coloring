@@ -166,7 +166,7 @@ function Domain_coloring(real, imag)
     else{
         //Modo 1 (sem descontinuidade):
         //modulo = (2/Math.PI) * Math.atan(dist);
-        let a = 1;
+        let a = 0.4;
         modulo = (dist**a)/((dist**a)+1);
     }
     
