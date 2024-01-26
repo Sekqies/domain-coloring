@@ -203,11 +203,11 @@ function Plotter(guppy){
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
-
+    let INICIO = performance.now();
     //Cria um array de pixels
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
-
+    const funcao = guppy.func(operacoes);
     //Percorre todos os pixels
     for (let x = 0; x < width; x++){
         for (let y = 0; y < height; y++){
@@ -218,7 +218,7 @@ function Plotter(guppy){
 
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = guppy.func(operacoes)({'z': {real: realAntes, imag: imagAntes}});
+            let z = funcao({'z': {real: realAntes, imag: imagAntes}});
             real = z.real;
             imag = z.imag;
 
@@ -235,7 +235,8 @@ function Plotter(guppy){
             canvasData[px + 3] = 255;
         }
     }
-
+    let FIM = performance.now();
+    console.log(FIM-INICIO);
     //Coloca a imagem no canvas
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");
