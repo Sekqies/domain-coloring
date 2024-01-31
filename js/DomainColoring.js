@@ -261,6 +261,7 @@ function carregar()
     adicionarFuncao(guppy,"arcsec","arcsec","arcsec","arcsec");
     adicionarFuncao(guppy,"arccsc","arccsc","arccsc","arccsc");
     adicionarFuncao(guppy,"arccot","arccot","arccot","arccot");
+    adicionarFuncao(guppy,"archsen","arcsenh","arcsenh","arcsinh");
     guppy.activate();
     init()
 }

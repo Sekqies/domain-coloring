@@ -234,6 +234,28 @@ function tanh(z)
     }   
 }
 
+//Hiperbólicas complexas inversas
+const teste = true;
+function arcsenh(z)
+{
+    if (teste) {
+    const a = z.real;
+    const b = z.imag;
+    const raizQuarta = Math.pow(a**4 + 2 * a**2 * (b**2 + 1) + Math.pow(b**2 -1,2),0.25);
+    const interiorTrig = 0.5 * Math.atan2(2*a*b,a**2 - b**2 +1);
+    const arg_real = (a+raizQuarta*Math.cos(interiorTrig));
+    const arg_imag = (b+raizQuarta*Math.sin(interiorTrig));
+    return {
+        real: 0.5 * Math.log( arg_real**2 + arg_imag**2),
+        imag: Math.atan2(arg_imag,arg_real)
+    }
+}
+else{
+    return log(soma(z,exponencial(soma(exponencial(z,{real:2,imag:0}),{real:1,imag:0}),{real:1/2,imag:0})))
+}
+}
+
+
 //Exponencial
 function exponencial(a,b)
 {
@@ -277,14 +299,11 @@ function exponencial(a,b)
                     return {real:0, imag: -Math.pow(a.imag,b.real)}
             }
         }
-        //Se não, isso significa que a é complexo e b é real, logo
-        let x = Math.pow(a.real**2 + a.imag**2, b.real);
-        return {real: x * Math.cos(arg(a) * b.real), imag: x * Math.sin(arg(a)* b.real) }
     }
 
     
 
-    let logreal = log(a).real;
+    let logreal = 0.5 * Math.log(a.real**2 + a.imag**2)
     let arga = arg(a)
     let x = Math.exp(b.real * logreal - b.imag * arga ); //A operação pode ser reescrita como logreal ^ b.real / e^b.imag*arga, mas é mais eficiente nessa forma de exponencial
     let y = b.imag * logreal + b.real * arga;
@@ -364,6 +383,13 @@ var operacoes = {
     "cos": function(args) {
         return function(vars) {
             return cos(args[0](vars));
+        }
+    },
+    "ln":function(args)
+    {
+        return function(vars)
+        {
+            return log(args[0](vars))
         }
     },
     "log": function(args) {
@@ -496,6 +522,13 @@ var operacoes = {
         return function(vars)
         {
             return arccot(args[0](vars))
+        }
+    },
+    "arcsinh":function(args)
+    {
+        return function(vars)
+        {
+            return arcsenh(args[0](vars))
         }
     }
 };
