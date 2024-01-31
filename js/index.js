@@ -55,3 +55,17 @@ document.addEventListener("DOMContentLoaded", () => {
     changeABIactive();
 
 });
+
+function adicionarFuncao(guppy,input_usuario, output_latex, output_text, nome_funcao)
+{
+    guppy.engine.add_symbol(input_usuario, {
+        "output": {
+            "latex": "\\text{" + output_latex +"}({$1})",
+            "text": output_text + "($1)"
+        },
+        "attrs": {
+            "type": nome_funcao,
+            "group": "function"
+        }
+    });
+}

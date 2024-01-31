@@ -249,30 +249,18 @@ function carregar()
     //alert(guppy)
     guppy.engine.set_content(funcaoBase);
     guppy.engine.add_symbol("conj", {"output": {"latex":"\\overline{{$1}}", "text":"conj($1)"}, "attrs": { "type":"conj", "group":"function"}});
-    guppy.engine.add_symbol("re", {"output": {"latex":"\\text{Re}({$1})", "text":"Re($1)"}, "attrs": { "type":"Re", "group":"function"}});
-    guppy.engine.add_symbol("im", {"output": {"latex":"\\text{Im}({$1})", "text":"Re($1)"}, "attrs": { "type":"Im", "group":"function"}});
-    guppy.engine.add_symbol("sen", {
-        "output": {
-            "latex": "\\text{sen}({$1})",
-            "text": "sen($1)"
-        },
-        "attrs": {
-            "type": "sin",
-            "group": "function"
-        }
-    });
-    
-    guppy.engine.add_symbol("tg", {
-        "output": {
-            "latex": "\\text{tg}({$1})",
-            "text": "tg($1)"
-        },
-        "attrs": {
-            "type": "tan",
-            "group": "function"
-        }
-    });
-    console.log("ei")
+    adicionarFuncao(guppy,"re","Re","Re","Re");
+    adicionarFuncao(guppy,"sen","sen","sen","sin");
+    adicionarFuncao(guppy,"tg","tg","tg","tan");
+    adicionarFuncao(guppy,"hsen","senh","senh","sinh");
+    adicionarFuncao(guppy,"hcos","cosh","cosh","cosh");
+    adicionarFuncao(guppy,"htan","tanh","tanh","tanh");
+    adicionarFuncao(guppy,"htg","tanh","tanh","tanh");
+    adicionarFuncao(guppy,"arcsen","arcsen","arcsen","arcsin");
+    adicionarFuncao(guppy,"arctg","arctg","arctg","arctan");
+    adicionarFuncao(guppy,"arcsec","arcsec","arcsec","arcsec");
+    adicionarFuncao(guppy,"arccsc","arccsc","arccsc","arccsc");
+    adicionarFuncao(guppy,"arccot","arccot","arccot","arccot");
     guppy.activate();
     init()
 }
