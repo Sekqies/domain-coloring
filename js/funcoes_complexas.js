@@ -1,7 +1,7 @@
 //Boolenas
-function isZero(a)
+function isZero(z)
 {
-    return a.real == 0 && a.imag == 0;
+    return z.real === 0 && z.imag === 0;
 }
 
 
@@ -30,22 +30,22 @@ function multiplicar(a,b)
 }
 function dividir (a,b)
 {
-    let denominador = (Math.pow(b.real,2) + Math.pow(b.imag,2));
+    let denominador = (b.real**2 + b.imag**2);
     return {
         real: (a.real*b.real + a.imag * b.imag)/ denominador,
-        imag: (a.imag*b.real - b.real*b.imag) / denominador
+        imag: (a.imag*b.real - a.real*b.imag) / denominador
     }
 }
 
 //Funções específicas aos números complexos
 
-function arg(a)
+function arg(z)
 {
-    return Math.atan2(a.imag,a.real);
+    return Math.atan2(z.imag,z.real);
 }
-function conjugar(a)
+function conjugar(z)
 {
-    return {real: a.real, imag: -a.imag}
+    return {real: z.real, imag: -z.imag}
 }
 
 //Funções hiperbólicas reais
@@ -60,36 +60,179 @@ function senh_real(a)
 }
 //Logaritmo e trigonométricas
 
-function log(a)
+function log(z)
 {
     return {
-        real: 0.5*Math.log(a.real**2 + a.imag**2),
-        imag: arg(a)
+        real: 0.5*Math.log(z.real**2 + z.imag**2),
+        imag: arg(z)
     }
 }
 
-function sen(a)
+function sen(z)
 {
     return {
-        real: Math.sin(a.real)*cosh_real(a.imag), imag: Math.cos(a.real)*senh_real(a.imag)
+        real: Math.sin(z.real)*cosh_real(z.imag), imag: Math.cos(z.real)*senh_real(z.imag)
     }
 }
 
-function cos(a)
+function cos(z)
 {
     return {
-        real:Math.cos(a.real)*cosh_real(a.imag), imag: -Math.sin(a.real) * senh_real(a.imag)
+        real:Math.cos(z.real)*cosh_real(z.imag), imag: -Math.sin(z.real) * senh_real(z.imag)
     }
 }
 
-function tg(a)
+function tg(z)
 {
-    let denominador = Math.cos(2*a.real) + cosh_real(2*a.imag);
+    const denominador = Math.cos(2*z.real) + cosh_real(2*z.imag);
     return {
-        real: Math.sin(2*a.real)/denominador, imag: senh_real(2*a.imag)/denominador
+        real: Math.sin(2*z.real)/denominador, imag: senh_real(2*z.imag)/denominador
     }
 }
 
+//Trigonométricas inversas multiplicativas (reciprocal)
+
+function sec(z)
+{
+    const denominador = Math.cos(2*z.real) + cosh_real(2*z.imag);
+    return {
+        real: 2*Math.cos(z.real) * cosh_real(z.imag) / denominador,
+        imag: 2*Math.sin(z.real) * senh_real(z.imag) / denominador,
+    }
+}
+
+function csc(z)
+{
+    const denominador = Math.cos(2*z.real) - cosh_real(2*z.imag);
+    return {
+        real: -2*Math.sin(z.real)*cosh_real(z.imag)/denominador,
+        imag: 2*Math.cos(z.real)*senh_real(z.imag)/denominador,
+    }
+}
+
+function cot(z)
+{
+    const denominador = Math.cos(2*z.real) - cosh_real(2*z.imag);
+    return {
+        real:-Math.sin(2*z.real)/denominador,
+        imag: senh_real(2*z.imag)/denominador,
+    }
+}
+
+//Trigonométricas reversas 
+
+function arcsen(z)
+{
+    //essa função não é de deus.
+    const a = z.real;
+    const b = z.imag;
+    const atan2 = Math.atan2;
+    const raizQuarta1 = Math.pow(4*a**2*b**2 + Math.pow(-(a**2)+b**2+1,2),1/4)
+    const interiorTrig1 = 0.5*atan2(1 + b**2 - a**2,-2*a*b)
+    const parteRealArgumento1 = -b + raizQuarta1 * Math.cos(interiorTrig1)
+    const parteImagArgumento1 = a + raizQuarta1 * Math.sin(interiorTrig1)
+
+    return {
+        real: atan2(parteImagArgumento1,parteRealArgumento1),
+        imag: -Math.log(Math.sqrt(Math.pow(parteRealArgumento1,2) + Math.pow(parteImagArgumento1,2)))
+    }
+}
+
+function arccos(z)
+{
+    //DEFINIÇÕES NOS SALVAM! arccos(z) = pi/2 - arcsen(z) 
+    const resultado_arcsen = arcsen(z);
+    return {
+        real: Math.PI * 0.5 - resultado_arcsen.real,
+        imag: -resultado_arcsen.imag
+    }
+}
+
+function arctan(z)
+{
+    const a = z.real;
+    const b = z.imag;
+    const atan2 = Math.atan2;
+    
+    //NOTA! arctan(x) não é igual a arcsen(x) / arccos(x)!
+    return {
+        real: 0.5 * (atan2(a,-b+1) - atan2(-a,b+1)),
+        imag: 0.25 *(Math.log(a**2 + (b+1)**2) - Math.log(a**2 + (b-1)**2))
+    }
+}
+
+//Trigonométricas inversas multiplicativas, reversas
+
+function arccsc(z)
+{
+    //Essa vai ser pior ainda
+    const a = z.real;
+    const b = z.imag;
+    const atan2 = Math.atan2;
+    const denominador1 = a**2 + b**2;
+    const realArg1 = (b**2 - a**2 ) / Math.pow(denominador1,2) + 1;
+    const imagArg1 = 2*a*b / Math.pow(denominador1,2);
+    const Arg1 = atan2(imagArg1,realArg1);
+    const RaizQuarta = Math.pow((4*a**2 * b**2)/Math.pow(denominador1 , 4) + Math.pow(1-(a**2 - b**2)/Math.pow(denominador1, 2),2), 0.25);
+    const interiorTrig1 = 0.5 * Arg1;
+    const realArgReal = b/(denominador1) + RaizQuarta * Math.cos(interiorTrig1);
+    const imagArgReal = a/denominador1 + RaizQuarta * Math.sin(interiorTrig1);
+    
+    return {
+        real: atan2(imagArgReal,realArgReal),
+        imag: -Math.log(Math.sqrt(imagArgReal**2 + realArgReal**2))
+    }
+}
+
+function arcsec(z)
+{
+    // arcsec(x) + arccsc(x) = pi/2 => arcsec(x) = pi/2 - arccsc(x)
+    const resultado_arccsc = arccsc(z);
+    return {
+        real: Math.PI * 0.5 - resultado_arccsc.real,
+        imag: - resultado_arccsc.imag
+    }
+}
+
+function arccot(z)
+{
+    const a = z.real;
+    const b = z.imag;
+    const denominador = a**2 + b**2;
+    const interiorLog1 = a**2 / (denominador**2);
+    const divisaoA = a/denominador;
+    const divisaoB = b/denominador;
+    return {
+        real: 0.5 * (Math.atan2(divisaoA, 1 + divisaoB) - Math.atan2(-divisaoA, 1 - divisaoB)),
+        imag: 0.25 * (Math.log(interiorLog1 + Math.pow(1-divisaoB,2)) - Math.log(interiorLog1 + Math.pow(1+divisaoB,2)))
+    }
+}
+//Hiperbólicas complexas
+
+function senh(z)
+{
+    return {
+        real: senh_real(z.real)*Math.cos(z.imag),
+        imag: cosh_real(z.real)*Math.sin(z.imag)
+    }
+}
+
+function cosh(z)
+{
+    return {
+        real: cosh_real(z.real)*Math.cos(z.imag),
+        imag: senh_real(z.real)*Math.sin(z.imag)
+    }
+}
+
+function tanh(z)
+{
+    const denominador = cosh_real(2*z.real) + Math.cos(2*z.imag);
+    return {
+        real: senh_real(2*z.imag) /denominador,
+        imag: Math.sin(2*z.imag) / denominador
+    }   
+}
 
 //Exponencial
 function exponencial(a,b)
@@ -146,9 +289,6 @@ function exponencial(a,b)
     let x = Math.exp(b.real * logreal - b.imag * arga ); //A operação pode ser reescrita como logreal ^ b.real / e^b.imag*arga, mas é mais eficiente nessa forma de exponencial
     let y = b.imag * logreal + b.real * arga;
     return {real: x * Math.cos(y), imag: x * Math.sin(y)};
-
-    
-    
 }
 
 var operacoes = {
@@ -273,6 +413,89 @@ var operacoes = {
         {
             return {real: -args[0](vars).real, imag: -args[0](vars).imag}
         }
+    },
+    "cot":function(args)
+    {
+        return function(vars)
+        {
+            return cot(args[0](vars))
+        }
+    },
+    "csc":function(args)
+    {
+        return function(vars)
+        {
+            return csc(args[0](vars))
+        }
+    },
+    "sec":function(args)
+    {
+        return function(vars)
+        {
+            return sec(args[0](vars))
+        }
+    },
+    "sinh":function(args)
+    {
+        return function(vars)
+        {
+            return senh(args[0](vars))
+        }
+    },
+    "cosh":function(args)
+    {
+        return function(vars)
+        {
+            return cosh(args[0](vars))
+        }
+    },
+    "tanh":function(args)
+    {
+        return function(vars)
+        {
+            return tanh(args[0](vars))
+        }
+    },
+    "arcsin":function(args)
+    {
+        return function(vars)
+        {
+            return arcsen(args[0](vars))
+        }
+    },
+    "arccos":function(args)
+    {
+        return function(vars)
+        {
+            return arccos(args[0](vars))
+        }
+    },
+    "arctan":function(args)
+    {
+        return function(vars)
+        {
+            return arctan(args[0](vars))
+        }
+    },
+    "arccsc":function(args)
+    {
+        return function(vars)
+        {
+            return arccsc(args[0](vars))
+        }
+    },
+    "arcsec":function(args)
+    {
+        return function(vars)
+        {
+            return arcsec(args[0](vars))
+        }
+    },
+    "arccot":function(args)
+    {
+        return function(vars)
+        {
+            return arccot(args[0](vars))
+        }
     }
-    
 };
