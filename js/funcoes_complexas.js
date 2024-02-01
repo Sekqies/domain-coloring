@@ -441,7 +441,10 @@ var operacoes = {
             if (args[0] == "e") return { real: Math.E, imag: 0 };
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
             if (args[0] == "z") return vars.z;
-            //return vars.args[0];
+            if (args[0] == "x") return {real: vars.z.real, imag: 0};
+            if (args[0] == "y") return {real: 0, imag: vars.z.imag};
+            if (args[0] == "a") return {real: vars.z.real, imag: 0};
+            if (args[0] == "b") return {real: 0, imag: vars.z.imag};
         }
     },
     "*": function(args) {

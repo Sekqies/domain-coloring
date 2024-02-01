@@ -9,8 +9,6 @@ var resultado_imag = 'b';
 
 let tipo_grafico = 1;
 
-var abi = false;
-
 function HSLtoRGB(h, s, l) {
     let r, g, b;
     if (s == 0) {
@@ -117,10 +115,9 @@ function getZvalue(a, b, f){
 //Recebe um pixel (real e imag) e retorna o valor real e imag em numeros inteiros.
 function getNumeroInteiro(x, y){
     let width = canvas.width;
-    let height = canvas.height;
     let centro = width/2;
 
-    let pixelPorInteiro = (width/2)/Number(qtndInteiros);
+    let pixelPorInteiro = (centro)/Number(qtndInteiros);
     let real = (x-centro)/pixelPorInteiro;
     let imag = (y-centro)/pixelPorInteiro;
 
@@ -202,6 +199,11 @@ function Plotter(guppy){
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
+
+    //define o scroll vertical e horizontal da tela para metade do total
+    window.scroll((document.documentElement.scrollWidth - window.innerWidth)/2, 
+    (document.documentElement.scrollHeight - window.innerHeight)/2);
+
     const height = canvas.height;
     let INICIO = performance.now();
     //Cria um array de pixels
@@ -315,7 +317,6 @@ function init(){
             Plotter(guppy);
         }
     });
-    abi = document.getElementById("abi").style.display === "none" ? false : true;
     canvas = document.getElementById("domainColorCanvas");
 
     let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
@@ -330,43 +331,60 @@ function init(){
     Plotter(guppy);
     //alert(qtndInteiros);
     //Função:
-    if (!abi){
-        /*let funcao = document.getElementById('funcao_complexa').value;
-
-        //remove todos os espaços de 'função'
-        //funcao = funcao.replace(/\s/g, '');
-        //alert(funcao);
-        let operacao = simplificarAntesAlgebrite(funcao);
-
-        //checar se, apos alguma letra Z, há um algarismo que não seja:
-        // (+, -, *, /, ^)
-        //se houver, dar um alert de erro
-        const teste = iniciarGambiarra(operacao);
-        console.log ("Função inicial: " + teste[0]);
-        const resultado = teste[0];
-        const originais = teste[1];
-        console.log("Função final: " + resultado);
-        resultado_real = reverterGambiarra(Algebrite.real(resultado).toString(),originais);
-        resultado_imag = reverterGambiarra(Algebrite.imag(resultado).toString(),originais);*/
-    }
-    else{
-        resultado_real = document.getElementById('funcao_complexa_real').value;
-        resultado_imag = document.getElementById('funcao_complexa_imag').value;
-    }
+    resultado_real = document.getElementById('funcao_complexa_real').value;
+    resultado_imag = document.getElementById('funcao_complexa_imag').value;
 
     const tudo = document.getElementById('tudo');
     canvas.addEventListener('mousemove', function(event) {
-        const num_inteiro = getNumeroInteiro();
         const x = event.offsetX;
         const y = event.offsetY;
+
+        tudo.style.top = y - 15 +  'px';
+        tudo.style.left = x + 90 + 'px';
 
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
 
         let z = funcaoHover({'z' : {real: realAntes, imag: imagAntes}});
+
+        //console.log(z)
+
         let real = z.real; 
         let imag = z.imag;
-        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real.toFixed(3)} + ${imag.toFixed(3) * (-1)}i</i>`);
+
+        if (real > 100 || real < -100){
+            real = Number(real).toExponential(2);
+        }
+        if (imag > 100 || imag < -100){
+            imag = Number(imag).toExponential(2);
+        }
+
+
+        if (String(real).includes('e+'))
+        {
+            let real1 = real.toString().split('e+')[0];
+            let real2 = real.toString().split('e+')[1];
+            real = Number(real1).toFixed(2) + ' * 10^' + real2;
+        }
+        else{
+            real = Number(real).toFixed(2);
+        }
+
+        if (String(imag).includes('e+'))
+        {
+            let imag1 = imag.toString().split('e+')[0];
+            let imag2 = imag.toString().split('e+')[1];
+            imag = Number(imag1).toFixed(2) + ' * 10^' + imag2;
+        }
+        else{
+            imag = Number(imag).toFixed(2);
+        }
+        //da split em e+ na string e pega o primeiro valor
+        
+
+
+
+        tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
 
