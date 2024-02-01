@@ -6,6 +6,7 @@ let qtndInteiros = 2;
 var funcaoHover;
 var resultado_real = 'a';
 var resultado_imag = 'b';
+let tudo;
 
 let tipo_grafico = 1;
 
@@ -248,7 +249,8 @@ function Plotter(guppy){
 function carregar()
 {
     guppy = new Guppy('guppy1');
-    //alert(guppy)
+    canvas = document.getElementById("domainColorCanvas");
+    tudo = document.getElementById('tudo');
     guppy.engine.set_content(funcaoBase);
     //Funções exclusivas às complexas
     guppy.engine.add_symbol("conj", {"output": {"latex":"\\overline{{$1}}", "text":"conj($1)"}, "attrs": { "type":"conj", "group":"function"}});
@@ -303,38 +305,6 @@ function carregar()
     adicionarFuncao(guppy,"harcot","arcoth","arccoth","arccoth");
     adicionarFuncao(guppy,"harsec","arsech","arcsech","arcsech");
     guppy.activate();
-    init()
-}
-function init(){
-
-    //alert(guppy)    
-    
-    document.addEventListener('keydown', function(event) {
-        if (event.key == "Enter") {
-            console.log(guppy.engine.get_content("ast"));
-            console.log(guppy.func(operacoes))
-            console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
-            Plotter(guppy);
-        }
-    });
-    canvas = document.getElementById("domainColorCanvas");
-
-    let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
-    canvas.width = tamanhoCanvas;
-    canvas.height = tamanhoCanvas;
-    //alert(canvas);
-    //var tempoInicial = performance.now();
-
-    tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
-    
-    qtndInteiros = document.getElementById('numero_inteiros').value;
-    Plotter(guppy);
-    //alert(qtndInteiros);
-    //Função:
-    resultado_real = document.getElementById('funcao_complexa_real').value;
-    resultado_imag = document.getElementById('funcao_complexa_imag').value;
-
-    const tudo = document.getElementById('tudo');
     canvas.addEventListener('mousemove', function(event) {
         const x = event.offsetX;
         const y = event.offsetY;
@@ -380,23 +350,32 @@ function init(){
             imag = Number(imag).toFixed(2);
         }
         //da split em e+ na string e pega o primeiro valor
-        
-
-
 
         tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
+    init()
+}
+document.addEventListener('keyup', function(event) {
+    if (event.key == "Enter") {
+        console.log(guppy.engine.get_content("ast"));
+        console.log(guppy.func(operacoes))
+        console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
+        init();
+    }
+});
+function init(){
 
-    /*console.log("Parte real antes do processamento: " + resultado_real);
-    console.log("Parte imaginária antes do processamento: " + resultado_imag);
-    //Substitui ^ para vários * para que o eval possa entender
+    //alert(guppy)    
+    let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    canvas.width = tamanhoCanvas;
+    canvas.height = tamanhoCanvas;
+    //alert(canvas);
+    //var tempoInicial = performance.now();
 
-    resultado_real = limparFuncao(resultado_real);
-    resultado_imag = limparFuncao(resultado_imag);
-    console.log("Parte real após o processamento: " + resultado_real);
-    console.log("Parte imaginária após o processamento: " + resultado_imag);*/
-
-
+    tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
+    
+    qtndInteiros = document.getElementById('numero_inteiros').value;
+    Plotter(guppy);
 }
 

@@ -442,9 +442,9 @@ var operacoes = {
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
             if (args[0] == "z") return vars.z;
             if (args[0] == "x") return {real: vars.z.real, imag: 0};
-            if (args[0] == "y") return {real: 0, imag: vars.z.imag};
+            if (args[0] == "y") return {real: vars.z.imag, imag: 0};
             if (args[0] == "a") return {real: vars.z.real, imag: 0};
-            if (args[0] == "b") return {real: 0, imag: vars.z.imag};
+            if (args[0] == "b") return {real: vars.z.imag, imag: 0 };
         }
     },
     "*": function(args) {
