@@ -90,6 +90,33 @@ function tg(z)
     }
 }
 
+//Hiperbólicas complexas
+
+function senh(z)
+{
+    return {
+        real: senh_real(z.real)*Math.cos(z.imag),
+        imag: cosh_real(z.real)*Math.sin(z.imag)
+    }
+}
+
+function cosh(z)
+{
+    return {
+        real: cosh_real(z.real)*Math.cos(z.imag),
+        imag: senh_real(z.real)*Math.sin(z.imag)
+    }
+}
+
+function tanh(z)
+{
+    const denominador = cosh_real(2*z.real) + Math.cos(2*z.imag);
+    return {
+        real: senh_real(2*z.real) /denominador,
+        imag: Math.sin(2*z.imag) / denominador
+    }   
+}
+
 //Trigonométricas inversas multiplicativas (reciprocal)
 
 function sec(z)
@@ -117,6 +144,23 @@ function cot(z)
         real:-Math.sin(2*z.real)/denominador,
         imag: senh_real(2*z.imag)/denominador,
     }
+}
+
+//Hiperbólicas inversas multiplicativas (reciprocal)
+
+function csch(z)
+{
+    return dividir({real:1,imag:0},senh(z));
+}
+
+function sech(z)
+{
+    return dividir({real:1,imag:0},cosh(z));
+}
+
+function coth(z)
+{
+    return dividir({real:1,imag:0},tanh(z))
 }
 
 //Trigonométricas reversas 
@@ -207,38 +251,11 @@ function arccot(z)
         imag: 0.25 * (Math.log(interiorLog1 + Math.pow(1-divisaoB,2)) - Math.log(interiorLog1 + Math.pow(1+divisaoB,2)))
     }
 }
-//Hiperbólicas complexas
-
-function senh(z)
-{
-    return {
-        real: senh_real(z.real)*Math.cos(z.imag),
-        imag: cosh_real(z.real)*Math.sin(z.imag)
-    }
-}
-
-function cosh(z)
-{
-    return {
-        real: cosh_real(z.real)*Math.cos(z.imag),
-        imag: senh_real(z.real)*Math.sin(z.imag)
-    }
-}
-
-function tanh(z)
-{
-    const denominador = cosh_real(2*z.real) + Math.cos(2*z.imag);
-    return {
-        real: senh_real(2*z.imag) /denominador,
-        imag: Math.sin(2*z.imag) / denominador
-    }   
-}
 
 //Hiperbólicas complexas inversas
-const teste = true;
+
 function arcsenh(z)
 {
-    if (teste) {
     const a = z.real;
     const b = z.imag;
     const raizQuarta = Math.pow(a**4 + 2 * a**2 * (b**2 + 1) + Math.pow(b**2 -1,2),0.25);
@@ -249,10 +266,6 @@ function arcsenh(z)
         real: 0.5 * Math.log( arg_real**2 + arg_imag**2),
         imag: Math.atan2(arg_imag,arg_real)
     }
-}
-else{
-    return log(soma(z,exponencial(soma(exponencial(z,{real:2,imag:0}),{real:1,imag:0}),{real:1/2,imag:0})))
-}
 }
 
 
@@ -529,6 +542,27 @@ var operacoes = {
         return function(vars)
         {
             return arcsenh(args[0](vars))
+        }
+    },
+    "sech":function(args)
+    {
+        return function(vars)
+        {
+            return sech(args[0](vars))
+        }
+    },
+    "csch":function(args)
+    {
+        return function(vars)
+        {
+            return csch(args[0](vars))
+        }
+    },
+    "coth":function(args)
+    {
+        return function(vars)
+        {
+            return coth(args[0](vars))
         }
     }
 };

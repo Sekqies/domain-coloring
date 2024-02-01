@@ -139,7 +139,7 @@ function Domain_coloring(real, imag)
     }
 
     //Angulo
-    let hue = (Math.atan2(imag, real)) / (2*Math.PI) + 0.375;
+    let hue = (Math.atan2(imag, real)) / (2*Math.PI);
 
     //Caucula a distancia do ponto até o centro (modulo)
     let dist = Math.sqrt(real * real + imag * imag);
@@ -248,20 +248,31 @@ function carregar()
     guppy = new Guppy('guppy1');
     //alert(guppy)
     guppy.engine.set_content(funcaoBase);
+    //Funções exclusivas às complexas
     guppy.engine.add_symbol("conj", {"output": {"latex":"\\overline{{$1}}", "text":"conj($1)"}, "attrs": { "type":"conj", "group":"function"}});
     adicionarFuncao(guppy,"re","Re","Re","Re");
+    adicionarFuncao(guppy,"im","Im","Im","Im");
+    //Trigonométricas em português
     adicionarFuncao(guppy,"sen","sen","sen","sin");
     adicionarFuncao(guppy,"tg","tg","tg","tan");
+    //Hiperbólicas
+    adicionarFuncao(guppy,"hsin","sinh","sinh","sinh");
     adicionarFuncao(guppy,"hsen","senh","senh","sinh");
     adicionarFuncao(guppy,"hcos","cosh","cosh","cosh");
     adicionarFuncao(guppy,"htan","tanh","tanh","tanh");
     adicionarFuncao(guppy,"htg","tanh","tanh","tanh");
+    //Inversas trigonométricas
     adicionarFuncao(guppy,"arcsen","arcsen","arcsen","arcsin");
     adicionarFuncao(guppy,"arctg","arctg","arctg","arctan");
     adicionarFuncao(guppy,"arcsec","arcsec","arcsec","arcsec");
+    //Inversas trigonométricas reversas
     adicionarFuncao(guppy,"arccsc","arccsc","arccsc","arccsc");
     adicionarFuncao(guppy,"arccot","arccot","arccot","arccot");
     adicionarFuncao(guppy,"archsen","arcsenh","arcsenh","arcsinh");
+    //Inversas hiperbólicas
+    adicionarFuncao(guppy,"hsec","sech","sech","sech");
+    adicionarFuncao(guppy,"hcsc","csch","csch","csch");
+    adicionarFuncao(guppy,"hcot","coth","coth","coth");
     guppy.activate();
     init()
 }
