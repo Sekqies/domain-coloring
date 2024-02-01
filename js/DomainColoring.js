@@ -305,7 +305,40 @@ function init(){
 
         let real = z.real; 
         let imag = z.imag;
-        tudo.innerHTML = (`<i>F( ${realAntes.toFixed(3)} + ${imagAntes.toFixed(3) * (-1)}i ) = ${real.toFixed(3)} + ${imag.toFixed(3) * (-1)}i</i>`);
+
+        if (real > 100 || real < -100){
+            real = Number(real).toExponential(3);
+        }
+        if (imag > 100 || imag < -100){
+            imag = Number(imag).toExponential(3);
+        }
+
+
+        if (String(real).includes('e+'))
+        {
+            let real1 = real.toString().split('e+')[0];
+            let real2 = real.toString().split('e+')[1];
+            real = Number(real1).toFixed(3) + 'e+' + real2;
+        }
+        else{
+            real = Number(real).toFixed(3);
+        }
+
+        if (String(imag).includes('e+'))
+        {
+            let imag1 = imag.toString().split('e+')[0];
+            let imag2 = imag.toString().split('e+')[1];
+            imag = Number(imag1).toFixed(3) + 'e+' + imag2;
+        }
+        else{
+            imag = Number(imag).toFixed(3);
+        }
+        //da split em e+ na string e pega o primeiro valor
+        
+
+
+
+        tudo.innerHTML = (`<i>F( ${realAntes} + ${imagAntes * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
 
