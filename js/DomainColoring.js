@@ -255,24 +255,51 @@ function carregar()
     //Trigonométricas em português
     adicionarFuncao(guppy,"sen","sen","sen","sin");
     adicionarFuncao(guppy,"tg","tg","tg","tan");
+    //Reversas trigonométricas
+    adicionarFuncao(guppy,"arcsen","arcsen","arcsen","arcsin");
+    adicionarFuncao(guppy,"arctg","arctg","arctg","arctan");
+    adicionarFuncao(guppy,"arcsec","arcsec","arcsec","arcsec");
+    //Reversas trigonométricas (abreviação)
+    adicionarFuncao(guppy,"arsin","arsin","arcsen","arcsin");
+    adicionarFuncao(guppy,"arsen","arsen","arcsen","arcsin");
+    adicionarFuncao(guppy,"artg","artg","arctg","arctan");
+    adicionarFuncao(guppy,"artan","artan","arctg","arctan");
+    adicionarFuncao(guppy,"arsec","arsec","arcsec","arcsec");
+    //Inversas trigonométricas reversas
+    adicionarFuncao(guppy,"arccsc","arccsc","arccsc","arccsc");
+    adicionarFuncao(guppy,"arccot","arccot","arccot","arccot");
+    //Inversas trigonométricas reversas (abreviação)
+    adicionarFuncao(guppy,"arcsc","arcsc","arccsc","arccsc");
+    adicionarFuncao(guppy,"arcot","arcot","arccot","arccot");
+    adicionarFuncao(guppy,"arsec","arsec","arsec","arcsec");
     //Hiperbólicas
     adicionarFuncao(guppy,"hsin","sinh","sinh","sinh");
     adicionarFuncao(guppy,"hsen","senh","senh","sinh");
     adicionarFuncao(guppy,"hcos","cosh","cosh","cosh");
     adicionarFuncao(guppy,"htan","tanh","tanh","tanh");
     adicionarFuncao(guppy,"htg","tanh","tanh","tanh");
-    //Inversas trigonométricas
-    adicionarFuncao(guppy,"arcsen","arcsen","arcsen","arcsin");
-    adicionarFuncao(guppy,"arctg","arctg","arctg","arctan");
-    adicionarFuncao(guppy,"arcsec","arcsec","arcsec","arcsec");
-    //Inversas trigonométricas reversas
-    adicionarFuncao(guppy,"arccsc","arccsc","arccsc","arccsc");
-    adicionarFuncao(guppy,"arccot","arccot","arccot","arccot");
-    adicionarFuncao(guppy,"archsen","arcsenh","arcsenh","arcsinh");
     //Inversas hiperbólicas
     adicionarFuncao(guppy,"hsec","sech","sech","sech");
     adicionarFuncao(guppy,"hcsc","csch","csch","csch");
     adicionarFuncao(guppy,"hcot","coth","coth","coth");
+    //Reversas hiperbólicas
+    adicionarFuncao(guppy,"harcsin","arcsinh","arcsinh","arcsinh");
+    adicionarFuncao(guppy,"harcsen","arcsenh","arcsinh","arcsinh");
+    adicionarFuncao(guppy,"harccos","arccosh","arccosh","arccosh");
+    adicionarFuncao(guppy,"harctan","arctanh","arctanh","arctanh");
+    //Reversas hiperbólicas (abreviação)
+    adicionarFuncao(guppy,"harsin","arsinh","arsinh","arcsinh");
+    adicionarFuncao(guppy,"harsen","arsenh","arcsinh","arcsinh");
+    adicionarFuncao(guppy,"harcos","arcosh","arccosh","arccosh");
+    adicionarFuncao(guppy,"hartan","artanh","arctanh","arctanh");
+    //Inversas hiperbólicas reversas
+    adicionarFuncao(guppy,"harccsc","arccsch","arccsch","arccsch");
+    adicionarFuncao(guppy,"harccot","arccoth","arccoth","arccoth");
+    adicionarFuncao(guppy,"harcsec","arcsech","arcsech","arcsech");
+    //Inversas hiperbólicas reversas (abreviação)
+    adicionarFuncao(guppy,"harcsc","arcsch","arccsch","arccsch");
+    adicionarFuncao(guppy,"harcot","arcoth","arccoth","arccoth");
+    adicionarFuncao(guppy,"harsec","arsech","arcsech","arcsech");
     guppy.activate();
     init()
 }
