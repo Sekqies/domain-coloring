@@ -254,7 +254,7 @@ function exponencial(a,b)
         //NOTA: a tem que ser positivo, já que, por exemplo (-1)^1/2 iria ser uma operação que retorna um número imaginário
         if (a.imag===0 && a.real>=0)
         {
-            return Math.pow(a.real,b.real);
+            return {real: Math.pow(a.real,b.real), imag:0};
         }
         //Se a for somente imaginário, no formato n*i...
         if(a.real===0)
@@ -343,7 +343,10 @@ var operacoes = {
             if (args[0] == "e") return { real: Math.E, imag: 0 };
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
             if (args[0] == "z") return vars.z;
-            //return vars.args[0];
+            if (args[0] == "x") return {real: vars.z.real, imag: 0};
+            if (args[0] == "y") return {real: 0, imag: vars.z.imag};
+            if (args[0] == "a") return {real: vars.z.real, imag: 0};
+            if (args[0] == "b") return {real: 0, imag: vars.z.imag};
         }
     },
     "*": function(args) {
