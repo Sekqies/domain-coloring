@@ -268,6 +268,29 @@ function arcsenh(z)
     }
 }
 
+function arccosh(z)
+{
+    const a = z.real;
+    const b = z.imag;
+    const interiorRaizPos = a**2 - 2*a + b**2 + 1;
+    const interiorRaizNeg = a**2 + 2*a + b**2 + 1;
+    const raizQuartaPos = Math.pow(interiorRaizPos,0.25);
+    const raizPos = Math.pow(interiorRaizPos,0.5);
+    const raizQuartaNeg = Math.pow(interiorRaizNeg,0.25);
+    const raizNeg = Math.pow(interiorRaizNeg,0.5);
+    const interiorTrig = 0.5 * (Math.atan2(b,a-1) + Math.atan2(b,a+1));
+    const argReal = a + raizQuartaNeg*raizQuartaPos*Math.cos(interiorTrig);
+    const argImag = b + raizQuartaNeg*raizQuartaPos*Math.sin(interiorTrig);
+    return{
+        real: a + argReal + b + argImag + raizPos * raizNeg + a**2 + b**2,
+        imag: Math.atan2(argImag,argReal)
+    }
+}
+
+function arctanh(z)
+{
+    
+}
 
 //Exponencial
 function exponencial(a,b)
