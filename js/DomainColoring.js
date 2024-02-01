@@ -199,6 +199,11 @@ function Plotter(guppy){
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
+
+    //define o scroll vertical e horizontal da tela para metade do total
+    window.scroll((document.documentElement.scrollWidth - window.innerWidth)/2, 
+    (document.documentElement.scrollHeight - window.innerHeight)/2);
+
     const height = canvas.height;
     let INICIO = performance.now();
     //Cria um array de pixels
@@ -292,9 +297,11 @@ function init(){
 
     const tudo = document.getElementById('tudo');
     canvas.addEventListener('mousemove', function(event) {
-        const num_inteiro = getNumeroInteiro();
         const x = event.offsetX;
         const y = event.offsetY;
+
+        tudo.style.top = y - 15 +  'px';
+        tudo.style.left = x + 90 + 'px';
 
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
@@ -307,10 +314,10 @@ function init(){
         let imag = z.imag;
 
         if (real > 100 || real < -100){
-            real = Number(real).toExponential(3);
+            real = Number(real).toExponential(2);
         }
         if (imag > 100 || imag < -100){
-            imag = Number(imag).toExponential(3);
+            imag = Number(imag).toExponential(2);
         }
 
 
@@ -318,27 +325,27 @@ function init(){
         {
             let real1 = real.toString().split('e+')[0];
             let real2 = real.toString().split('e+')[1];
-            real = Number(real1).toFixed(3) + 'e+' + real2;
+            real = Number(real1).toFixed(2) + ' * 10^' + real2;
         }
         else{
-            real = Number(real).toFixed(3);
+            real = Number(real).toFixed(2);
         }
 
         if (String(imag).includes('e+'))
         {
             let imag1 = imag.toString().split('e+')[0];
             let imag2 = imag.toString().split('e+')[1];
-            imag = Number(imag1).toFixed(3) + 'e+' + imag2;
+            imag = Number(imag1).toFixed(2) + ' * 10^' + imag2;
         }
         else{
-            imag = Number(imag).toFixed(3);
+            imag = Number(imag).toFixed(2);
         }
         //da split em e+ na string e pega o primeiro valor
         
 
 
 
-        tudo.innerHTML = (`<i>F( ${realAntes} + ${imagAntes * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
+        tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
 

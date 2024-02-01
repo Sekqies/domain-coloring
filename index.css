@@ -17,14 +17,34 @@ body {
     flex-direction: column;
     align-items: center;
 }
+#grafico{
+    position: relative;
+    margin-left: 500px;
+    padding: 50px 100px;
+}
+
+#grafico:has(canvas:hover) > p{
+    opacity: 1;
+    scale: 1;
+    transition: opacity, scale 0.3s;
+}
 #grafico canvas{
     border: 3px solid black;
     border-radius: 10px;
     aspect-ratio: 1;
 }
 #grafico p{
-    width: calc(100% - 70px);
-    text-align: center;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.5;
+    transition: 0.3s;
 }
 section{
     width: 100%;
@@ -33,13 +53,16 @@ section{
     grid-template-columns: 1fr 1fr;
     gap: 50px;
 }
-section{
-    margin-top: 30px;
-}
-
 #opcoes{
+    position: fixed;
+    width: 500px;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    border: 1px solid black;
     padding: 15px;
-    border-radius: 10px;
+    min-height: 100vh;
     height: fit-content;
     font-size: 1rem;
 }
@@ -57,6 +80,7 @@ section{
     font-size: 1.2rem;
     font-weight: 100;
     color: rgb(82, 82, 82);
+    word-break: break-all;
 }
 .funcao input{
     padding: 5px;
@@ -139,35 +163,6 @@ section{
 #numeroreal #checkbox.active{
     background-color: rgb(181, 249, 181);
 }
-
-@media screen and (max-width: 1920px){
-    .container{
-        max-width: 1440px;
-    }  
-}
-@media screen and (max-width: 1440px){
-    .container{
-        max-width: 1024px;
-    }  
-}
-@media screen and (max-width: 1024px){
-    .container{
-        max-width: 768px;
-    }  
-}
-
-@media screen and (max-width: 768px){
-    .container{
-        max-width: 480px;
-    }  
-}
-
-@media screen and (max-width: 480px){
-    .container{
-        max-width: 320px;
-    }  
-}
-
 
 /* guppy */
 
