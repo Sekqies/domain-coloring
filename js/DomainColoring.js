@@ -365,6 +365,15 @@ function carregar()
         tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
     });
 
+
+    const arrow = document.getElementById('arrow');
+    const form = document.getElementById('form');
+
+    arrow.addEventListener('click', function(){
+        form.classList.toggle('active');
+        arrow.classList.toggle('active');
+    });
+
     init()
 }
 document.addEventListener('keyup', function(event) {

@@ -20,7 +20,15 @@ body {
 #grafico{
     position: relative;
     margin-left: 500px;
+    margin-top: 12vh;
     padding: 50px 100px;
+}
+a{
+    color: black;
+}
+a:hover{
+    cursor: pointer;
+    color: rgb(0, 0, 133);
 }
 
 #grafico:has(canvas:hover) > p{
@@ -53,7 +61,14 @@ section{
     grid-template-columns: 1fr 1fr;
     gap: 50px;
 }
-#opcoes{
+form.active{
+    transform: translateX(0);
+    transition: 0.3s;
+}
+form{
+    transition: 0.3s;
+    transform: translateX(-100%);
+
     position: fixed;
     width: 500px;
     z-index: 1;
@@ -71,10 +86,47 @@ section{
     text-align: center;
 }
 
+#guppyfunction{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    min-width: 100dvw;
+    box-sizing: border-box;
+    z-index: 3;
+    background-color: white;
+    border: 1px solid black;
+}
+#guppyfunction > div{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+#guppyfunction img{
+    transition: 0.3s;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    rotate: 180deg;
+}
+
+#guppyfunction img.active{
+    rotate: 0deg;
+    transition: 0.3s;
+}
+
+#guppyfunction p{
+    font-size: 15px;
+}
+#guppy1{
+    flex: 1;
+}
 .funcao{
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    gap: 2px;
 }
 .funcao p{
     font-size: 1.2rem;
@@ -94,12 +146,14 @@ section{
 }
 
 #options{
+
     padding: 15px;
     border: 1px solid rgb(82, 82, 82);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: calc(12vh + 20px);
 }
 #options > .tipo{
     display: flex;
