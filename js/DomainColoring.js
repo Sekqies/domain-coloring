@@ -8,6 +8,8 @@ var resultado_real = 'a';
 var resultado_imag = 'b';
 let tudo;
 
+var graficoTelainteira = false;
+
 let tipo_grafico = 1;
 
 function HSLtoRGB(h, s, l) {
@@ -368,10 +370,22 @@ function carregar()
 
     const arrow = document.getElementById('arrow');
     const form = document.getElementById('form');
+    const grafico = document.getElementById('grafico');
 
     arrow.addEventListener('click', function(){
         form.classList.toggle('active');
         arrow.classList.toggle('active');
+        grafico.classList.toggle('active');
+    });
+
+    const checkbox = document.querySelector('.inputcheckbox > div');
+    const gsize = document.getElementById('gsize');
+    checkbox.addEventListener('click', function(){
+        checkbox.classList.toggle('active');
+        gsize.classList.toggle('disabled');
+        gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
+        graficoTelainteira = !graficoTelainteira;
+        grafico.style.padding = graficoTelainteira ? '0' : '50px 100px';
     });
 
     init()
@@ -386,8 +400,15 @@ document.addEventListener('keyup', function(event) {
 });
 function init(){
 
-    //alert(guppy)    
-    let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    //alert(guppy)  
+    let tamanhoCanvas;  
+    if (graficoTelainteira)
+    {
+        tamanhoCanvas = window.innerWidth;
+    }
+    else{
+        tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    }
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
     //alert(canvas);

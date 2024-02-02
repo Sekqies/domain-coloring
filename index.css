@@ -19,10 +19,15 @@ body {
 }
 #grafico{
     position: relative;
-    margin-left: 500px;
     margin-top: 12vh;
     padding: 50px 100px;
+    transition: 0.3s;
 }
+#grafico.active{
+    margin-left: 500px;
+    transition: 0.3s;
+}
+
 a{
     color: black;
 }
@@ -57,8 +62,8 @@ a:hover{
 section{
     width: 100%;
     border-radius: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
     gap: 50px;
 }
 form.active{
@@ -141,9 +146,11 @@ form{
     font-size: 1rem;
     font-weight: 100;
     color: rgb(82, 82, 82);
-    
-
 }
+.funcao.disabled{
+    opacity: 50%;
+}
+
 
 #options{
 
@@ -309,3 +316,22 @@ form{
   to { visibility: hidden; }
 }
 
+.inputcheckbox{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  .inputcheckbox > div{
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.1s;
+  }
+  
+  .inputcheckbox > div.active{
+    background-color: #b5f9b5;
+    transition: 0.1s;
+  }
