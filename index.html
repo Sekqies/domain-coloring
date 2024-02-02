@@ -56,11 +56,16 @@
                         <input type="number" id="tamanho_grafico" value="500" min="100" max="4000" step="100">
                     </div>
                 </div>
+
+
                 <a href="Docs.html">Documentação</a>
                 <div id="submit">
                     <input type="button" value="Desenhar" onclick="init()">
-                </div>
+                    <input type="button" value="Baixar o gráfico" onclick="download()">
+                </div>  
             </form>
+
+            
         </div>
         <div id="grafico" class="active">
             <canvas id="domainColorCanvas" width="600" height="600"></canvas>
