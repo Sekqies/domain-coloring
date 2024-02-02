@@ -362,6 +362,16 @@ function carregar()
         else{
             imag = Number(imag).toFixed(2);
         }
+
+        if (real == 'NaN')
+        {
+            real = 0;
+        }
+
+        if (imag == 'NaN')
+        {
+            imag = 0;
+        }
         //da split em e+ na string e pega o primeiro valor
 
         tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
