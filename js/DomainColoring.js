@@ -372,9 +372,19 @@ function carregar()
         {
             imag = 0;
         }
+
+        if (real == 'Infinity' || real == '-Infinity')
+        {
+            real = '∞';
+        }
+
+        if (imag == 'NaN' || imag == 'Infinity' || imag == '-Infinity')
+        {
+            imag = '∞';
+        }
         //da split em e+ na string e pega o primeiro valor
 
-        tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
+        tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
     });
 
 
@@ -418,7 +428,7 @@ function init(){
         //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
         window.addEventListener('mousedown', function (event) {
             function handleMouseMove(event) {
-                window.scrollBy(-event.movementX, -event.movementY);
+                window.scrollBy(-event.movementX/2, -event.movementY/2);
             }
         
             window.addEventListener('mousemove', handleMouseMove);

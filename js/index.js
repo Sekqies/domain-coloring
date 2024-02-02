@@ -33,8 +33,6 @@ function checaFuncao() {
 
 document.addEventListener("DOMContentLoaded", () => {
     changeActiveClass();
-    changeABIactive();
-
 });
 
 function adicionarFuncao(guppy,input_usuario, output_latex, output_text, nome_funcao)
