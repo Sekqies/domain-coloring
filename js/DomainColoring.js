@@ -395,7 +395,7 @@ function carregar()
         gsize.classList.toggle('disabled');
         gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
         graficoTelainteira = !graficoTelainteira;
-        grafico.style.padding = graficoTelainteira ? '0' : '50px 100px';
+        grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
     });
 
     init()
@@ -415,6 +415,20 @@ function init(){
     if (graficoTelainteira)
     {
         tamanhoCanvas = window.innerWidth;
+        //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
+        window.addEventListener('mousedown', function (event) {
+            function handleMouseMove(event) {
+                window.scrollBy(-event.movementX, -event.movementY);
+            }
+        
+            window.addEventListener('mousemove', handleMouseMove);
+        
+            window.addEventListener('mouseup', function () {
+                window.removeEventListener('mousemove', handleMouseMove);
+            });
+        });
+        
+
     }
     else{
         tamanhoCanvas = document.getElementById("tamanho_grafico").value;
