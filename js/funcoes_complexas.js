@@ -388,7 +388,7 @@ function exponencial(a,b)
 }
 
 var operacoes = {
-    "+":function(args)
+    "+":function(args) //
     {
         return function(vars)
         {
@@ -396,7 +396,7 @@ var operacoes = {
         }
     },
 
-    "-":function(args)
+    "-":function(args) //
     {
         return function(vars)
         {
@@ -404,7 +404,7 @@ var operacoes = {
         }
     },
 
-    "fraction":function(args)
+    "fraction":function(args)//
     {
         return function(vars)
         {
@@ -412,7 +412,7 @@ var operacoes = {
         }
     },
 
-    "val":function(args)
+    "val":function(args)//
     {
         return function(vars)
         {
@@ -433,7 +433,7 @@ var operacoes = {
         ]
     ]*/
 
-    "var": function(args) {
+    "var": function(args) {//
         return function(vars) {
             if (args[0] == "i") return { real: 0, imag: 1 };
             if (args[0] == "e") return { real: Math.E, imag: 0 };
@@ -445,70 +445,70 @@ var operacoes = {
             if (args[0] == "b") return {real: vars.z.imag, imag: 0 };
         }
     },
-    "*": function(args) {
+    "*": function(args) {//
         return function(vars) {
             return multiplicar(args[0](vars), args[1](vars));
         }
     },
-    "exponential": function(args) {
+    "exponential": function(args) {//
         return function(vars) {
             return exponencial(args[0](vars), args[1](vars));
         }
     },
-    "sin": function(args) {
+    "sin": function(args) {//
         return function(vars) {
             return sen(args[0](vars));
         }
     },
-    "cos": function(args) {
+    "cos": function(args) {//
         return function(vars) {
             return cos(args[0](vars));
         }
     },
-    "ln":function(args)
+    "ln":function(args)//
     {
         return function(vars)
         {
             return log(args[0](vars))
         }
     },
-    "log": function(args) {
+    "log": function(args) {//
         return function(vars) {
             return log(args[0](vars));
         }
     },
-    "tan": function(args) {
+    "tan": function(args) {//
         return function(vars) {
             return tg(args[0](vars));
         };
     },
-    "squareroot": function(args) {
+    "squareroot": function(args) {//
         return function(vars) {
             var b = { real: 1/2, imag: 0 };
             return exponencial(args[0](vars), b);
         };
     },
-    "root": function(args) {
+    "root": function(args) {//
         return function(vars) {
-            var b = { real: 1/args[1](vars).real, imag: 0 };
-            return exponencial(args[0](vars), b);
+            var b = { real: 1/args[0](vars).real, imag: 0 };
+            return exponencial(args[1](vars), b);
         };
     },
-    "Re": function(args)
+    "Re": function(args)//
     {
         return function(vars)
         {
             return {real: args[0](vars).real, imag: 0}
         }
     },
-    "Im": function(args)
+    "Im": function(args)//
     {
         return function(vars)
         {
             return {real: 0, imag: args[0](vars).real}
         }
     },
-    "conj":function(args){
+    "conj":function(args){//
         return function(vars){
           return conjugar(args[0](vars));
         }
@@ -520,147 +520,147 @@ var operacoes = {
             return {real: -args[0](vars).real, imag: -args[0](vars).imag}
         }
     },
-    "cot":function(args)
+    "cot":function(args)//
     {
         return function(vars)
         {
             return cot(args[0](vars))
         }
     },
-    "csc":function(args)
+    "csc":function(args)//
     {
         return function(vars)
         {
             return csc(args[0](vars))
         }
     },
-    "sec":function(args)
+    "sec":function(args)//
     {
         return function(vars)
         {
             return sec(args[0](vars))
         }
     },
-    "sinh":function(args)
+    "sinh":function(args)//
     {
         return function(vars)
         {
             return senh(args[0](vars))
         }
     },
-    "cosh":function(args)
+    "cosh":function(args)//
     {
         return function(vars)
         {
             return cosh(args[0](vars))
         }
     },
-    "tanh":function(args)
+    "tanh":function(args)//
     {
         return function(vars)
         {
             return tanh(args[0](vars))
         }
     },
-    "arcsin":function(args)
+    "arcsin":function(args)//
     {
         return function(vars)
         {
             return arcsen(args[0](vars))
         }
     },
-    "arccos":function(args)
+    "arccos":function(args)//
     {
         return function(vars)
         {
             return arccos(args[0](vars))
         }
     },
-    "arctan":function(args)
+    "arctan":function(args)//
     {
         return function(vars)
         {
             return arctan(args[0](vars))
         }
     },
-    "arccsc":function(args)
+    "arccsc":function(args)//
     {
         return function(vars)
         {
             return arccsc(args[0](vars))
         }
     },
-    "arcsec":function(args)
+    "arcsec":function(args)//
     {
         return function(vars)
         {
             return arcsec(args[0](vars))
         }
     },
-    "arccot":function(args)
+    "arccot":function(args)//
     {
         return function(vars)
         {
             return arccot(args[0](vars))
         }
     },
-    "arcsinh":function(args)
+    "arcsinh":function(args)//
     {
         return function(vars)
         {
             return arcsenh(args[0](vars))
         }
     },
-    "arccosh":function(args)
+    "arccosh":function(args)//
     {
         return function(vars)
         {
             return arccosh(args[0](vars))
         }
     },
-    "arctanh":function(args)
+    "arctanh":function(args)//
     {
         return function(vars)
         {
             return arctanh(args[0](vars))
         }
     },
-    "arccoth":function(args)
+    "arccoth":function(args)//
     {
         return function(vars)
         {
             return arccoth(args[0](vars))
         }
     },
-    "sech":function(args)
+    "sech":function(args)//
     {
         return function(vars)
         {
             return sech(args[0](vars))
         }
     },
-    "csch":function(args)
+    "csch":function(args)//
     {
         return function(vars)
         {
             return csch(args[0](vars))
         }
     },
-    "coth":function(args)
+    "coth":function(args)//
     {
         return function(vars)
         {
             return coth(args[0](vars))
         }
     },
-    "arccsch":function(args)
+    "arccsch":function(args)//
     {
         return function(vars)
         {
             return arccsch(args[0](vars))
         }
     },
-    "arcsech":function(args)
+    "arcsech":function(args)//
     {
         return function(vars)
         {
