@@ -170,15 +170,13 @@ function arcsen(z)
     //essa função não é de deus.
     const a = z.real;
     const b = z.imag;
-    const atan2 = Math.atan2;
-    const raizQuarta1 = Math.pow(4*a**2*b**2 + Math.pow(-(a**2)+b**2+1,2),1/4)
-    const interiorTrig1 = 0.5*atan2(1 + b**2 - a**2,-2*a*b)
-    const parteRealArgumento1 = -b + raizQuarta1 * Math.cos(interiorTrig1)
-    const parteImagArgumento1 = a + raizQuarta1 * Math.sin(interiorTrig1)
-
+    const raizQuarta = Math.pow(4 * a**2 * b**2 + (1 - a**2 + b**2)**2,0.25);
+    const interiorTrig = 0.5 * Math.atan2(-2*a*b,1 - a**2 + b**2)
+    const argReal = -b + raizQuarta * Math.cos(interiorTrig);
+    const argImag = a + raizQuarta * Math.sin(interiorTrig);
     return {
-        real: atan2(parteImagArgumento1,parteRealArgumento1),
-        imag: -Math.log(Math.sqrt(Math.pow(parteRealArgumento1,2) + Math.pow(parteImagArgumento1,2)))
+        real: Math.atan2(argImag,argReal),
+        imag: -0.5*Math.log(argImag**2 + argReal**2)
     }
 }
 
