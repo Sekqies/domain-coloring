@@ -253,7 +253,18 @@ function carregar()
     tudo = document.getElementById('tudo');
     guppy.engine.set_content(funcaoBase);
     //Funções exclusivas às complexas
+    guppy.engine.add_symbol("2atan", {
+        "output": {
+            "latex": "\\text{atan2}({$1},{$2})",
+            "text": "atan2($1,$2)"
+        },
+        "attrs": {
+            "type": "atan2",
+            "group": "function"
+        }
+    });
     guppy.engine.add_symbol("conj", {"output": {"latex":"\\overline{{$1}}", "text":"conj($1)"}, "attrs": { "type":"conj", "group":"function"}});
+    adicionarFuncao(guppy,"arg","Arg","Arg","arg")
     adicionarFuncao(guppy,"re","Re","Re","Re");
     adicionarFuncao(guppy,"im","Im","Im","Im");
     //Trigonométricas em português

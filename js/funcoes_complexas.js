@@ -668,5 +668,19 @@ var operacoes = {
         {
             return arcsech(args[0](vars))
         }
+    },
+    "arg":function(args)
+    {
+        return function(vars)
+        {
+            return {real: arg(args[0](vars)), imag:0 }
+        }
+    },
+    "atan2":function(args)
+    {
+        return function(vars)
+        {
+            return { real: Math.atan2(args[0](vars).real,args[1](vars).real), imag: 0 }
+        }
     }
 };
