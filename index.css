@@ -225,6 +225,10 @@ form{
     background-color: rgb(181, 249, 181);
 }
 
+.font-mat {
+    font-family: katex_math;
+}
+
 /* guppy */
 
 .guppy_active {
@@ -370,3 +374,4 @@ form{
     grid-template-columns: 1fr 3fr;
     gap: 10px;
   }
+
