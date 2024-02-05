@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="index.css">
+    <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
+
+    <title>Docs | Funções complexas</title>
+</head>
+<body>
+    <section id="docs">
+        <h1>Documentação</h1>
+        <p>Esta cauculadora foi desenvolvida como um projeto de iniciação cientifica da FC (Faculdade de ciencias)
+            UNESP - Campus de Bauru, pelos alunos: <a href="https://github.com/MBastazini">Mateus Bastazini N. T.</a> e 
+            <a href="https://github.com/Sekqies">Fernando Ellerbrock T.</a>
+        </p>
+        <p>Nesta documentação é possivel encontrar todas as funçãoes atualmente aceitas pela calculadora.
+        </p>
+        <div id="funcoesaceitas">
+            <h3>Variaveis aceitas: </h3>
+
+            <div>
+                <h4>Número de Euler <span class="font-mat">(e)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>e</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o número de Euler, 2.718...</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Pi <span class="font-mat">(π)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>pi</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o número Pi, 3.1415...</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Número Imaginario <span class="font-mat">(i)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>i</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o valor '1' no eixo imaginario, multiplicando ele a um número real tem-se um número complexo.
+                        (ex 2i, ou até a*i ou b*i)
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Número real, eixo real <span class="font-mat">(a ou x)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>a ou x</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o valor do número real no eixo real, ou o eixo das absissas.
+                        De maneira mais tecnica: retorna o valor inteiro ao qual o pixel do 
+                        canvas representa, no eixo das absissas. 
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Número real, eixo imaginario <span class="font-mat">(b ou y)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>b ou y</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o valor do número real no eixo imaginario, ou o eixo das ordenadas.
+                        De maneira mais tecnica: retorna o valor inteiro ao qual o pixel do 
+                        canvas representa, no eixo das ordenadas. 
+                        Um número imaginario é representado por (a + bi) ou (x +yi), ambos a e b são reais, mas
+                        representam diferentes eixos no grafico. e ao se multiplicar por i tem-se um
+                        número complexo.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="funcoesaceitas">
+            <h3>Funções aceitas: </h3>
+            
+            <div>
+                <h4 class="font-mat">Re</h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>re(n)</p>
+                    <p>Exemplo:</p>
+                    <p>re(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a parte real de n</p>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-mat">Im</h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>im(n)</p>
+                    <p>Exemplo:</p>
+                    <p>im(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a parte imaginaria de n</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Soma <span class="font-mat">(+)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>n + x</p>
+                    <p>Exemplo:</p>
+                    <p>z + 2</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a soma de n e x, sendo n e x números inteiros, complexos ou imaginarios.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Subtração <span class="font-mat">(-)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>n - x</p>
+                    <p>Exemplo:</p>
+                    <p>z - 2</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a subtração de n e x, sendo n e x números inteiros, complexos ou imaginarios.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Multiplicação <span class="font-mat">(×)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>n * x ou nx</p>
+                    <p>Exemplo:</p>
+                    <p>z * 2 ou z2 ou 2z</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a multiplicação de n e x, sendo n e x números inteiros, complexos ou imaginarios.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Exponencial <span class="font-mat">(x<sup>y</sup>)</span> </h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>n^x</p>
+                    <p>Exemplo:</p>
+                    <p>z^2</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a exponencial de n elevado a x, sendo n e x números inteiros, complexos ou imaginarios.</p>
+                </div>
+            </div> 
+
+            <div>
+                <h4>Divisão <span class="font-mat">(÷)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>n/x</p>
+                    <p>Exemplo:</p>
+                    <p>z/2</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a divisão de n por x, sendo n e x números nteiros, complexos ou imaginarios.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Raiz quadrada <span class="font-mat">(√x)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>sqrt(n)</p>
+                    <p>Exemplo:</p>
+                    <p>sqrt(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a raiz quadrada de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Raiz de 'n' <span class="font-mat">(<sup>x</sup>√y )</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>root(x, n)</p>
+                    <p>Exemplo:</p>
+                    <p>root(2, z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a raiz de n, sendo n um número inteiro, complexo ou imaginario, e x o indice da raiz.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Conjugação <span class="font-mat">( conj(z) )</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>conj(n)</p>
+                    <p>Exemplo:</p>
+                    <p>conj(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a conjugação de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Cosseno <span class="font-mat">( cos(z) )</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>cos(n)</p>
+                    <p>Exemplo:</p>
+                    <p>cos(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o cosseno de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Seno <span class="font-mat">(sen z ou sin z) </span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>sen(n) ou sin(n)</p>
+                    <p>Exemplo:</p>
+                    <p>sen(z) ou sin(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o seno de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Tangente <span class="font-mat">(tg z ou tan z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>tan(n) ou tg(n)</p>
+                    <p>Exemplo:</p>
+                    <p>tan(z) ou tg(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a tangente de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+ 
+            <div>
+                <h4>Cotangente <span class="font-mat">(cot z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>cot(n)</p>
+                    <p>Exemplo:</p>
+                    <p>cot(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a cotangente de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Secante <span class="font-mat">(sec z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>sec(n)</p>
+                    <p>Exemplo:</p>
+                    <p>sec(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a secante de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Cosecante <span class="font-mat">(csc z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>csc(n)</p>
+                    <p>Exemplo:</p>
+                    <p>csc(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a cosecante de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco cosseno <span class="font-mat">(arccos z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arccos(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arccos(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cosseno de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco seno <span class="font-mat">(arcsen z ou arcsin z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arcsen(n) ou arcsin(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arcsen(z) ou arcsin(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco seno de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco tangente <span class="font-mat">(arctan z ou arctg z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arctan(n) ou arctg(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arctan(z) ou arctg(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco tangente de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div> 
+            </div>
+
+            <div>
+                <h4>Logaritmo natural <span class="font-mat">(ln z ou log z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>log(n) ou ln(z)</p>
+                    <p>Exemplo:</p>
+                    <p>log(z) ou ln(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o logaritmo de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Cosseno hiperbolico <span class="font-mat">(cosh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>hcos(n) [ps. a calculadora transforma em cosh, mas deve-se escrever hcos]</p>
+                    <p>Exemplo:</p>
+                    <p>hcos(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o cosseno hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Seno hiperbolico <span class="font-mat">(senh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>hsen(n) ou hsin(n) [ps. a calculadora transforma em sinh, mas deve-se escrever hsen]</p>
+                    <p>Exemplo:</p>
+                    <p>hsen(z) ou hsin(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o seno hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Tangente hiperbolica <span class="font-mat">(tanh z ou tgh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>htan(n) ou htg(n) [ps. a calculadora transforma em tanh, mas deve-se escrever htan]</p>
+                    <p>Exemplo:</p>
+                    <p>htan(z) ou htg(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a tangente hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Cotangente hiperbolica <span class="font-mat">(coth z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>hcot(n)</p>
+                    <p>Exemplo:</p>
+                    <p>hcot(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a cotangente hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Secante hiperbolica <span class="font-mat">(sech z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>hsec(n)</p>
+                    <p>Exemplo:</p>
+                    <p>hsec(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a secante hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Cosecante hiperbolica <span class="font-mat">(csch z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>hcsc(n)</p>
+                    <p>Exemplo:</p>
+                    <p>hcsc(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna a cosecante hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco cosseno hiperbolico <span class="font-mat">(arccosh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harccos(n) [ps. a calculadora transforma em arccosh, mas deve-se escrever harccos]</p>
+                    <p>Exemplo:</p>
+                    <p>harccos(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cosseno hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco seno hiperbolico <span class="font-mat">(arcsenh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harcsen(n) ou harcsin(n) [ps. a calculadora transforma em arcsinh, mas deve-se escrever harcsen]</p>
+                    <p>Exemplo:</p>
+                    <p>harcsen(z) ou harcsin(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco seno hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco tangente hiperbolica <span class="font-mat">(arctanh z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harctan(n) ou hartan(z) [ps. a calculadora transforma em arctanh, mas deve-se escrever harctan]</p>
+                    <p>Exemplo:</p>
+                    <p>harctan(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco tangente hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+    
+            <div>
+                <h4>Arco cossecante <span class="font-mat">(arccsc z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arccsc(n) ou arcsc(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arccsc(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cossecante de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+    
+            <div>
+                <h4>Arco secante <span class="font-mat">(arcsec z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arcsec(n) ou arsec(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arcsec(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco secante de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+    
+            <div>
+                <h4>Arco cotangente <span class="font-mat">(arccot z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arccot(n) ou arcot(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arccot(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cotangente de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco cossecante hiperbolico (arccsch z)</h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harccsc(n) ou harcsc(n)</p>
+                    <p>Exemplo:</p>
+                    <p>harccsc(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cossecante hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco secante hiperbolico <span class="font-mat">(arcsech z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harcsec(n) ou harsec(n)</p>
+                    <p>Exemplo:</p>
+                    <p>harcsec(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco secante hiperbolico de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Arco cotangente hiperbolica <span class="font-mat">(arccoth z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>harccot(n) ou harcot(n)</p>
+                    <p>Exemplo:</p>
+                    <p>harccot(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o arco cotangente hiperbolica de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Argumento <span class="font-mat">(Arg z)</span></h4>
+                <div class="funcgrid">
+                    <p>Simbolo:</p>
+                    <p>arg(n)</p>
+                    <p>Exemplo:</p>
+                    <p>arg(z)</p>
+                    <p>Descrição: </p>
+                    <p>Retorna o argumento de n, sendo n um número inteiro, complexo ou imaginario.</p>
+                </div>
+            </div>
+
+        </div>
+
+        
+</body>
+</html>

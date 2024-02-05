@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
-    
+    <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
 
     <script src="js/DomainColoring.js" ></script> 
     <script src="js/index.js"></script>     
@@ -13,33 +13,21 @@
     <script src="js/funcoes_complexas.js"></script>
     <script src="guppy-master/build/guppy.js"></script>
     
-    <title>F(Z) Números Complexos</title>  
+    <title>Funções complexas</title>  
 </head>
 <body onload="carregar()">
     <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
     <section>
+        <div id="guppyfunction">
+            <img src="assets/arrow.svg" alt="arrow" id="arrow" class="active">
+            <div>
+                <div id="guppy1"></div>
+                <p>Digite uma função complexa e pressione 'enter'. Para uma lista de simbolos aceitos clique <a href="Docs.html">aqui</a></p>
+            </div>
+
+        </div>
         <div id="opcoes">
-            <h1>Funções complexas</h1>
-            <form>
-                <div class="funcao">
-                    <p>Função:  </p>
-                    <div id="guppy1"></div>
-                    <!---<input type="text" value="z" id="funcao_complexa">--> 
-                    <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
-                </div>
-                <div id="abi" style="display: none;">
-                    <div class="funcao">
-                        <p>Parte real:  </p>
-                        <input type="text" value="a" id="funcao_complexa_real"> 
-                        <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
-                    </div>
-                    <div class="funcao">
-                        <p>Parte imaginaria:  </p>
-                        <input type="text" value="b" id="funcao_complexa_imag"> 
-                        <h2 id="funcao-invalida" style="display: none;">Função invalida</h2>
-                    </div>
-                    <p>Favor escrever com termos a e b (b é imaginario)</p>
-                </div>
+            <form id="form" class="active">
                 <div id="options"> 
                     <div class="tipo">
                         <p>Tipo do Gráfico: </p>
@@ -53,24 +41,35 @@
                         </div>
                     </div>
                     
+                    <div class="inputcheckbox">
+                        <div></div>
+                        <p>Grafico ocupa a tela inteira</p> 
+                    </div>
+
                     <div class="funcao">
                         <p>Numero de inteiros: </p>
                         <input type="number" id="numero_inteiros" value="2" min="1" max="100">
                     </div>
 
-                    <div class="funcao">
+                    <div class="funcao" id="gsize">
                         <p>Tamanho do gráfico:</p>
                         <input type="number" id="tamanho_grafico" value="500" min="100" max="4000" step="100">
                     </div>
                 </div>
+
+
+                <a href="Docs.html">Documentação</a>
                 <div id="submit">
                     <input type="button" value="Desenhar" onclick="init()">
-                </div>
+                    <input type="button" value="Baixar o gráfico" onclick="download()">
+                </div>  
             </form>
+
+            
         </div>
-        <div id="grafico">
+        <div id="grafico" class="active">
             <canvas id="domainColorCanvas" width="600" height="600"></canvas>
-            <p id="tudo"><i>F ( a + bi ) = a + bi</i></p>
+            <p id="tudo"><i>f ( a + bi ) = a + bi</i></p>
         </div>
         
     </section>

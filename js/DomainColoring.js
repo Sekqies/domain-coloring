@@ -8,6 +8,8 @@ var resultado_real = 'a';
 var resultado_imag = 'b';
 let tudo;
 
+var graficoTelainteira = false;
+
 let tipo_grafico = 1;
 
 function HSLtoRGB(h, s, l) {
@@ -360,9 +362,50 @@ function carregar()
         else{
             imag = Number(imag).toFixed(2);
         }
+
+        if (real == 'NaN')
+        {
+            real = 0;
+        }
+
+        if (imag == 'NaN')
+        {
+            imag = 0;
+        }
+
+        if (real == 'Infinity' || real == '-Infinity')
+        {
+            real = '∞';
+        }
+
+        if (imag == 'NaN' || imag == 'Infinity' || imag == '-Infinity')
+        {
+            imag = '∞';
+        }
         //da split em e+ na string e pega o primeiro valor
 
-        tudo.innerHTML = (`<i>F( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag * (-1)}i</i>`);
+        tudo.innerHTML = (`<i>f( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
+    });
+
+
+    const arrow = document.getElementById('arrow');
+    const form = document.getElementById('form');
+    const grafico = document.getElementById('grafico');
+
+    arrow.addEventListener('click', function(){
+        form.classList.toggle('active');
+        arrow.classList.toggle('active');
+        grafico.classList.toggle('active');
+    });
+
+    const checkbox = document.querySelector('.inputcheckbox > div');
+    const gsize = document.getElementById('gsize');
+    checkbox.addEventListener('click', function(){
+        checkbox.classList.toggle('active');
+        gsize.classList.toggle('disabled');
+        gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
+        graficoTelainteira = !graficoTelainteira;
+        grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
     });
 
     init()
@@ -377,8 +420,29 @@ document.addEventListener('keyup', function(event) {
 });
 function init(){
 
-    //alert(guppy)    
-    let tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    //alert(guppy)  
+    let tamanhoCanvas;  
+    if (graficoTelainteira)
+    {
+        tamanhoCanvas = window.innerWidth;
+        //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
+        window.addEventListener('mousedown', function (event) {
+            function handleMouseMove(event) {
+                window.scrollBy(-event.movementX/2, -event.movementY/2);
+            }
+        
+            window.addEventListener('mousemove', handleMouseMove);
+        
+            window.addEventListener('mouseup', function () {
+                window.removeEventListener('mousemove', handleMouseMove);
+            });
+        });
+        
+
+    }
+    else{
+        tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    }
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
     //alert(canvas);
