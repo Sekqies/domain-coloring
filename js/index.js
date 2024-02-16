@@ -50,3 +50,12 @@ function adicionarFuncao(guppy,input_usuario, output_latex, output_text, nome_fu
         }
     });
 }
+
+function download(){
+    const canvas = document.getElementById("domainColorCanvas");
+    const dataURL = canvas.toDataURL('image/png');
+    let link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "domainColor.png";
+    link.click();
+}
