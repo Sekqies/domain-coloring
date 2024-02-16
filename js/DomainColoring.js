@@ -43,10 +43,10 @@ function HSLtoRGB(h, s, l) {
     }
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
-
+const teste= true;
 
 function Eixos (imgDataEixos, numeroInteiro){
-    if (false) {
+    if (teste) {
     let dataEixos = imgDataEixos.data;
     
     let posicoesInteiros = [];
@@ -139,9 +139,16 @@ function Domain_coloring(real, imag)
     }
 
     //Angulo
-    let hue = (Math.atan2(imag, real)) / (2*Math.PI);
 
-    //Caucula a distancia do ponto até o centro (modulo)
+
+
+    //NÃO MEXE NISSO
+    let hue = (Math.atan2(imag, real)) / (2*Math.PI);
+    //PERIGO !!! PERIGO!!!!! NÃO MEXE!!!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+
+
+    //Calcula a distancia do ponto até o centro (modulo)
     let dist = Math.sqrt(real * real + imag * imag);
 
     let modulo;
@@ -200,6 +207,9 @@ function Plotter(guppy){
     alert('f: ' + f)
     f({z: {real: 1, imag: 1}});
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
+    const f = guppy.func(operacoes);
+    console.log(f);
+    console.log(f({z: {real:1,imag:1}}))
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
 
@@ -221,13 +231,13 @@ function Plotter(guppy){
             //antes de passar pela função
             let realAntes = getNumeroInteiro(x, y)[0];
             let imagAntes = getNumeroInteiro(x, y)[1];
-
+            
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = funcao({'z': {real: realAntes, imag: imagAntes}});
+            let z = funcao({'z': {real: realAntes, imag: -imagAntes}});
             real = z.real;
             imag = z.imag;
-
+            
             //Pega a cor do pixel
             const color = Domain_coloring(real, imag);
 
@@ -241,9 +251,10 @@ function Plotter(guppy){
             canvasData[px + 3] = 255;
         }
     }
+    
     let FIM = performance.now();
     console.log(FIM-INICIO);
-    //Coloca a imagem no canvas
+    //Coloca a imagem no canvas 
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");
 
@@ -328,7 +339,7 @@ function carregar()
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
 
-        let z = funcaoHover({'z' : {real: realAntes, imag: imagAntes}});
+        let z = funcaoHover({'z' : {real: realAntes, imag: -imagAntes}});
 
         //console.log(z)
 
@@ -450,6 +461,7 @@ function init(){
 
     tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     
+    const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
     Plotter(guppy);
 }

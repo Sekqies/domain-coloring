@@ -387,6 +387,13 @@ function exponencial(a,b)
     return {real: x * Math.cos(y), imag: x * Math.sin(y)};
 }
 
+//Outras
+
+function modulo(z)
+{
+    return {real: Math.sqrt(z.imag**2 + z.real**2), imag:0};
+}
+
 var operacoes = {
     "+":function(args) //
     {
@@ -508,11 +515,13 @@ var operacoes = {
             return {real: 0, imag: args[0](vars).real}
         }
     },
-    "conj":function(args){//
-        return function(vars){
+    "conj":function(args)
+    {
+        return function(vars)
+        {
           return conjugar(args[0](vars));
         }
-      },
+    },
     "neg":function(args)
     {
         return function(vars)
@@ -671,7 +680,7 @@ var operacoes = {
     {
         return function(vars)
         {
-            return {real: arg(args[0](vars)), imag:0 }
+            return {real: Math.atan2(args[0](vars).imag, args[0](vars).real), imag:0}
         }
     },
     "atan2":function(args)
@@ -679,6 +688,13 @@ var operacoes = {
         return function(vars)
         {
             return { real: Math.atan2(args[0](vars).real,args[1](vars).real), imag: 0 }
+        }
+    },
+    "absolutevalue":function(args)
+    {
+        return function(vars)
+        {
+            return modulo(args[0](vars));
         }
     }
 };
