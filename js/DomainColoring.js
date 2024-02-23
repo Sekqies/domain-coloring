@@ -208,6 +208,8 @@ function Plotter(guppy){
     f({z: {real: 1, imag: 1}});
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
     const f = guppy.func(operacoes);
+    const f_gl = guppy.func(operacoes_gl);
+    console.log(f_gl());
     console.log(f);
     console.log(f({z: {real:1,imag:1}}))
     const canvasContext2d = canvas.getContext("2d");
@@ -258,6 +260,93 @@ function Plotter(guppy){
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");
 
+}
+function writeFragmentShader(real,imag,width,height,funcoes_gl)
+{
+    let funcoes = "";
+    for (let [key, value] of funcoes_gl) {
+        funcoes += value;
+    }
+    console.log(funcoes);
+    return `
+    precision mediump float;
+    const float PI = 3.141592653589793238462643383279502884197;
+    ${funcoes}
+    vec2 canvasSize = vec2(${width},${height});
+    vec3 hsl2rgb(vec3 hsl) {
+        vec3 rgb = clamp(abs(mod(hsl.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
+        rgb = rgb * rgb * (3.0 - 2.0 * rgb);
+        return hsl.z + hsl.y * (rgb - 0.5) * (1.0 - abs(2.0 * hsl.z - 1.0));
+    }
+    void main() {
+        float a = 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5);
+        float b = 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
+        float x = a;
+        float y = b;
+        float real = ${real};
+        float imag = ${imag};
+        vec2 z = vec2(real,imag);
+        vec2 f = z; // f(z) = z
+        float hue =  atan(f.y, f.x) / (2.0 * PI) ;
+        float sat = 1.0;
+        float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
+        vec3 rgb = hsl2rgb(vec3(hue,sat,light));
+        gl_FragColor = vec4(rgb, 1);
+    }
+    `
+}
+
+function PlotterGl(real,imag)
+{
+    let start = performance.now();
+    let canvas = document.getElementById("glCanvas");
+    var gl = canvas.getContext("webgl");
+    
+    var vertexShaderSource = `
+    attribute vec2 a_position;
+
+    void main()
+    {
+        gl_Position = vec4(a_position, 0, 1);
+    }
+    `; 
+    var fragmentShaderSource = writeFragmentShader(real,imag,canvas.width,canvas.height,op);
+    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertexShader, vertexShaderSource);
+    gl.compileShader(vertexShader);
+
+    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, fragmentShaderSource);
+    gl.compileShader(fragmentShader);
+
+    var shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    gl.useProgram(shaderProgram);
+
+    var positionAttributeLocation = gl.getAttribLocation(shaderProgram, "a_position");
+    var positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    var positions = [
+        -1, -1,
+        1, -1,
+        -1,  1,
+        -1,  1,
+        1, -1,
+        1,  1,
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(positionAttributeLocation);
+    gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+    /*var resolutionUniformLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
+    gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);*/
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    let end = performance.now();
+    console.log("Tempo do WEBGL");
+    console.log(end-start);
 }
 function carregar()
 {
@@ -424,7 +513,7 @@ function carregar()
 document.addEventListener('keyup', function(event) {
     if (event.key == "Enter") {
         console.log(guppy.engine.get_content("ast"));
-        console.log(guppy.func(operacoes))
+        console.log(guppy.func(operacoes));
         console.log(guppy.func(operacoes)({'z': {real: 1, imag: 1}}));  
         init();
     }
@@ -464,5 +553,7 @@ function init(){
     const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
     Plotter(guppy);
+    const result_gl = guppy.func(operacoes_gl)();
+    PlotterGl(result_gl.real,result_gl.imag);
 }
 
