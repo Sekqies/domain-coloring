@@ -6,7 +6,7 @@ function isZero(z)
 
 
 //Operações ariméticas simples
-let mapa_func = new Map();
+let lista_func = [];
 function soma(a,b)
 {
     return {
@@ -442,45 +442,53 @@ class c_GSGLFunction
     constructor(name,declaration)
     {
         this.name = name;
-        this.declaration = declaration;
     }
     runFunction(...params){ 
-        if (!mapa_func.has(this.name)) 
-        {
-            mapa_func.set(this.name,this.declaration);
-        }
         return `${this.name}(${params.join(',')})`;
     }
 }
 
-const cadd_gl_alt = new c_GSGLFunction("csoma","vec2 cadd(vec2 a, vec2 b) { return vec2(a.x + b.x, a.y + b.y); }");
-const csub_gl_alt = new c_GSGLFunction("csub","vec2 csub(vec2 a, vec2 b) { return vec2(a.x - b.x, a.y - b.y); }");
-const cmult_gl_alt = new c_GSGLFunction("cmult","vec2 cmult(vec2 a, vec2 b) { return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }");
-const cdiv_gl_alt = new c_GSGLFunction("cdiv","vec2 cdiv(vec2 a, vec2 b) { float denominador = pow(b.x,2.0) + pow(b.y,2.0); return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador); }");
-const cexponencial_gl_alt = new c_GSGLFunction("cexpo","vec2 cexpo(vec2 a, vec2 b) { float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento)); }");
-const csqrt_gl_alt = new c_GSGLFunction("csqrt","vec2 csqrt (vec2 a) { return cexpo(a,vec2(0.5,0.0));}");
-const clog_gl_alt = new c_GSGLFunction("clog","vec2 clog(vec2 a) { return vec2(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)), atan(a.y,a.x)); }");
-const csen_gl_alt = new c_GSGLFunction("csen","vec2 csen(vec2 a) { return vec2(sin(a.x)*cosh(a.y), cos(a.x)*sinh(a.y)); }");
-const ccos_gl_alt = new c_GSGLFunction("ccos","vec2 ccos(vec2 a) { return vec2(cos(a.x)*cosh(a.y), -sin(a.x) * sinh(a.y)); }");
-const ctan_gl_alt = new c_GSGLFunction("ctan","vec2 ctan(vec2 a) { float denominador = cos(2.0 * a.x) + cosh(a.y * 2.0); return vec2(sin(2.0 * a.x)/denominador, senh(a.y * 2.0)/denominador); }");
-const ccot_gl_alt = new c_GSGLFunction("ccot","vec2 ccot(vec2 a) { float denominador = cos(2.0 * a.x) - cosh(a.y * 2.0); return vec2(-sin(2.0 * a.x)/denominador, senh(a.y * 2.0)/denominador); }");
-const ccsc_gl_alt = new c_GSGLFunction("ccsc","vec2 ccsc(vec2 a) { float denominador = cos(2.0 * a.x) - cosh(a.y * 2.0); return vec2(-2.0 * sin(a.x)*cosh(a.y)/denominador, 2.0 * cos(a.x)*senh(a.y)/denominador); }");
-const csec_gl_alt = new c_GSGLFunction("csec","vec2 csec(vec2 a) { float denominador = cos(2.0 * a.x) + cosh(a.y * 2.0); return vec2(2.0 * cos(a.x) * cosh(a.y)/denominador, 2.0 * sin(a.x) * senh(a.y)/denominador); }");
-const csenh_gl_alt = new c_GSGLFunction("csenh","vec2 csenh(vec2 a) { return vec2(sinh(a.x)*cos(a.y), cosh(a.x)*sin(a.y)); }");
-const ccosh_gl_alt = new c_GSGLFunction("ccosh","vec2 ccosh(vec2 a) { return vec2(cosh(a.x)*cos(a.y), senh(a.x)*sin(a.y)); }");
-const ctanh_gl_alt = new c_GSGLFunction("ctanh","vec2 ctanh(vec2 a) { float denominador = cosh(2.0 * a.x) + cos(a.y * 2.0); return vec2(senh(2.0 * a.x)/denominador, sin(2.0 * a.y)/denominador); }");
-const carcsen_gl_alt = new c_GSGLFunction("carcsin","vec2 carcsin(vec2 al) { float a = al.x; float b = al.y; float raizQuarta = pow(4.0 * pow(a,2.0) * pow(b,2.0) + pow(1.0 - pow(a,2.0) + pow(b,2.0),2.0),0.25); float interiorTrig = 0.5 * atan(-2.0*a*b,1.0 - pow(a,2.0) + pow(b,2.0)); float argReal = -b + raizQuarta * cos(interiorTrig); float argImag = a + raizQuarta * sin(interiorTrig); return vec2(atan(argImag,argReal), -0.5 * log(pow(argImag,2.0) + pow(argReal,2.0))); }");
-const carccos_gl_alt = new c_GSGLFunction("carccos","vec2 carccos(vec2 al) { vec2 resultado_arcsen = carcsin(a); return vec2(3.141592653589793 - resultado_arcsen.x, -resultado_arcsen.y); }");
-const carctan_gl_alt = new c_GSGLFunction("carctan","vec2 carctan(vec2 al) { float a = al.x; float b = al.y; float atan2 = atan; return vec2(0.5 * (atan2(a,-b+1.0) - atan2(-a,b+1.0)), 0.25 *(log(pow(a,2.0) + pow(b+1.0,2.0)) - log(pow(a,2.0) + pow(b-1.0,2.0)))); }");
-const carcsenh_gl_alt = new c_GSGLFunction("carctanh","vec2 caractanh(vec2 a) {return clog(soma(a,sqrt(cadd(cexpo(a,2),1)))) }");
-const carccosh_gl_alt = new c_GSGLFunction("carccosh","vec2 carccosh(vec2 a) { return clog(soma(a,sqrt(csub(cexpo(a,2),1)))); }");
-const carctanh_gl_alt = new c_GSGLFunction("carctanh","vec2 carctanh(vec2 a) { return cdiv(clog(soma(vec2(1.0,0.0),a)),clog(soma(vec2(1.0,0.0),cexpo(a,2.0)))); }");
-const carccsch_gl_alt = new c_GSGLFunction("carccsch","vec2 carccsch(vec2 a) { return clog(cdiv(soma(vec2(1.0,0.0),csqrt(cadd(cexpo(a,2.0),1.0))),a)); }");
-const carcsech_gl_alt = new c_GSGLFunction("carcsech","vec2 carcsech(vec2 a) { return clog(cdiv(soma(vec2(1.0,0.0),csqrt(csub(cexpo(a,2.0),1.0))),a)); }");
-const carccoth_gl_alt = new c_GSGLFunction("carccoth","vec2 carccoth(vec2 a) { return cdiv(clog(cdiv(soma(vec2(1.0,0.0),a),soma(vec2(1.0,0.0),a))),2.0); }");
-const carcsec_gl_alt = new c_GSGLFunction("carcsec","vec2 carcsec(vec2 a) { vec2 resultado_arccsc = carccsc(a); return vec2(3.141592653589793 - resultado_arccsc.x, - resultado_arccsc.y); }");
-const carccot_gl_alt = new c_GSGLFunction("carccot","vec2 carccot(vec2 al) { float a = al.x; float b = al.y; float denominador = pow(a,2.0) + pow(b,2.0); float interiorLog1 = pow(a,2.0) / pow(denominador,2.0); float divisaoA = a/denominador; float divisaoB = b/denominador; return vec2(0.5 * (atan2(divisaoA, 1.0 + divisaoB) - atan2(-divisaoA, 1.0 - divisaoB)), 0.25 * (log(interiorLog1 + pow(1.0-divisaoB,2.0)) - log(interiorLog1 + pow(1.0+divisaoB,2.0))); }");
-const carccsc_gl_alt = new c_GSGLFunction("carccsc","vec2 carccsc(vec2 al) { float a = al.x; float b = al.y; float atan2 = atan; float denominador1 = pow(a,2.0) + pow(b,2.0); float realArg1 = (pow(b,2.0) - pow(a,2.0) ) / pow(denominador1,2.0) + 1.0; float imagArg1 = 2.0*a*b / pow(denominador1,2.0); float Arg1 = atan2(imagArg1,realArg1); float RaizQuarta = pow(pow(4.0*pow(a,2.0) * pow(b,2.0)/pow(denominador1 , 4.0) + pow(1.0-(pow(a,2.0) - pow(b,2.0))/pow(denominador1, 2.0),2.0), 0.25); float interiorTrig1 = 0.5 * Arg1; float realArgReal = b/(denominador1) + RaizQuarta * cos(interiorTrig1); float imagArgReal = a/denominador1 + RaizQuarta * sin(interiorTrig1); return vec2(atan(imagArgReal,realArgReal), -log(pow(imagArgReal,2.0) + pow(realArgReal,2.0)); }");
+const csum_gl_alt = new c_GSGLFunction("csum");
+const csub_gl_alt = new c_GSGLFunction("csub");
+const cmult_gl_alt = new c_GSGLFunction("cmult");
+const cdiv_gl_alt = new c_GSGLFunction("cdiv");
+const cexponencial_gl_alt = new c_GSGLFunction("cexpo");
+const csqrt_gl_alt = new c_GSGLFunction("csqrt");
+const clog_gl_alt = new c_GSGLFunction("clog");
+
+const csen_gl_alt = new c_GSGLFunction("csen");
+const ccos_gl_alt = new c_GSGLFunction("ccos");
+const ctan_gl_alt = new c_GSGLFunction("ctan");
+
+const csec_gl_alt = new c_GSGLFunction("csec");
+const ccsc_gl_alt = new c_GSGLFunction("ccsc");
+const ccot_gl_alt = new c_GSGLFunction("ccot");
+
+const csenh_gl_alt = new c_GSGLFunction("csenh");
+const ccosh_gl_alt = new c_GSGLFunction("ccosh");
+const ctanh_gl_alt = new c_GSGLFunction("ctanh");
+
+const ccsch_gl_alt = new c_GSGLFunction("ccsch");
+const csech_gl_alt = new c_GSGLFunction("csech");
+const ccoth_gl_alt = new c_GSGLFunction("ccoth");
+
+const carcsen_gl_alt = new c_GSGLFunction("carcsen");
+const carccos_gl_alt = new c_GSGLFunction("carccos");
+const carctan_gl_alt = new c_GSGLFunction("carctan");
+
+const carccsc_gl_alt = new c_GSGLFunction("carccsc");
+const carcsec_gl_alt = new c_GSGLFunction("carcsec");
+const carccot_gl_alt = new c_GSGLFunction("carccot");
+
+const carcsenh_gl_alt = new c_GSGLFunction("carcsenh");
+const carccosh_gl_alt = new c_GSGLFunction("carccosh");
+const carctanh_gl_alt = new c_GSGLFunction("carctanh");
+
+const carccsch_gl_alt = new c_GSGLFunction("carccsch");
+const carcsech_gl_alt = new c_GSGLFunction("carcsech");
+const carccoth_gl_alt = new c_GSGLFunction("carccoth");
+
+
 var operacoes_gl_alt = {
     "var":function(args)
     {
@@ -502,7 +510,7 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return cadd_gl_alt.runFunction(args[0](vars),args[1](vars))
+            return csum_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     }
     ,
@@ -610,21 +618,21 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return caracsin_gl_alt.runFunction(args[0](vars))
+            return carcsen_gl_alt.runFunction(args[0](vars))
         }
     },
     "arccos":function(args)//
     {
         return function(vars)
         {
-            return caraccos_gl_alt.runFunction(args[0](vars))
+            return carccos_gl_alt.runFunction(args[0](vars))
         }
     },
     "arctan":function(args)//
     {
         return function(vars)
         {
-            return caractan_gl_alt.runFunction(args[0](vars))
+            return carctan_gl_alt.runFunction(args[0](vars))
         }
     },
     "arccot":function(args)//
@@ -704,10 +712,14 @@ var operacoes_gl_alt = {
             return `vec2(${args[0](vars)}.y,0.0)`
         }
     },
+    "conj":function(args)
+    {
+        return function(vars)
+        {
+            return `vec2(${args[0](vars)}.x,-${args[0](vars)}.y)`
+        }
+    },
     
-
-
-
 }
 
 var operacoes_gl = {
