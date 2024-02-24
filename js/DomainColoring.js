@@ -160,8 +160,8 @@ function Domain_coloring(real, imag)
         let expoente = Math.log2(dist);
 
         let expoente_decimal = 0;
-        if (dist > 0){
-            expoente_decimal = (expoente - Math.floor(expoente) -1)*(-1);
+        if (dist > 0 ){
+            expoente_decimal = -(expoente - Math.floor(expoente) -1);
         }
         else{
             expoente_decimal = (expoente - Math.floor(expoente));
@@ -261,7 +261,7 @@ function Plotter(guppy){
 }
 function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
 {
-    
+    let continuo = tipo_grafico == 1;
     let vazio = funcoes_gl.size ===0;
     let funcoes = "";
     for (let value of funcoes_gl)
@@ -337,13 +337,27 @@ function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
         vec2 f = z; 
         float hue =  atan(f.y, f.x) / (2.0 * PI) ;
         float sat = 1.0;
-        float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
+        ${!continuo? `
+        float expoente = log2(length(f)); 
+        float expoente_decimal = 0.0;
+        if (length(f)>0.0) 
+        {
+            expoente_decimal = -(expoente - floor(expoente) - 1.0);
+        }
+        else 
+        {
+            expoente_decimal = expoente - floor(expoente);
+        }
+
+        float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) -0.1;
+` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
+`}
         if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
         {
             hue = 1.0;
             sat = 1.0;
             light = 1.0;
-        }
+        }        
         vec3 rgb = hsl2rgb(vec3(hue,sat,light));
         gl_FragColor = vec4(rgb, 1);
     }
