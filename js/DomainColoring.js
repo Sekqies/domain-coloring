@@ -208,8 +208,6 @@ function Plotter(guppy){
     f({z: {real: 1, imag: 1}});
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
     const f = guppy.func(operacoes);
-    const f_gl = guppy.func(operacoes_gl);
-    console.log(f_gl());
     console.log(f);
     console.log(f({z: {real:1,imag:1}}))
     const canvasContext2d = canvas.getContext("2d");
@@ -261,11 +259,12 @@ function Plotter(guppy){
     console.log("Imagem desenhada");
 
 }
-function writeFragmentShader(real,imag,width,height,funcoes_gl)
+function writeFragmentShader(funcao,width,height,funcoes_gl)
 {
+    let vazio = funcoes_gl.size ===0;
     let funcoes = "";
     for (let [key, value] of funcoes_gl) {
-        funcoes += value;
+        funcoes += value + '\n';
     }
     console.log(funcoes);
     return `
@@ -283,9 +282,7 @@ function writeFragmentShader(real,imag,width,height,funcoes_gl)
         float b = 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
         float x = a;
         float y = b;
-        float real = ${real};
-        float imag = ${imag};
-        vec2 z = vec2(real,imag);
+        vec2 z = ${vazio? "vec2(a,b)" : funcao};
         vec2 f = z; // f(z) = z
         float hue =  atan(f.y, f.x) / (2.0 * PI) ;
         float sat = 1.0;
@@ -296,7 +293,7 @@ function writeFragmentShader(real,imag,width,height,funcoes_gl)
     `
 }
 
-function PlotterGl(real,imag)
+function PlotterGl(funcao)
 {
     let start = performance.now();
     let canvas = document.getElementById("glCanvas");
@@ -310,7 +307,7 @@ function PlotterGl(real,imag)
         gl_Position = vec4(a_position, 0, 1);
     }
     `; 
-    var fragmentShaderSource = writeFragmentShader(real,imag,canvas.width,canvas.height,op);
+    var fragmentShaderSource = writeFragmentShader(funcao,canvas.width,canvas.height,mapa_func);
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
@@ -553,7 +550,8 @@ function init(){
     const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
     Plotter(guppy);
-    const result_gl = guppy.func(operacoes_gl)();
-    PlotterGl(result_gl.real,result_gl.imag);
+    const result_gl = guppy.func(operacoes_gl_alt)();
+    console.log(`Função a ser renderizada ${result_gl}`);
+    PlotterGl(result_gl);
 }
 

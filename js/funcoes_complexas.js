@@ -6,7 +6,7 @@ function isZero(z)
 
 
 //Operações ariméticas simples
-
+let mapa_func = new Map();
 function soma(a,b)
 {
     return {
@@ -435,6 +435,125 @@ function exponencial_gl(a,b)
         real: `${x} * cos(${y})`,
         imag: `${x} * sin(${y})`
     }
+}
+
+function soma_gl_alt(a,b)
+{
+    if (!mapa_func.has("soma")) 
+    {
+        mapa_func.set("soma",`vec2 soma(vec2 a, vec2 b) 
+        {
+            return vec2(a.x + b.x, a.y + b.y);
+        }`);
+    }
+    return `soma(${a},${b})`;
+
+}
+function subtrair_gl_alt(a,b)
+{
+    if (!mapa_func.has("subtrair")) 
+    {
+        mapa_func.set("subtrair",`vec2 subtrair(vec2 a, vec2 b) 
+        {
+            return vec2(a.x - b.x, a.y - b.y);
+        }`);
+    }
+    return `subtrair(${a},${b})`;
+}
+function multiplicar_gl_alt(a,b)
+{
+    if (!mapa_func.has("multiplicar"))
+    {
+        mapa_func.set("multiplicar",`vec2 multiplicar(vec2 a, vec2 b)
+        {
+            return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+        }`);
+    }
+    return `multiplicar(${a},${b})`;
+}
+function dividir_gl_alt(a,b)
+{
+    if (!mapa_func.has("dividir"))
+    {
+        mapa_func.set("dividir",`vec2 dividir(vec2 a, vec2 b)
+        {
+            float denominador = pow(b.x,2.0) + pow(b.y,2.0);
+            return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador);
+        }`);
+    }
+    return `dividir(${a},${b})`;
+}
+function exponencial_gl_alt(a,b)
+{   
+    const logmag = `(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)))`;   
+    const argumento = `atan(a.y,a.x)`;
+    const x = `exp(b.x * ${logmag} - b.y * ${argumento})`;
+    const y = `b.y * ${logmag} + b.x * ${argumento}`;
+    if (!mapa_func.has("cexpo")) 
+    {
+        mapa_func.set("cexpo",`vec2 cexpo(vec2 a, vec2 b) 
+        {
+            return vec2(${x} * cos(${y}), ${x} * sin(${y}));
+    }`);
+    }
+    return `cexpo(${a},${b})`;
+}
+var operacoes_gl_alt = {
+    "var":function(args)
+    {
+        return function(vars)
+        {
+            if (args[0] == 'z') return "vec2(a,b)";
+        }
+    
+    },
+    "val":function(args)
+    {
+        return function(vars)
+        {
+            return `vec2(${args[0].toString()}.0,0.0)`;
+        }
+    }
+    ,   
+    "+":function(args) //
+    {
+        return function(vars)
+        {
+            return soma_gl_alt(args[0](vars),args[1](vars))
+        }
+    }
+    ,
+    "-":function(args) //
+    {
+        return function(vars)
+        {
+            return subtrair_gl_alt(args[0](vars),args[1](vars))
+        }
+    }
+    ,
+    "*":function(args) //
+    {
+        return function(vars)
+        {
+            return multiplicar_gl_alt(args[0](vars),args[1](vars))
+        }
+    }
+    ,
+    "fraction":function(args) //
+    {
+        return function(vars)
+        {
+            return dividir_gl_alt(args[0](vars),args[1](vars))
+        }
+    },
+    "exponential":function(args)//
+    {
+        return function(vars)
+        {
+            return exponencial_gl_alt(args[0](vars),args[1](vars))
+        }
+    }
+
 }
 
 var operacoes_gl = {
