@@ -133,10 +133,8 @@ function getNumeroInteiro(x, y){
 function Domain_coloring(real, imag)
 {
     
-    //Checa se explodiu para o infinito.
-    if (real >= 9e+10 || real <= -9e+10 || imag >= 9e+10 || imag <= -9e+10){
-        return [255,255,255];
-    }
+    //Checa se explodiu para o infinito. 
+
 
     //Angulo
 
@@ -157,10 +155,11 @@ function Domain_coloring(real, imag)
 
     if (tipo_grafico == 2){
         //Modo 2 (com descontinuidade):
+        dist = Math.sqrt(real**2 + imag**2);
         let expoente = Math.log2(dist);
 
         let expoente_decimal = 0;
-        if (dist > 0 ){
+        if (dist > 0  ){
             expoente_decimal = -(expoente - Math.floor(expoente) -1);
         }
         else{
@@ -170,6 +169,10 @@ function Domain_coloring(real, imag)
         modulo = 1/((expoente_decimal**0.2) +1)-0.1;
     }
     else{
+        if (real >= 9e+10 || real <= -9e+10 || imag >= 9e+10 || imag <= -9e+10){
+            return [255,255,255];
+        }
+        
         //Modo 1 (sem descontinuidade):
         //modulo = (2/Math.PI) * Math.atan(dist);
         let a = 0.4;
@@ -351,13 +354,14 @@ function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
 
         float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) -0.1;
 ` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
-`}
         if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
         {
             hue = 1.0;
             sat = 1.0;
             light = 1.0;
         }        
+`}
+
         vec3 rgb = hsl2rgb(vec3(hue,sat,light));
         gl_FragColor = vec4(rgb, 1);
     }
