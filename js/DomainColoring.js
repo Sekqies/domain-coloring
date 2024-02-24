@@ -171,7 +171,7 @@ function Domain_coloring(real, imag)
     }
     else{
         //Modo 1 (sem descontinuidade):
-        modulo = (2/Math.PI) * Math.atan(dist);
+        //modulo = (2/Math.PI) * Math.atan(dist);
         let a = 0.4;
         modulo = (dist**a)/((dist**a)+1);
     }
@@ -259,8 +259,9 @@ function Plotter(guppy){
     console.log("Imagem desenhada");
 
 }
-function writeFragmentShader(funcao,width,height,funcoes_gl)
+function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
 {
+    
     let vazio = funcoes_gl.size ===0;
     let funcoes = "";
     for (let [key, value] of funcoes_gl) {
@@ -268,22 +269,37 @@ function writeFragmentShader(funcao,width,height,funcoes_gl)
     }
     console.log(funcoes);
     return `
+    #ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float;
+    #else
     precision mediump float;
+    #endif
     const float PI = 3.141592653589793238462643383279502884197;
+    float cosh(float x)
+    {
+        return (exp(x) + exp(-x))/2.0;
+    }
+    float sinh(float x)
+    {
+        return (exp(x) - exp(-x))/2.0;
+    }
+    float senh(float x)
+    {
+        return sinh(x);
+    }
     ${funcoes}
     vec2 canvasSize = vec2(${width},${height});
     vec3 hsl2rgb(vec3 hsl) {
-        vec3 rgb = clamp(abs(mod(hsl.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
-        rgb = rgb * rgb * (3.0 - 2.0 * rgb);
-        return hsl.z + hsl.y * (rgb - 0.5) * (1.0 - abs(2.0 * hsl.z - 1.0));
+        vec3 rgb = clamp( abs(mod(hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
+        return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
     void main() {
-        float a = 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5);
-        float b = 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
+        float a = ${inteiros}.0 * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5);
+        float b = ${inteiros}.0 * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
         float x = a;
         float y = b;
         vec2 z = ${vazio? "vec2(a,b)" : funcao};
-        vec2 f = z; // f(z) = z
+        vec2 f = z; 
         float hue =  atan(f.y, f.x) / (2.0 * PI) ;
         float sat = 1.0;
         float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
@@ -293,12 +309,13 @@ function writeFragmentShader(funcao,width,height,funcoes_gl)
     `
 }
 
-function PlotterGl(funcao)
+function PlotterGl(funcao,tamanhoCanvas)
 {
     let start = performance.now();
     let canvas = document.getElementById("glCanvas");
     var gl = canvas.getContext("webgl");
-    
+    canvas.width = tamanhoCanvas;
+    canvas.height = tamanhoCanvas;
     var vertexShaderSource = `
     attribute vec2 a_position;
 
@@ -307,7 +324,7 @@ function PlotterGl(funcao)
         gl_Position = vec4(a_position, 0, 1);
     }
     `; 
-    var fragmentShaderSource = writeFragmentShader(funcao,canvas.width,canvas.height,mapa_func);
+    var fragmentShaderSource = writeFragmentShader(funcao,canvas.width,canvas.height,mapa_func,qtndInteiros);
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
@@ -336,8 +353,6 @@ function PlotterGl(funcao)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(positionAttributeLocation);
     gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-    /*var resolutionUniformLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
-    gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);*/
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -552,6 +567,6 @@ function init(){
     Plotter(guppy);
     const result_gl = guppy.func(operacoes_gl_alt)();
     console.log(`Função a ser renderizada ${result_gl}`);
-    PlotterGl(result_gl);
+    PlotterGl(result_gl,tamanhoCanvas);
 }
 

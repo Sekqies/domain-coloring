@@ -437,67 +437,38 @@ function exponencial_gl(a,b)
     }
 }
 
-function soma_gl_alt(a,b)
+class c_GSGLFunction
 {
-    if (!mapa_func.has("soma")) 
+    constructor(name,declaration)
     {
-        mapa_func.set("soma",`vec2 soma(vec2 a, vec2 b) 
-        {
-            return vec2(a.x + b.x, a.y + b.y);
-        }`);
+        this.name = name;
+        this.declaration = declaration;
     }
-    return `soma(${a},${b})`;
+    runFunction(...params){ 
+        if (!mapa_func.has(this.name)) 
+        {
+            mapa_func.set(this.name,this.declaration);
+        }
+        return `${this.name}(${params.join(',')})`;
+    }
+}
 
-}
-function subtrair_gl_alt(a,b)
-{
-    if (!mapa_func.has("subtrair")) 
-    {
-        mapa_func.set("subtrair",`vec2 subtrair(vec2 a, vec2 b) 
-        {
-            return vec2(a.x - b.x, a.y - b.y);
-        }`);
-    }
-    return `subtrair(${a},${b})`;
-}
-function multiplicar_gl_alt(a,b)
-{
-    if (!mapa_func.has("multiplicar"))
-    {
-        mapa_func.set("multiplicar",`vec2 multiplicar(vec2 a, vec2 b)
-        {
-            return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
-        }`);
-    }
-    return `multiplicar(${a},${b})`;
-}
-function dividir_gl_alt(a,b)
-{
-    if (!mapa_func.has("dividir"))
-    {
-        mapa_func.set("dividir",`vec2 dividir(vec2 a, vec2 b)
-        {
-            float denominador = pow(b.x,2.0) + pow(b.y,2.0);
-            return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador);
-        }`);
-    }
-    return `dividir(${a},${b})`;
-}
-function exponencial_gl_alt(a,b)
-{   
-    const logmag = `(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)))`;   
-    const argumento = `atan(a.y,a.x)`;
-    const x = `exp(b.x * ${logmag} - b.y * ${argumento})`;
-    const y = `b.y * ${logmag} + b.x * ${argumento}`;
-    if (!mapa_func.has("cexpo")) 
-    {
-        mapa_func.set("cexpo",`vec2 cexpo(vec2 a, vec2 b) 
-        {
-            return vec2(${x} * cos(${y}), ${x} * sin(${y}));
-    }`);
-    }
-    return `cexpo(${a},${b})`;
-}
+const csoma_gl_alt = new c_GSGLFunction("csoma","vec2 csoma(vec2 a, vec2 b) { return vec2(a.x + b.x, a.y + b.y); }");
+const csubtrair_gl_alt = new c_GSGLFunction("csubtrair","vec2 csubtrair(vec2 a, vec2 b) { return vec2(a.x - b.x, a.y - b.y); }");
+const cmultiplicar_gl_alt = new c_GSGLFunction("cmultiplicar","vec2 cmultiplicar(vec2 a, vec2 b) { return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }");
+const cdividir_gl_alt = new c_GSGLFunction("cdividir","vec2 cdividir(vec2 a, vec2 b) { float denominador = pow(b.x,2.0) + pow(b.y,2.0); return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador); }");
+const cexponencial_gl_alt = new c_GSGLFunction("cexpo","vec2 cexpo(vec2 a, vec2 b) { float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento)); }");
+const clog_gl_alt = new c_GSGLFunction("clog","vec2 clog(vec2 a) { return vec2(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)), atan(a.y,a.x)); }");
+const csen_gl_alt = new c_GSGLFunction("csen","vec2 csen(vec2 a) { return vec2(sin(a.x)*cosh(a.y), cos(a.x)*sinh(a.y)); }");
+const ccos_gl_alt = new c_GSGLFunction("ccos","vec2 ccos(vec2 a) { return vec2(cos(a.x)*cosh(a.y), -sin(a.x) * sinh(a.y)); }");
+const ctan_gl_alt = new c_GSGLFunction("ctan","vec2 ctan(vec2 a) { float denominador = cos(2.0 * a.x) + cosh(a.y * 2.0); return vec2(sin(2.0 * a.x)/denominador, senh(a.y * 2.0)/denominador); }");
+const ccot_gl_alt = new c_GSGLFunction("ccot","vec2 ccot(vec2 a) { float denominador = cos(2.0 * a.x) - cosh(a.y * 2.0); return vec2(-sin(2.0 * a.x)/denominador, senh(a.y * 2.0)/denominador); }");
+const ccsc_gl_alt = new c_GSGLFunction("ccsc","vec2 ccsc(vec2 a) { float denominador = cos(2.0 * a.x) - cosh(a.y * 2.0); return vec2(-2.0 * sin(a.x)*cosh(a.y)/denominador, 2.0 * cos(a.x)*senh(a.y)/denominador); }");
+const csec_gl_alt = new c_GSGLFunction("csec","vec2 csec(vec2 a) { float denominador = cos(2.0 * a.x) + cosh(a.y * 2.0); return vec2(2.0 * cos(a.x) * cosh(a.y)/denominador, 2.0 * sin(a.x) * senh(a.y)/denominador); }");
+const csenh_gl_alt = new c_GSGLFunction("csenh","vec2 csenh(vec2 a) { return vec2(sinh(a.x)*cos(a.y), cosh(a.x)*sin(a.y)); }");
+const ccosh_gl_alt = new c_GSGLFunction("ccosh","vec2 ccosh(vec2 a) { return vec2(cosh(a.x)*cos(a.y), senh(a.x)*sin(a.y)); }");
+const ctanh_gl_alt = new c_GSGLFunction("ctanh","vec2 ctanh(vec2 a) { float denominador = cosh(2.0 * a.x) + cos(a.y * 2.0); return vec2(senh(2.0 * a.x)/denominador, sin(2.0 * a.y)/denominador); }");
+
 var operacoes_gl_alt = {
     "var":function(args)
     {
@@ -519,7 +490,7 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return soma_gl_alt(args[0](vars),args[1](vars))
+            return csoma_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     }
     ,
@@ -527,7 +498,7 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return subtrair_gl_alt(args[0](vars),args[1](vars))
+            return csubtrair_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     }
     ,
@@ -535,7 +506,7 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return multiplicar_gl_alt(args[0](vars),args[1](vars))
+            return cmultiplicar_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     }
     ,
@@ -543,16 +514,87 @@ var operacoes_gl_alt = {
     {
         return function(vars)
         {
-            return dividir_gl_alt(args[0](vars),args[1](vars))
+            return cdividir_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     },
     "exponential":function(args)//
     {
         return function(vars)
         {
-            return exponencial_gl_alt(args[0](vars),args[1](vars))
+            return cexponencial_gl_alt.runFunction(args[0](vars),args[1](vars))
+        }
+    },
+    "log":function(args)//
+    {
+        return function(vars)
+        {
+            return clog_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "sin":function(args)//
+    {
+        return function(vars)
+        {
+            return csen_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "cos":function(args)//
+    {
+        return function(vars)
+        {
+            return ccos_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "tan":function(args)//
+    {
+        return function(vars)
+        {
+            return ctan_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "cot":function(args)//
+    {
+        return function(vars)
+        {
+            return ccot_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "csc":function(args)//
+    {
+        return function(vars)
+        {
+            return ccsc_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "sec":function(args)//
+    {
+        return function(vars)
+        {
+            return csec_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "senh":function(args)//
+    {
+        return function(vars)
+        {
+            return csenh_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "cosh":function(args)//
+    {
+        return function(vars)
+        {
+            return ccosh_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "tanh":function(args)//
+    {
+        return function(vars)
+        {
+            return ctanh_gl_alt.runFunction(args[0](vars))
         }
     }
+
 
 }
 
