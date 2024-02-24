@@ -276,6 +276,9 @@ function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
     precision mediump float;
     #endif
     const float PI = 3.141592653589793238462643383279502884197169393751;
+
+
+
     float cosh(float x)
     {
         return (exp(x) + exp(-x))/2.0;
@@ -335,6 +338,12 @@ function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
         float hue =  atan(f.y, f.x) / (2.0 * PI) ;
         float sat = 1.0;
         float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
+        if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
+        {
+            hue = 1.0;
+            sat = 1.0;
+            light = 1.0;
+        }
         vec3 rgb = hsl2rgb(vec3(hue,sat,light));
         gl_FragColor = vec4(rgb, 1);
     }
