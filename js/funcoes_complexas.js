@@ -439,7 +439,7 @@ function exponencial_gl(a,b)
 
 class c_GSGLFunction
 {
-    constructor(name,declaration)
+    constructor(name)
     {
         this.name = name;
     }
@@ -544,6 +544,13 @@ var operacoes_gl_alt = {
             return cexponencial_gl_alt.runFunction(args[0](vars),args[1](vars))
         }
     },
+    "sqrt":function(args)//
+    {
+        return function(vars)
+        {
+            return csqrt_gl_alt.runFunction(args[0](vars))
+        }
+    },
     "log":function(args)//
     {
         return function(vars)
@@ -584,6 +591,27 @@ var operacoes_gl_alt = {
         return function(vars)
         {
             return ccsc_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "csch":function(args)//
+    {
+        return function(vars)
+        {
+            return ccsch_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "sech":function(args)//
+    {
+        return function(vars)
+        {
+            return csech_gl_alt.runFunction(args[0](vars))
+        }
+    },
+    "coth":function(args)//
+    {
+        return function(vars)
+        {
+            return ccoth_gl_alt.runFunction(args[0](vars))
         }
     },
     "sec":function(args)//
