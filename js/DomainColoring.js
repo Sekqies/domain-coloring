@@ -316,9 +316,9 @@ function writeFragmentShader(funcao, width, height, funcoes_gl, inteiros) {
     vec2 carcsen(vec2 a) { return cmult(vec2(0.0,1.0), clog(csub(csqrt(csub(vec2(1.0,0.0), cmult(a, a))), cmult(a, vec2(0.0,1.0))))); }
     vec2 carccos(vec2 a) { return csum(vec2(PI/2.0,0.0), -carcsen(a)); }
     vec2 carctan(vec2 a) { return cmult(vec2(0.0,-0.5), clog(cdiv(csum(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a)), csub(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a))))); }
-    vec2 carccsc(vec2 a) { return cdiv(vec2(1.0,0.0),carcsen(a)); }
-    vec2 carcsec(vec2 a) { return cdiv(vec2(1.0,0.0),carccos(a)); }
-    vec2 carccot(vec2 a) { return cdiv(vec2(1.0,0.0),carctan(a)); }
+    vec2 carccsc(vec2 a) { return carcsen(cdiv(vec2(1.0, 0.0), a)); }
+    vec2 carcsec(vec2 a) { return carccos(cdiv(vec2(1.0, 0.0), a)); }
+    vec2 carccot(vec2 a) { return carctan(cdiv(vec2(1.0, 0.0), a)); }
     vec2 carcsenh(vec2 a) { return clog(csum(a, csqrt(csum(cmult(a, a), vec2(1.0,0.0))))); }
     vec2 carccosh(vec2 a) { return clog(csum(a,sqrt(csub(cmult(a,a),vec2(1.0,0.0))))); }
     vec2 carctanh(vec2 a) { return cmult(vec2(0.5,0.0), clog(cdiv(csum(vec2(1.0,0.0), a), csub(vec2(1.0,0.0), a)))); }
