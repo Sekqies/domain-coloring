@@ -155,18 +155,18 @@ function Domain_coloring(real, imag)
 
     if (tipo_grafico == 2){
         //Modo 2 (com descontinuidade):
-        dist = Math.sqrt(real**2 + imag**2);
+        dist = dist == "Infinity"? 10e50 : dist ;
         let expoente = Math.log2(dist);
 
         let expoente_decimal = 0;
-        if (dist > 0  ){
+        if (dist != 0  ){
             expoente_decimal = -(expoente - Math.floor(expoente) -1);
         }
         else{
-            expoente_decimal = (expoente - Math.floor(expoente));
+            expoente_decimal = 0;
         }
-        
         modulo = 1/((expoente_decimal**0.2) +1)-0.1;
+        modulo = modulo % 1;
     }
     else{
         if (real >= 9e+10 || real <= -9e+10 || imag >= 9e+10 || imag <= -9e+10){
@@ -338,20 +338,20 @@ function writeFragmentShader(funcao,width,height,funcoes_gl,inteiros)
         float y = b;
         vec2 z = ${vazio? "vec2(a,b)" : funcao};
         vec2 f = z; 
-        float hue =  atan(f.y, f.x) / (2.0 * PI) ;
+        float hue =  atan(f.y, f.x) / (2.0 * PI);
         float sat = 1.0;
         ${!continuo? `
-        float expoente = log2(length(f)); 
-        float expoente_decimal = 0.0;
-        if (length(f)>0.0) 
+        float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10? 9e10 : length(f); 
+        float logaritmo = log2(dist); 
+        float expoente_decimal;
+        if (length(f)!=0.0) 
         {
-            expoente_decimal = -(expoente - floor(expoente) - 1.0);
+            expoente_decimal =  -logaritmo + 1.0 + floor(logaritmo);
         }
         else 
         {
-            expoente_decimal = expoente - floor(expoente);
+            expoente_decimal = 0.0;
         }
-
         float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) -0.1;
 ` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
         if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
