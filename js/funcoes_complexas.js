@@ -495,6 +495,14 @@ var operacoes_gl_alt = {
         return function(vars)
         {
             if (args[0] == 'z') return "vec2(a,b)";
+            if (args[0] == 'i') return "vec2(0.0,1.0)";
+            if (args[0] == 'e') return "vec2(2.718281828459045,0.0)";
+            if (args[0] == 'pi') return "vec2(3.141592653589793,0.0)";
+            if (args[0] == 'x') return "vec2(a,0.0)";
+            if (args[0] == 'y') return "vec2(b,0.0)";
+            if (args[0] == 'a') return "vec2(a,0.0)";
+            if (args[0] == 'b') return "vec2(b,0.0)";
+
         }
     
     },
@@ -747,6 +755,13 @@ var operacoes_gl_alt = {
             return `vec2(${args[0](vars)}.x,-${args[0](vars)}.y)`
         }
     },
+    "arg":function(args)
+    {
+        return function(vars)
+        {
+            return `vec2(atan(${args[0](vars)}.y,${args[0](vars)}.x),0)`
+        }
+    }
     
 }
 

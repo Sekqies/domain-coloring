@@ -157,7 +157,7 @@ function Domain_coloring(real, imag) {
         dist = dist == "Infinity" ? 10e50 : dist;
         let expoente = Math.log2(dist);
 
-        //Isso faz com que numeros menores que aprox 1/2 fiquem sem desconitnuidade, porem é imperceptivel.
+        //Isso faz com que numeros menores que aprox 1/2 fiquem sem desconitnuidade, porem é inperceptivel.
         let expoente_decimal = 1;
 
         if (dist != 0) {
@@ -341,14 +341,15 @@ function writeFragmentShader(funcao, width, height, funcoes_gl, inteiros) {
         float hue =  atan(f.y, f.x) / (2.0 * PI);
         float sat = 1.0;
         ${!continuo ? `
-        float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e10 : length(f); 
-        float logaritmo = log2(dist); 
-        float expoente_decimal = 0.0;
+        float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e+10 : length(f); 
+        float logaritmo = mod(log2(dist), 1.0); 
+        float expoente_decimal = 1.0;
         if (length(f) != 0.0) 
         {
             expoente_decimal =  -(logaritmo - floor(logaritmo) - 1.0);
         }
-        float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) -0.1;
+        float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) - 0.1;
+        light = mod(light,1.0);
 
 ` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
         if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
