@@ -343,7 +343,7 @@ function writeFragmentShader(funcao, width, height, funcoes_gl, inteiros) {
         ${!continuo ? `
         float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e10 : length(f); 
         float logaritmo = log2(dist); 
-        float expoente_decimal = 1.0;
+        float expoente_decimal = 0.0;
         if (length(f) != 0.0) 
         {
             expoente_decimal =  -(logaritmo - floor(logaritmo) - 1.0);
