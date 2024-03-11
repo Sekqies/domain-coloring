@@ -42,14 +42,13 @@ function init() {
     PlotterGl(result_gl, tamanhoCanvas, result_gl);
 }
 
-function load()
-{
+function load() {
     canvas = document.getElementById("domainColorCanvas");
     canvasGL = document.getElementById("glCanvas");
     loadGuppy();
     init();
-    loadHover(funcaoHover,"domainColorCanvas");
-    loadHover(funcaoHover,"glCanvas");
+    loadHover(funcaoHover, "domainColorCanvas");
+    loadHover(funcaoHover, "glCanvas");
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
@@ -61,13 +60,13 @@ function load()
     const arrow = document.getElementById('arrow');
     const form = document.getElementById('form');
     const grafico = document.getElementById('grafico');
-    
+
     arrow.addEventListener('click', function () {
         form.classList.toggle('active');
         arrow.classList.toggle('active');
         grafico.classList.toggle('active');
     });
-    
+
     const checkbox = document.querySelector('.inputcheckbox > div');
     const gsize = document.getElementById('gsize');
     checkbox.addEventListener('click', function () {
@@ -77,9 +76,9 @@ function load()
         graficoTelainteira = !graficoTelainteira;
         grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
     });
-    
+
 }
 
 
 
-export {load};
+export { load };

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,10 @@
     <script src="js/global.js"></script>
     <script type="module" src="js/pages/index.js"></script>
     <script type="module" src="js/setup/setup.js"></script>
-    
-    <title>Funções complexas</title>  
+
+    <title>Funções complexas</title>
 </head>
+
 <body>
     <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
     <section>
@@ -21,13 +23,14 @@
             <img src="assets/arrow.svg" alt="arrow" id="arrow" class="active">
             <div>
                 <div id="guppy1"></div>
-                <p>Digite uma função complexa e pressione 'enter'. Para uma lista de simbolos aceitos clique <a href="Docs.html">aqui</a></p>
+                <p>Digite uma função complexa e pressione 'enter'. Para uma lista de simbolos aceitos clique <a
+                        href="Docs.html">aqui</a></p>
             </div>
 
         </div>
         <div id="opcoes">
             <form id="form" class="active">
-                <div id="options"> 
+                <div id="options">
                     <div class="tipo">
                         <p>Tipo do Gráfico: </p>
                         <div class="active">
@@ -39,10 +42,10 @@
                             <label for="descontinuo">Descontínuo</label>
                         </div>
                     </div>
-                    
+
                     <div class="inputcheckbox">
                         <div></div>
-                        <p>Grafico ocupa a tela inteira</p> 
+                        <p>Grafico ocupa a tela inteira</p>
                     </div>
 
                     <div class="funcao">
@@ -61,19 +64,28 @@
                 <div id="submit">
                     <input type="button" value="Desenhar" onclick="init()">
                     <input type="button" value="Baixar o gráfico" onclick="download()">
-                </div>  
+                </div>
             </form>
 
-            
+
         </div>
-        <div id="grafico" class="active">
-            <canvas id="domainColorCanvas" width="600" height="600"></canvas>
-            <canvas id="glCanvas" width="600" height="600"></canvas>
-            <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
+        <div id="graficos-complexos">
+
+            <div id="grafico">
+                <canvas id="domainColorCanvas" width="600" height="600"></canvas>
+                <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
+            </div>
+
+            <div id="grafico">
+                <canvas id="glCanvas" width="600" height="600"></canvas>
+                <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
+            </div>
         </div>
-        
+
+
     </section>
 </body>
+
 </html>
 
 <!-- Creditos para: The Big Int (Youtube) -->

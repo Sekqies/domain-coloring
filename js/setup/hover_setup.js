@@ -2,20 +2,18 @@ import { getNumeroInteiro } from '/js/engine/color.js';
 
 function loadHover(funcaoHover, nomeStringCanvas) {
     let nomeCanvas = document.getElementById(nomeStringCanvas);
-    descricaoFuncao = document.getElementById('descricaoFuncao');
+    let descricaoFuncao = nomeCanvas.parentElement.querySelector('p');
+    console.log(funcaoHover);
+    //Usar as variaveis abaixo caso deseje tirar a linha de white-space: nowrap, e colocar um padidng: 250px ao invez.
+    //let nomeCanvasContainerStyle = window.getComputedStyle(nomeCanvas.parentElement);
+    //let nomeCanvasContainerStylePaddingLeft = Number(nomeCanvasContainerStyle.getPropertyValue('padding-left').split('px')[0]);
     nomeCanvas.addEventListener('mousemove', function (event) {
         const x = event.offsetX;
         const y = event.offsetY;
-        console.log(x, y);
+        //console.log(x, y);
 
-        if (nomeStringCanvas == "glCanvas") {
-            descricaoFuncao.style.top = y + 'px';
-            descricaoFuncao.style.left = x + nomeCanvas.offsetWidth + 80 + 'px';
-        }
-        else {
-            descricaoFuncao.style.top = y + 'px';
-            descricaoFuncao.style.left = x + 90 + 'px';
-        }
+        descricaoFuncao.style.top = y + 'px';
+        descricaoFuncao.style.left = x + 'px';
 
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];

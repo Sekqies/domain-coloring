@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Jaldi&display=swap');
 
-:root{
+:root {
     font-family: 'Jaldi', sans-serif;
     font-size: 25px;
     scroll-behavior: smooth;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
 }
@@ -18,38 +18,48 @@ body {
     flex-direction: column;
     align-items: center;
 }
-#grafico{
+
+#grafico {
     position: relative;
-    margin-top: 12vh;
-    padding: 50px 100px;
-    transition: 0.3s;
-}
-#grafico.active{
-    margin-left: 500px;
+
+    /*para o JS compreender */
+
+    padding-bottom: 50px;
+    padding-top: 50px;
     transition: 0.3s;
 }
 
-a{
+#graficos-complexos {
+    margin-top: 12vh;
+    display: flex;
+    gap: 50px;
+    margin-left: 500px;
+}
+
+a {
     color: black;
 }
-a:hover{
+
+a:hover {
     cursor: pointer;
     color: rgb(0, 0, 133);
 }
 
-#grafico:has(canvas:hover) > p{
+#grafico:has(canvas:hover)>p {
     opacity: 1;
     scale: 1;
     transition: opacity, scale 0.3s;
 }
-#grafico canvas{
+
+#grafico canvas {
     border: 3px solid black;
     border-radius: 10px;
     aspect-ratio: 1;
 }
-#grafico p{
+
+#grafico p {
     position: absolute;
-    top: 50%; 
+    top: 50%;
     font-family: 'KaTeX_Math';
     z-index: 2;
     background-color: rgba(255, 255, 255, 0.5);
@@ -60,19 +70,23 @@ a:hover{
     opacity: 0;
     scale: 0.5;
     transition: 0.3s;
+    white-space: nowrap;
 }
-section{
+
+section {
     width: 100%;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     gap: 50px;
 }
-form.active{
+
+form.active {
     transform: translateX(0);
     transition: 0.3s;
 }
-form{
+
+form {
     transition: 0.3s;
     transform: translateX(-100%);
 
@@ -88,12 +102,13 @@ form{
     height: fit-content;
     font-size: 1rem;
 }
-#opcoes > h1{
+
+#opcoes>h1 {
     width: 100%;
     text-align: center;
 }
 
-#guppyfunction{
+#guppyfunction {
     position: fixed;
     display: flex;
     justify-content: center;
@@ -106,12 +121,14 @@ form{
     background-color: white;
     border: 1px solid black;
 }
-#guppyfunction > div{
+
+#guppyfunction>div {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
-#guppyfunction img{
+
+#guppyfunction img {
     transition: 0.3s;
     width: 50px;
     height: 50px;
@@ -119,29 +136,33 @@ form{
     rotate: 180deg;
 }
 
-#guppyfunction img.active{
+#guppyfunction img.active {
     rotate: 0deg;
     transition: 0.3s;
 }
 
-#guppyfunction p{
+#guppyfunction p {
     font-size: 15px;
 }
-#guppy1{
+
+#guppy1 {
     flex: 1;
 }
-.funcao{
+
+.funcao {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-.funcao p{
+
+.funcao p {
     font-size: 1.2rem;
     font-weight: 100;
     color: rgb(82, 82, 82);
     word-break: break-all;
 }
-.funcao input{
+
+.funcao input {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid rgb(82, 82, 82);
@@ -149,12 +170,13 @@ form{
     font-weight: 100;
     color: rgb(82, 82, 82);
 }
-.funcao.disabled{
+
+.funcao.disabled {
     opacity: 50%;
 }
 
 
-#options{
+#options {
 
     padding: 15px;
     border: 1px solid rgb(82, 82, 82);
@@ -164,29 +186,33 @@ form{
     gap: 10px;
     margin-top: calc(12vh + 20px);
 }
-#options > .tipo{
+
+#options>.tipo {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-#options > .tipo > div{
+
+#options>.tipo>div {
     display: flex;
     gap: 3px;
     padding: 3px 8px;
     border-radius: 5px;
 }
-#options > .tipo > div.active{
+
+#options>.tipo>div.active {
     background-color: rgb(181, 249, 181);
 }
 
-#options .funcao p{
+#options .funcao p {
     font-size: 1rem !important;
 }
-#options .funcao input{
+
+#options .funcao input {
     font-size: 0.8rem !important;
 }
 
-#submit input{
+#submit input {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid rgb(82, 82, 82);
@@ -199,31 +225,33 @@ form{
     width: 100%;
 }
 
-.funcao h2{
+.funcao h2 {
     font-size: 0.8rem;
     font-weight: 100;
     color: red;
 }
 
-#submit input:hover{
+#submit input:hover {
     background-color: rgb(82, 82, 82);
     color: white;
 }
 
-#numeroreal{
+#numeroreal {
     display: flex;
     align-items: center;
     gap: 20px;
     justify-content: center;
 }
-#numeroreal #checkbox{
+
+#numeroreal #checkbox {
     height: 20px;
     width: 20px;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
 }
-#numeroreal #checkbox.active{
+
+#numeroreal #checkbox.active {
     background-color: rgb(181, 249, 181);
 }
 
@@ -239,9 +267,10 @@ form{
     box-shadow: 1px 1px 1px 0 lightgray inset;
     cursor: text;
     background-color: #ffffff;
-    color:#000;
-    position:relative;
+    color: #000;
+    position: relative;
 }
+
 .katex .cursor {
     border-left: 1px solid black !important;
     width: 0px !important;
@@ -256,8 +285,8 @@ form{
     box-shadow: 1px 1px 1px 0 lightgray inset;
     cursor: text;
     background-color: #fafafa;
-    color:#000;
-    position:relative;
+    color: #000;
+    position: relative;
 }
 
 .guppy_text_current {
@@ -265,8 +294,8 @@ form{
 }
 
 .guppy_active .main_cursor {
-  animation: blink-animation 1s steps(2, start) infinite;
-  -webkit-animation: blink-animation 1s steps(2, start) infinite;
+    animation: blink-animation 1s steps(2, start) infinite;
+    -webkit-animation: blink-animation 1s steps(2, start) infinite;
 }
 
 .guppy_active .guppy_buttons {
@@ -278,106 +307,118 @@ form{
 }
 
 
-.guppy_buttons div.settings{
-    background:url('./icons/settings.png') center no-repeat;
+.guppy_buttons div.settings {
+    background: url('./icons/settings.png') center no-repeat;
 }
-.guppy_buttons div.keyboard{
-    background:url('./icons/keyboard.png') center no-repeat;
+
+.guppy_buttons div.keyboard {
+    background: url('./icons/keyboard.png') center no-repeat;
 }
-.guppy_buttons div.help{
-    background:url('./icons/help.png') center no-repeat;
+
+.guppy_buttons div.help {
+    background: url('./icons/help.png') center no-repeat;
 }
-.guppy_buttons div.symbols{
-    background:url('./icons/symbols.png') center no-repeat;
+
+.guppy_buttons div.symbols {
+    background: url('./icons/symbols.png') center no-repeat;
 }
 
 .guppy_buttons {
-    position:absolute;
-    bottom:0;
-    right:0;
-    padding:0 3px 3px 0;
-    width:100%;
-    text-align:right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 3px 3px 0;
+    width: 100%;
+    text-align: right;
 }
 
-.guppy_buttons div.guppy-button{
+.guppy_buttons div.guppy-button {
     background-size: 12px 12px;
-    cursor:pointer;
-    height:16px;
-    width:16px;
-    padding:3px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    padding: 3px;
     opacity: 0.5;
     display: inline-block;
 }
 
-.guppy_buttons img:hover{
+.guppy_buttons img:hover {
     opacity: 1;
 }
 
 @keyframes blink-animation {
-  to { visibility: hidden; }
+    to {
+        visibility: hidden;
+    }
 }
 
 @-webkit-keyframes blink-animation {
-  to { visibility: hidden; }
+    to {
+        visibility: hidden;
+    }
 }
 
-.inputcheckbox{
+.inputcheckbox {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px;
-  }
-  .inputcheckbox > div{
+}
+
+.inputcheckbox>div {
     width: 20px;
     height: 20px;
     border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
     transition: 0.1s;
-  }
-  
-  .inputcheckbox > div.active{
+}
+
+.inputcheckbox>div.active {
     background-color: #b5f9b5;
     transition: 0.1s;
-  }
+}
 
 
-  #docs{
+#docs {
     flex-direction: column;
     padding: 50px;
     box-sizing: border-box;
     gap: 10px;
-  }
-  #docs > h1{
+}
+
+#docs>h1 {
     width: 100%;
     text-align: center;
-  }
+}
 
-  #funcoesaceitas{
+#funcoesaceitas {
     padding: 30px;
     border: 1px solid black;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-  }
-  #funcoesaceitas > div{
+}
+
+#funcoesaceitas>div {
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
-  }
-  #funcoesaceitas h4{
+}
+
+#funcoesaceitas h4 {
     font-weight: 400;
     font-size: 30px;
-  }
-  #funcoesaceitas .funcgrid{
+}
+
+#funcoesaceitas .funcgrid {
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 10px;
-  }
+}
 
-  #voltaraotopo{
+#voltaraotopo {
     position: fixed;
     bottom: 40px;
     right: 40px;
@@ -394,14 +435,14 @@ form{
     font-size: 50px;
     transition: 0.2s;
     opacity: 0;
-  }
+}
 
-  #voltaraotopo:hover{
+#voltaraotopo:hover {
     cursor: pointer;
     transform: translateY(-5px);
     transition: 0.2s;
-  }
+}
 
-  #voltaraotopo p{
+#voltaraotopo p {
     transform: translateY(8px);
-  }
+}
