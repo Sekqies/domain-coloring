@@ -1,4 +1,5 @@
 import { HSLtoRGB, getNumeroInteiro} from './color.js';
+import { operacoes } from './funcoes_complexas.js';
 //Receber um ponto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
 function Domain_coloring(real, imag) {
@@ -138,13 +139,5 @@ function Plotter(guppy) {
 
 }
 
-document.addEventListener('keyup', function (event) {
-    if (event.key == "Enter") {
-        console.log(guppy.engine.get_content("ast"));
-        console.log(guppy.func(operacoes));
-        console.log(guppy.func(operacoes)({ 'z': { real: 1, imag: 1 } }));
-        init();
-    }
-});
 
-export { Plotter } from 'js/engine/plotter.js';
+export { Plotter, operacoes };

@@ -1,4 +1,5 @@
-import { writeFragmentShader } from "./shaders";
+import { writeFragmentShader } from "./shaders.js";
+import { operacoes_gl } from "./funcoes_complexas_gl.js";
 
 function PlotterGl(funcao, tamanhoCanvas) {
     let start = performance.now();
@@ -14,7 +15,7 @@ function PlotterGl(funcao, tamanhoCanvas) {
         gl_Position = vec4(a_position, 0, 1);
     }
     `;
-    var fragmentShaderSource = writeFragmentShader(funcao, canvas.width, canvas.height, lista_func, qtndInteiros);
+    var fragmentShaderSource = writeFragmentShader(funcao, canvas.width, canvas.height, qtndInteiros);
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
@@ -50,4 +51,4 @@ function PlotterGl(funcao, tamanhoCanvas) {
     console.log("Tempo do WEBGL");
     console.log(end - start);
 }
-export { PlotterGl }
+export { PlotterGl, operacoes_gl }

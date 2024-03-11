@@ -1,11 +1,6 @@
-function writeFragmentShader(funcao, width, height, funcoes_gl, inteiros) {
+function writeFragmentShader(funcao, width, height, inteiros) {
     let continuo = tipo_grafico == 1;
-    let vazio = funcoes_gl.size === 0;
-    let funcoes = "";
-    for (let value of funcoes_gl) {
-        funcoes += value + "\n";
-    }
-    console.log(funcoes);
+    let vazio = funcao === '';
     return `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;

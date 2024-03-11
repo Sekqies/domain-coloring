@@ -43,4 +43,4 @@ function getNumeroInteiro(x, y) {
 
     return [real, imag];
 }
-export { HSLtoRGB, getNumeroInteiro} from 'js/engine/color.js';
+export { HSLtoRGB, getNumeroInteiro};

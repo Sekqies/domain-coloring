@@ -1,9 +1,9 @@
-
-let canvas = null;
+let canvas, canvasGL;
 let guppy;
 let qtndInteiros = 2;
-
+let grafico;
 var funcaoHover;
+let real,imag;
 var resultado_real = 'a';
 var resultado_imag = 'b';
 let descricaoFuncao;

@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
     <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
 
+    <script src="guppy-master/build/guppy.min.js"></script>
     <script src="js/global.js"></script>
-    <script src="js/DomainColoring.js" ></script> 
-    <script src="js/index.js"></script>     
-    <script src="js/funcoes_template.js"></script>
-    <script src="js/funcoes_complexas.js"></script>
-    <script src="guppy-master/build/guppy.js"></script>
+    <script type="module" src="js/pages/index.js"></script>
+    <script type="module" src="js/setup/setup.js"></script>
     
     <title>Funções complexas</title>  
 </head>
@@ -70,12 +68,11 @@
         </div>
         <div id="grafico" class="active">
             <canvas id="domainColorCanvas" width="600" height="600"></canvas>
-            <canvas id="glCanvas" width="1000" height="1000"></canvas>
+            <canvas id="glCanvas" width="600" height="600"></canvas>
             <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
         </div>
         
     </section>
-    
 </body>
 </html>
 

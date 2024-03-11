@@ -1,3 +1,5 @@
+import { load } from '/js/setup/setup.js';
+
 function changeActiveClass() {
     const radioDivs = document.querySelectorAll("#options .tipo div input");
     radioDivs.forEach(div => {
@@ -12,7 +14,7 @@ function changeActiveClass() {
 
 document.addEventListener("DOMContentLoaded", () => {
     changeActiveClass();
-    carregar();
+    load();
 });
 
 

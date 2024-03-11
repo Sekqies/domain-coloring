@@ -1,12 +1,13 @@
-function loadHover(funcaoHover) {
-    canvas = document.getElementById("domainColorCanvas");
+import { getNumeroInteiro } from '/js/engine/color.js';
+
+function loadHover(funcaoHover, nomeCanvas) {
     descricaoFuncao = document.getElementById('descricaoFuncao');
-    canvas.addEventListener('mousemove', function (event) {
+    nomeCanvas.addEventListener('mousemove', function (event) {
         const x = event.offsetX;
         const y = event.offsetY;
-
-        tudo.style.top = y - 15 + 'px';
-        tudo.style.left = x + 90 + 'px';
+        console.log(x, y);
+        descricaoFuncao.style.top = y - 15 + 'px';
+        descricaoFuncao.style.left = x + 90 + 'px';
 
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
@@ -61,28 +62,9 @@ function loadHover(funcaoHover) {
         }
         //da split em e+ na string e pega o primeiro valor
 
-        tudo.innerHTML = (`<i>f( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
-    });
-
-
-    const arrow = document.getElementById('arrow');
-    const form = document.getElementById('form');
-    const grafico = document.getElementById('grafico');
-
-    arrow.addEventListener('click', function () {
-        form.classList.toggle('active');
-        arrow.classList.toggle('active');
-        grafico.classList.toggle('active');
-    });
-
-    const checkbox = document.querySelector('.inputcheckbox > div');
-    const gsize = document.getElementById('gsize');
-    checkbox.addEventListener('click', function () {
-        checkbox.classList.toggle('active');
-        gsize.classList.toggle('disabled');
-        gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
-        graficoTelainteira = !graficoTelainteira;
-        grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
+        descricaoFuncao.innerHTML = (`<i>f( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
     });
 
 }
+
+export { loadHover };
