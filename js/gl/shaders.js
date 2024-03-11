@@ -1,5 +1,5 @@
 function writeFragmentShader(funcao, width, height, inteiros) {
-    console.log(width)
+    console.log(width,height)
     let continuo = tipo_grafico == 1;
     let vazio = funcao === '';
     return `
