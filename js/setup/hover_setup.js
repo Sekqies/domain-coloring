@@ -10,7 +10,7 @@ function loadHover(funcaoHover, nomeStringCanvas) {
 
         if (nomeStringCanvas == "glCanvas") {
             descricaoFuncao.style.top = y + 'px';
-            descricaoFuncao.style.left = x + 600 + 'px';
+            descricaoFuncao.style.left = x + nomeCanvas.offsetWidth + 80 + 'px';
         }
         else {
             descricaoFuncao.style.top = y + 'px';
