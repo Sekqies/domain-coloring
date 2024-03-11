@@ -1,4 +1,4 @@
-import { load } from '/js/setup/setup.js';
+import { load, init } from '/js/setup/setup.js';
 
 function changeActiveClass() {
     const radioDivs = document.querySelectorAll("#options .tipo div input");
@@ -27,3 +27,6 @@ function download(){
     link.download = "domainColor.png";
     link.click();
 }
+
+document.getElementById("download").addEventListener("click", init);
+document.getElementById("draw").addEventListener("click", init);
