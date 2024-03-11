@@ -30,10 +30,11 @@ body {
 }
 
 #graficos-complexos {
-    margin-top: 12vh;
-    display: flex;
-    gap: 50px;
+    margin-top: 12vh;   
+    display:flex;
+    flex-wrap:wrap;
     margin-left: 500px;
+    gap:50px;
 }
 
 a {
