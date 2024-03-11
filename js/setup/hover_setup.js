@@ -1,13 +1,21 @@
 import { getNumeroInteiro } from '/js/engine/color.js';
 
-function loadHover(funcaoHover, nomeCanvas) {
+function loadHover(funcaoHover, nomeStringCanvas) {
+    let nomeCanvas = document.getElementById(nomeStringCanvas);
     descricaoFuncao = document.getElementById('descricaoFuncao');
     nomeCanvas.addEventListener('mousemove', function (event) {
         const x = event.offsetX;
         const y = event.offsetY;
         console.log(x, y);
-        descricaoFuncao.style.top = y - 15 + 'px';
-        descricaoFuncao.style.left = x + 90 + 'px';
+
+        if (nomeStringCanvas == "glCanvas") {
+            descricaoFuncao.style.top = y + 'px';
+            descricaoFuncao.style.left = x + 600 + 'px';
+        }
+        else {
+            descricaoFuncao.style.top = y + 'px';
+            descricaoFuncao.style.left = x + 90 + 'px';
+        }
 
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];

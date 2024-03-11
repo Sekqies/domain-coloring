@@ -48,8 +48,8 @@ function load()
     canvasGL = document.getElementById("glCanvas");
     loadGuppy();
     init();
-    loadHover(funcaoHover,canvas);
-    loadHover(funcaoHover,canvasGL);
+    loadHover(funcaoHover,"domainColorCanvas");
+    loadHover(funcaoHover,"glCanvas");
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
