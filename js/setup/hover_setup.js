@@ -18,11 +18,8 @@ function loadHover(funcaoHover, nomeStringCanvas) {
         let imagAntes = getNumeroInteiro(x, y)[1];
 
         let z = funcaoHover({ 'z': { real: realAntes, imag: -imagAntes } });
-
-        //console.log(z)
-
-        let real = z.real;
-        let imag = z.imag;
+        real = z.real;
+        imag = z.imag;
 
         if (real > 100 || real < -100) {
             real = Number(real).toExponential(2);

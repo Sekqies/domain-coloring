@@ -79,16 +79,17 @@ function Domain_coloring(real, imag) {
 
 
 //Receber o canvas, rodar por todos os pixels e colocar a cor
-function Plotter(guppy) {
+function Plotter(funcaoHover) {
     /*alert('Guppy: ' + guppy)
     const f = guppy.func(operacoes);
     alert(guppy.engine.get_content('ast'));
     alert('f: ' + f)
     f({z: {real: 1, imag: 1}});
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
-    const f = guppy.func(operacoes);
-    console.log(f);
-    console.log(f({ z: { real: 1, imag: 1 } }))
+
+
+    console.log(funcaoHover);
+    console.log(funcaoHover({ z: { real: 1, imag: 1 } }))
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
 
@@ -101,8 +102,7 @@ function Plotter(guppy) {
     //Cria um array de pixels
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
-    const funcao = guppy.func(operacoes);
-    funcaoHover = funcao;
+    
     //Percorre todos os pixels
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
@@ -113,7 +113,7 @@ function Plotter(guppy) {
 
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = funcao({ 'z': { real: realAntes, imag: -imagAntes } });
+            let z = funcaoHover({ 'z': { real: realAntes, imag: -imagAntes } });
             real = z.real;
             imag = z.imag;
 
