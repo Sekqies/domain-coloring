@@ -7,6 +7,7 @@ function PlotterGl(funcao, tamanhoCanvas) {
     var gl = canvas.getContext("webgl");
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
+    gl.viewport(0, 0, canvas.width, canvas.height); 
     var vertexShaderSource = `
     attribute vec2 a_position;
 

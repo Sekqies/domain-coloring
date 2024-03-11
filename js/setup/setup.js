@@ -81,4 +81,4 @@ function load() {
 
 
 
-export { load };
+export {load, init};
