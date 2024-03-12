@@ -306,7 +306,7 @@ var operacoes_gl = {
     {
         return function(vars)
         {
-            return `vec2(${args[0](vars)}.y,0.0)`
+            return `vec2(0.0,${args[0](vars)}.x)`
         }
     },
     "conj":function(args)
@@ -321,6 +321,13 @@ var operacoes_gl = {
         return function(vars)
         {
             return `vec2(atan(${args[0](vars)}.y,${args[0](vars)}.x),0)`
+        }
+    },
+    "absolutevalue":function(args)
+    {
+        return function(vars)
+        {
+            return `vec2(length(${args[0](vars)}),0)`
         }
     }
     

@@ -52,9 +52,12 @@ function writeFragmentShader(funcao, width, height, inteiros) {
     vec2 carcsenh(vec2 a) { return clog(csum(a, csqrt(csum(cmult(a,a),vec2(1.0,0.0))))); }
     vec2 carccosh(vec2 a) { return clog(csum(a, csqrt(csub(cmult(a,a),vec2(1.0,0.0))))); }
     vec2 carctanh(vec2 a) { return cmult(vec2(0.5,0.0), clog(cdiv(csum(vec2(1.0,0.0), a), csub(vec2(1.0,0.0), a)))); }
-    vec2 carccsch(vec2 a) { return clog(cdiv(csum(vec2(1.0,0.0),csqrt(csum(cmult(a,a),vec2(1.0,1.0)))),a)); }
-    vec2 carcsech(vec2 a) { return clog(cdiv(csum(vec2(1.0,0.0),csqrt(csub(cmult(a,a),vec2(1.0,1.0)))),a)); }
-    vec2 carccoth(vec2 a) { return cdiv(clog(cdiv(csum(vec2(1.0,0.0),a),csum(vec2(1.0,0.0),a))),vec2(2.0,0)); }
+    vec2 carccsch(vec2 a) { vec2 div = cdiv(vec2(1.0,0.0),a); return clog(csum(div,csqrt(csum(vec2(1.0,0.0),cmult(div,div))))); }
+    vec2 carcsech(vec2 z) { vec2 div = cdiv(vec2(1.0,0.0),z); 
+        return clog(csum(div,cmult(csqrt(csum(vec2(1.0,0.0),div)),csqrt(csum(vec2(-1.0,0.0),div)))));
+        }
+        
+    vec2 carccoth(vec2 a) { return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0))))); }
 
     vec2 canvasSize = vec2(${width},${height});
     vec3 hsl2rgb(vec3 hsl) {
