@@ -36,10 +36,13 @@ function init() {
 
     const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
-    Plotter(guppy);
+    funcaoHover = guppy.func(operacoes);
+    Plotter(funcaoHover);
     const result_gl = guppy.func(operacoes_gl)();
     console.log(`Função a ser renderizada ${result_gl}`);
     PlotterGl(result_gl, tamanhoCanvas, result_gl);
+    loadHover(funcaoHover, "domainColorCanvas");
+    loadHover(funcaoHover, "glCanvas");
 }
 
 function load() {
@@ -47,8 +50,7 @@ function load() {
     canvasGL = document.getElementById("glCanvas");
     loadGuppy();
     init();
-    loadHover(funcaoHover, "domainColorCanvas");
-    loadHover(funcaoHover, "glCanvas");
+
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
@@ -81,4 +83,4 @@ function load() {
 
 
 
-export {load, init};
+export { load, init };
