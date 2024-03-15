@@ -37,13 +37,11 @@ function init() {
     const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
     funcaoHover = guppy.func(operacoes);
-    //Plotter(funcaoHover);
-    for (let valoras=0 ; valoras<5;valoras+=0.2) {
-    k=valoras;
+    Plotter(funcaoHover);
     const result_gl = guppy.func(operacoes_gl)();
     console.log(`Função a ser renderizada ${result_gl}`);
     PlotterGl(result_gl, tamanhoCanvas, result_gl);
-    }
+    
     loadHover(funcaoHover, "domainColorCanvas");
     loadHover(funcaoHover, "glCanvas");
 }
