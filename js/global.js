@@ -8,7 +8,7 @@ let real, imag;
 var resultado_real = 'a';
 var resultado_imag = 'b';
 let descricaoFuncao;
-
+let k =0.0;
 var graficoTelainteira = false;
 
 let tipo_grafico = 1;

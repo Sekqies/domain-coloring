@@ -445,6 +445,7 @@ var operacoes = {
             if (args[0] == "i") return { real: 0, imag: 1 };
             if (args[0] == "e") return { real: Math.E, imag: 0 };
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
+            if (args[0] == "k") return {real: 1, imag:0};
             if (args[0] == "z") return vars.z;
             if (args[0] == "x") return {real: vars.z.real, imag: 0};
             if (args[0] == "y") return {real: vars.z.imag, imag: 0};

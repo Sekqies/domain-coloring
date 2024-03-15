@@ -56,6 +56,7 @@ var operacoes_gl = {
         return function(vars)
         {
             if (args[0] == 'z') return "vec2(a,b)";
+            if (args[0] == 'k') return "vec2(" + k + ",0.0)"; 
             if (args[0] == 'i') return "vec2(0.0,1.0)";
             if (args[0] == 'e') return "vec2(2.718281828459045,0.0)";
             if (args[0] == 'pi') return "vec2(3.141592653589793,0.0)";
