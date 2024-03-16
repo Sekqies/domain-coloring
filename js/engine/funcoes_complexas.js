@@ -697,6 +697,20 @@ var operacoes = {
         {
             return modulo(args[0](vars));
         }
+    },
+    "factorial":function(args)
+    {
+        return function(vars)
+        {
+            return {real: 1, imag: 0};
+        }
+    },
+    "gamma":function(args)
+    {
+        return function(vars)
+        {
+            return {real:1, imag:0};
+        }
     }
 };
 

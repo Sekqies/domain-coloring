@@ -1,9 +1,20 @@
-
-function adicionarFuncao(guppy,input_usuario, output_latex, output_text, nome_funcao)
-{
+function adicionarFuncao_Latex(guppy, input_usuario, output_latex, output_text, nome_funcao) {
     guppy.engine.add_symbol(input_usuario, {
         "output": {
-            "latex": "\\text{" + output_latex +"}({$1})",
+            "latex": output_latex,
+            "text": output_text + "($1)"
+        },
+        "attrs": {
+            "type": nome_funcao,
+            "group": "function"
+        }
+    });
+}
+
+function adicionarFuncao(guppy, input_usuario, output_text, nome_funcao) {
+    guppy.engine.add_symbol(input_usuario, {
+        "output": {
+            "latex": "\\text{" + output_text + "}({$1})",
             "text": output_text + "($1)"
         },
         "attrs": {
@@ -17,73 +28,62 @@ function loadGuppy() {
     guppy = new Guppy('guppy1');
     guppy.engine.set_content(funcaoBase);
     //Funções exclusivas às complexas
-    guppy.engine.add_symbol("2atan", {
-        "output": {
-            "latex": "\\text{atan2}({$1},{$2})",
-            "text": "atan2($1,$2)"
-        },
-        "attrs": {
-            "type": "atan2",
-            "group": "function"
-        }
-    });
-    guppy.engine.add_symbol("conj", { "output": { "latex": "\\overline{{$1}}", "text": "conj($1)" }, "attrs": { "type": "conj", "group": "function" } });
-    adicionarFuncao(guppy, "arg", "Arg", "Arg", "arg")
-    adicionarFuncao(guppy, "re", "Re", "Re", "Re");
-    adicionarFuncao(guppy, "im", "Im", "Im", "Im");
+    adicionarFuncao_Latex(guppy, "2atan", "\\text{atan2}({$1},{$2})", "atan2($1,$2)", "atan2");
+    adicionarFuncao_Latex(guppy, "conj", "\\overline{{$1}}", "conj($1)", "conj");
+    adicionarFuncao(guppy, "arg", "Arg", "arg");
+    adicionarFuncao(guppy, "re", "Re", "Re");
+    adicionarFuncao(guppy, "im", "Im", "Im");
     //Trigonométricas em português
-    adicionarFuncao(guppy, "sen", "sen", "sen", "sin");
-    adicionarFuncao(guppy, "tg", "tg", "tg", "tan");
+    adicionarFuncao(guppy, "sen", "sen", "sin");
+    adicionarFuncao(guppy, "tg", "tg", "tan");
     //Reversas trigonométricas
-    adicionarFuncao(guppy, "arcsen", "arcsen", "arcsen", "arcsin");
-    adicionarFuncao(guppy, "arctg", "arctg", "arctg", "arctan");
-    adicionarFuncao(guppy, "arcsec", "arcsec", "arcsec", "arcsec");
+    adicionarFuncao(guppy, "arcsen", "arcsen", "arcsin");
+    adicionarFuncao(guppy, "arctg", "arctg", "arctan");
+    adicionarFuncao(guppy, "arcsec", "arcsec", "arcsec");
     //Reversas trigonométricas (abreviação)
-    adicionarFuncao(guppy, "arsin", "arsin", "arcsen", "arcsin");
-    adicionarFuncao(guppy, "arsen", "arsen", "arcsen", "arcsin");
-    adicionarFuncao(guppy, "artg", "artg", "arctg", "arctan");
-    adicionarFuncao(guppy, "artan", "artan", "arctg", "arctan");
-    adicionarFuncao(guppy, "arsec", "arsec", "arcsec", "arcsec");
+    adicionarFuncao(guppy, "arsin", "arsin", "arcsen");
+    adicionarFuncao(guppy, "arsen", "arsen", "arcsen");
+    adicionarFuncao(guppy, "artg", "artg", "arctg");
+    adicionarFuncao(guppy, "artan", "artan", "arctg");
+    adicionarFuncao(guppy, "arsec", "arsec", "arcsec");
     //Inversas trigonométricas reversas
-    adicionarFuncao(guppy, "arccsc", "arccsc", "arccsc", "arccsc");
-    adicionarFuncao(guppy, "arccot", "arccot", "arccot", "arccot");
+    adicionarFuncao(guppy, "arccsc", "arccsc", "arccsc");
+    adicionarFuncao(guppy, "arccot", "arccot", "arccot");
     //Inversas trigonométricas reversas (abreviação)
-    adicionarFuncao(guppy, "arcsc", "arcsc", "arccsc", "arccsc");
-    adicionarFuncao(guppy, "arcot", "arcot", "arccot", "arccot");
-    adicionarFuncao(guppy, "arsec", "arsec", "arsec", "arcsec");
+    adicionarFuncao(guppy, "arcsc", "arcsc", "arccsc");
+    adicionarFuncao(guppy, "arcot", "arcot", "arccot");
+    adicionarFuncao(guppy, "arsec", "arsec", "arcsec");
     //Hiperbólicas
-    adicionarFuncao(guppy, "hsin", "sinh", "sinh", "sinh");
-    adicionarFuncao(guppy, "hsen", "senh", "senh", "sinh");
-    adicionarFuncao(guppy, "hcos", "cosh", "cosh", "cosh");
-    adicionarFuncao(guppy, "htan", "tanh", "tanh", "tanh");
-    adicionarFuncao(guppy, "htg", "tanh", "tanh", "tanh");
+    adicionarFuncao(guppy, "hsin", "sinh", "sinh");
+    adicionarFuncao(guppy, "hsen", "senh", "sinh");
+    adicionarFuncao(guppy, "hcos", "cosh", "cosh");
+    adicionarFuncao(guppy, "htan", "tanh", "tanh");
+    adicionarFuncao(guppy, "htg", "tanh", "tanh");
     //Inversas hiperbólicas
-    adicionarFuncao(guppy, "hsec", "sech", "sech", "sech");
-    adicionarFuncao(guppy, "hcsc", "csch", "csch", "csch");
-    adicionarFuncao(guppy, "hcot", "coth", "coth", "coth");
+    adicionarFuncao(guppy, "hsec", "sech", "sech");
+    adicionarFuncao(guppy, "hcsc", "csch", "csch");
+    adicionarFuncao(guppy, "hcot", "coth", "coth");
     //Reversas hiperbólicas
-    adicionarFuncao(guppy, "harcsin", "arcsinh", "arcsinh", "arcsinh");
-    adicionarFuncao(guppy, "harcsen", "arcsenh", "arcsinh", "arcsinh");
-    adicionarFuncao(guppy, "harccos", "arccosh", "arccosh", "arccosh");
-    adicionarFuncao(guppy, "harctan", "arctanh", "arctanh", "arctanh");
+    adicionarFuncao(guppy, "harcsin", "arcsinh", "arcsinh");
+    adicionarFuncao(guppy, "harcsen", "arcsenh", "arcsinh");
+    adicionarFuncao(guppy, "harccos", "arccosh", "arccosh");
+    adicionarFuncao(guppy, "harctan", "arctanh", "arctanh");
     //Reversas hiperbólicas (abreviação)
-    adicionarFuncao(guppy, "harsin", "arsinh", "arsinh", "arcsinh");
-    adicionarFuncao(guppy, "harsen", "arsenh", "arcsinh", "arcsinh");
-    adicionarFuncao(guppy, "harcos", "arcosh", "arccosh", "arccosh");
-    adicionarFuncao(guppy, "hartan", "artanh", "arctanh", "arctanh");
+    adicionarFuncao(guppy, "harsin", "arsinh", "arcsinh");
+    adicionarFuncao(guppy, "harsen", "arsenh", "arcsinh");
+    adicionarFuncao(guppy, "harcos", "arcosh", "arccosh");
+    adicionarFuncao(guppy, "hartan", "artanh", "arctanh");
     //Inversas hiperbólicas reversas
-    adicionarFuncao(guppy, "harccsc", "arccsch", "arccsch", "arccsch");
-    adicionarFuncao(guppy, "harccot", "arccoth", "arccoth", "arccoth");
-    adicionarFuncao(guppy, "harcsec", "arcsech", "arcsech", "arcsech");
+    adicionarFuncao(guppy, "harccsc", "arccsch", "arccsch");
+    adicionarFuncao(guppy, "harccot", "arccoth", "arccoth");
+    adicionarFuncao(guppy, "harcsec", "arcsech", "arcsech");
     //Inversas hiperbólicas reversas (abreviação)
-    adicionarFuncao(guppy, "harcsc", "arcsch", "arccsch", "arccsch");
-    adicionarFuncao(guppy, "harcot", "arcoth", "arccoth", "arccoth");
-    adicionarFuncao(guppy, "harsec", "arsech", "arcsech", "arcsech");
+    adicionarFuncao(guppy, "harcsc", "arcsch", "arccsch");
+    adicionarFuncao(guppy, "harcot", "arcoth", "arccoth");
+    adicionarFuncao(guppy, "harsec", "arsech", "arcsech");
+    //Outras funções
+    adicionarFuncao_Latex(guppy, "gamma", "\\Gamma({$1})", "gamma($1)", "gamma");
     guppy.activate();
 }
-
-
-
-
 
 export { loadGuppy }

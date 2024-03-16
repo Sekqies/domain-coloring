@@ -7,7 +7,7 @@
     <link type="text/css" rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
     <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
-
+    <script src=".\js\lib\ccapture.min.js"></script>
     <script src="guppy-master/build/guppy.min.js"></script>
     <script src="js/global.js"></script>
     <script type="module" src="js/pages/index.js"></script>
@@ -46,6 +46,14 @@
                     <div class="inputcheckbox">
                         <div></div>
                         <p>Grafico ocupa a tela inteira</p>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="animation-checkbox" name="fullscreen"><label for='animation-checkbox'>animar</label>
+                        <label for="limite_minimo">Limite minimo</label> <input type="number" id="limite-minimo" value="0"> 
+                        <label for="limite_maximo">Limite maximo</label> <input type="number" id="limite-maximo" value="5"> 
+                        <label for="iteracao">Iteração</label> <input type="number" id="iteracao" value="0.2"> 
+                        <label for="fps">FPS</label> <input type="number" id="fps" value="30">
+                        <button id="BAIXAR">BAIXAKI</button>
                     </div>
 
                     <div class="funcao">

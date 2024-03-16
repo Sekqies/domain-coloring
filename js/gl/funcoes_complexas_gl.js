@@ -13,7 +13,7 @@ const csum_gl = new c_GSGLFunction("csum");
 const csub_gl = new c_GSGLFunction("csub");
 const cmult_gl = new c_GSGLFunction("cmult");
 const cdiv_gl = new c_GSGLFunction("cdiv");
-const cexponencial_gl = new c_GSGLFunction("cexpo");
+const cpower_gl = new c_GSGLFunction("cpow");
 const csqrt_gl = new c_GSGLFunction("csqrt");
 const clog_gl = new c_GSGLFunction("clog");
 
@@ -56,7 +56,7 @@ var operacoes_gl = {
         return function(vars)
         {
             if (args[0] == 'z') return "vec2(a,b)";
-            if (args[0] == 'k') return "vec2(" + k + ",0.0)"; 
+            if (args[0] == 'k') {animation_variable_exists = true; return "vec2(ANIMATION_VARIABLE,0.0)"}; 
             if (args[0] == 'i') return "vec2(0.0,1.0)";
             if (args[0] == 'e') return "vec2(2.718281828459045,0.0)";
             if (args[0] == 'pi') return "vec2(3.141592653589793,0.0)";
@@ -72,10 +72,17 @@ var operacoes_gl = {
     {
         return function(vars)
         {
-            return `vec2(${args[0].toString()}.0,0.0)`;
+            return `vec2(${parseFloat(args[0])},0.0)`;
         }
     }
     ,   
+    "neg":function(args)
+    {
+        return function(vars)
+        {
+            return `vec2(-${args[0](vars)}.x,-${args[0](vars)}.y)`;
+        }
+    },
     "+":function(args) //
     {
         return function(vars)
@@ -111,7 +118,7 @@ var operacoes_gl = {
     {
         return function(vars)
         {
-            return cexponencial_gl.runFunction(args[0](vars),args[1](vars))
+            return cpower_gl.runFunction(args[0](vars),args[1](vars))
         }
     },
     "sqrt":function(args)//
@@ -329,6 +336,20 @@ var operacoes_gl = {
         return function(vars)
         {
             return `vec2(length(${args[0](vars)}),0)`
+        }
+    },
+    "factorial":function(args)
+    {
+        return function(vars)
+        {
+            return `cfactorial(${args[0](vars)})`
+        }
+    },
+    "gamma":function(args)
+    {
+        return function(vars)
+        {
+            return `cgamma(${args[0](vars)})`
         }
     }
     

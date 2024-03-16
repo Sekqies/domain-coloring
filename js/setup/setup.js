@@ -2,9 +2,22 @@ import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
 import { PlotterGl, operacoes_gl } from '/js/gl/plotter_gl.js';
 import { Plotter, operacoes } from '/js/engine/plotter.js';
+import { GlAnimation } from '/js/gl/animation.js';
+
+function initializeVariables() 
+{
+    canvas = document.getElementById("domainColorCanvas");
+    canvasGL = document.getElementById("glCanvas");
+    animationCheckbox = document.getElementById("animation-checkbox");
+    grafico = document.getElementById('grafico');
+    iteracao = document.getElementById('iteracao');
+    limiteMinimo = document.getElementById('limite-minimo');
+    limiteMaximo = document.getElementById('limite-maximo');
+    fps = document.getElementById('fps');
+}
+
 
 function init() {
-    grafico = document.getElementById('grafico');
     //alert(guppy)  
     let tamanhoCanvas;
     if (graficoTelainteira) {
@@ -29,29 +42,33 @@ function init() {
     }
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
-    //alert(canvas);
-    //var tempoInicial = performance.now();
-
     tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
-
-    const eixos = document.getElementById('eixos')
     qtndInteiros = document.getElementById('numero_inteiros').value;
     funcaoHover = guppy.func(operacoes);
+
     Plotter(funcaoHover);
+    animation_variable_exists = false;
     const result_gl = guppy.func(operacoes_gl)();
     console.log(`Função a ser renderizada ${result_gl}`);
-    PlotterGl(result_gl, tamanhoCanvas, result_gl);
-    
+    if (animationCheckbox.checked && animation_variable_exists)
+    {
+        const minimo = parseFloat(limiteMinimo.value);
+        const maximo = parseFloat(limiteMaximo.value);
+        const it = parseFloat(iteracao.value);
+        const framerate = parseFloat(fps.value);
+        let animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
+        animation.animate(result_gl, minimo,maximo,it);
+        animation.playAnimation(framerate, "continue");
+    }
+    else
+    {
+        PlotterGl(result_gl, tamanhoCanvas, result_gl);
+    }
     loadHover(funcaoHover, "domainColorCanvas");
     loadHover(funcaoHover, "glCanvas");
 }
-
-function load() {
-    canvas = document.getElementById("domainColorCanvas");
-    canvasGL = document.getElementById("glCanvas");
-    loadGuppy();
-    init();
-
+function createEventListeners()
+{
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
@@ -80,6 +97,19 @@ function load() {
         grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
     });
 
+    document.getElementById('BAIXAR').addEventListener('click', function () {
+        let a = new GlAnimation(canvas, canvas.width, canvas.height);
+        a.downloadAnimation();
+    });
+
+}
+
+function load() {
+    //console.log = function() {};
+    initializeVariables();
+    loadGuppy();
+    init();
+    createEventListeners();
 }
 
 

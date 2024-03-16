@@ -9,7 +9,7 @@ function writeFragmentShader(funcao, width, height, inteiros) {
     precision mediump float;
     #endif
     const float PI = 3.141592653589793238462643383279502884197169393751;
-
+    const float E = 2.7182818284590452353602874713526624977572470936995;
 
 
     float cosh(float x)
@@ -25,13 +25,18 @@ function writeFragmentShader(funcao, width, height, inteiros) {
         return sinh(x);
     }
     vec2 csum(vec2 a, vec2 b) { return vec2(a.x + b.x, a.y + b.y); }
+    vec2 cadd(vec2 a, vec2 b) { return csum(a,b);}
     vec2 csub(vec2 a, vec2 b) { return vec2(a.x - b.x, a.y - b.y); }
+    vec2 cneg(vec2 a) { return vec2(-a.x, -a.y);}
     vec2 cmult(vec2 a, vec2 b) { return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
     vec2 cdiv(vec2 a, vec2 b) { float denominador = pow(b.x,2.0) + pow(b.y,2.0); return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador); }
-    vec2 cexpo(vec2 a, vec2 b) { float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento)); }
-    vec2 csqrt (vec2 a) { return cexpo(a,vec2(0.5,0.0));}
+    vec2 creciprocal(vec2 z) {return cdiv(vec2(1.0,0.0),z);}
+    vec2 cpow(vec2 a, vec2 b) { float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento)); }
+    vec2 csqrt (vec2 a) { return cpow(a,vec2(0.5,0.0));}
+    vec2 cexp (vec2 a) { return cpow(vec2(E,0.0),a);}
     vec2 clog(vec2 a) { return vec2(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)), atan(a.y,a.x)); }
     vec2 csen(vec2 a) { return vec2(sin(a.x)*cosh(a.y), cos(a.x)*sinh(a.y)); }
+    vec2 csin(vec2 a) { return csen(a);}
     vec2 ccos(vec2 a) { return vec2(cos(a.x)*cosh(a.y), -sin(a.x) * sinh(a.y)); }
     vec2 ctan(vec2 a) { return cdiv(csen(a),ccos(a));}
     vec2 csec (vec2 a) { return cdiv(vec2(2.0,0.0),ccos(a)); }
@@ -58,6 +63,78 @@ function writeFragmentShader(funcao, width, height, inteiros) {
         }
         
     vec2 carccoth(vec2 a) { return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0))))); }
+    
+const float EPSILON = 1e-7;
+
+vec2 drop_imag(vec2 z)
+{
+    if (abs(z.y)<=EPSILON)
+        z.y = 0.0;
+    return z;
+}
+vec2 cgamma_right(vec2 z) {
+    vec2 w = csub(z, vec2(1.0, 0.0));
+    vec2 t = cadd(w, vec2(7.5, 0.0));
+    vec2 x = vec2(0.99999999999980993, 0.0);
+    x = cadd(x, cmult(vec2(676.5203681218851, 0.0), creciprocal(cadd(w, vec2(1.0, 0.0)))));
+    x = csub(x, cmult(vec2(1259.1392167224028, 0.0), creciprocal(cadd(w, vec2(2.0, 0.0)))));
+    x = cadd(x, cmult(vec2(771.32342877765313, 0.0), creciprocal(cadd(w, vec2(3.0, 0.0)))));
+    x = csub(x, cmult(vec2(176.61502916214059, 0.0), creciprocal(cadd(w, vec2(4.0, 0.0)))));
+    x = cadd(x, cmult(vec2(12.507343278686905, 0.0), creciprocal(cadd(w, vec2(5.0, 0.0)))));
+    x = csub(x, cmult(vec2(0.13857109526572012, 0.0), creciprocal(cadd(w, vec2(6.0, 0.0)))));
+    x = cadd(x, cmult(vec2(9.9843695780195716e-6, 0.0), creciprocal(cadd(w, vec2(7.0, 0.0)))));
+    x = cadd(x, cmult(vec2(1.5056327351493116e-7, 0.0), creciprocal(cadd(w, vec2(8.0, 0.0)))));
+    return cmult(vec2(sqrt(2.0 * PI), 0.0), cmult(x, cexp(csub(cmult(clog(t), cadd(w, vec2(0.5, 0.0))), t))));
+}
+vec2 cgamma_left(vec2 z) {
+    return cdiv(vec2(PI, 0.0), cmult(csin(cmult(z, vec2(PI, 0.0))), cgamma_right(csub(vec2(1.0, 0.0), z))));
+}
+vec2 cgamma(vec2 z) {
+    if (z.x < 0.5) {
+        return cgamma_left(z);
+    } else {
+        return cgamma_right(z);
+    }
+}
+vec2 cfactorial(vec2 z)
+{
+    return cgamma(cadd(z,vec2(1.0,0.0)));
+}
+/*
+vec2 cfactorial(vec2 z)
+{
+    float g = 7.0;
+    float n = 9.0;
+    float GAMMA_COEFF[9];
+    GAMMA_COEFF[0] = 0.99999999999980993;
+    GAMMA_COEFF[1] = 676.5203681218851;
+    GAMMA_COEFF[2] = -1259.1392167224028;
+    GAMMA_COEFF[3] = 771.32342877765313;
+    GAMMA_COEFF[4] = -176.61502916214059;
+    GAMMA_COEFF[5] = 12.507343278686905;
+    GAMMA_COEFF[6] = -0.13857109526572012;
+    GAMMA_COEFF[7] = 9.9843695780195716e-6;
+    GAMMA_COEFF[8] = 1.5056327351493116e-7;
+    vec2 y;
+    vec2 x;
+    if (z.x < 0.5)
+    {
+        y = cdiv(vec2(PI,0.0),cmult(csin(cmult(z,vec2(PI,0.0))),(csub(z,vec2(1.0,0.0)))));
+    }
+    else {
+        z = csub(z,vec2(1.0,0.0));   
+        x = vec2(GAMMA_COEFF[0],0.0);
+        for (int i=1; i<9;i++)
+        {
+            x = csum(x,cdiv(vec2(GAMMA_COEFF[i],0.0),cadd(z,vec2(0.0,1.0))));
+        }
+        vec2 t = cadd(z,vec2(g+0.5,0.0));
+        y = cmult(cpow(t,cadd(z,vec2(0.5,0.0))),cexp(cmult(cneg(t),z)));
+    }
+    return drop_imag(y);
+}
+*/
+
 
     vec2 canvasSize = vec2(${width},${height});
     vec3 hsl2rgb(vec3 hsl) {
