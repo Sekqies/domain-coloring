@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+:root{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    --navbar-size: 120px;
+}
+
+p{
+    font-size: 22px;
+}
+h2{
+    font-size: 30px;
+}
+
+h4{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.btn{
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: #333333;
+    border: 3px solid #333333;
+    border-radius: 15px;
+    font-size: 22px;
+    padding: 10px;
+    color: white;
+}
+
+.btn.secondary{
+    border: 3px solid #333333;
+    background-color: white;
+    color: #333333;
+}
+
+
+section#navbar{
+    position: fixed;
+    min-width: 100dvw;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 0px #000000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: var(--navbar-size);
+    z-index: 2;
+}
+section#navbar #guppy1{
+    width: calc(100% - 20px);
+    height: 60px;
+    border: 1px solid #000;
+    margin: 10px;
+}
+
+section#navbar .navbar-arrow{
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+
+
+
+
+section#lateral{
+    position: fixed;
+    left: 0;
+    height: calc(100dvh - var(--navbar-size));
+    margin-top: var(--navbar-size);
+    min-width: 40dvw;
+    border-right: 3px solid black;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    overflow: scroll;
+}
+
+section#lateral #lateral-desenhar{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+section#lateral #lateral-desenhar .lateral-desenhar-botao h4{
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+section#lateral .lateral-div{
+    padding: 30px;
+    border: 2px solid #333333;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+section#lateral .lateral-div .lateral-div-header{
+    display: flex;
+}
+
+section#lateral .lateral-div .lateral-div-header h2{
+    flex: 1;
+    font-size: 30px;
+}
+
+section#lateral .lateral-div .lateral-div-content{
+    display: flex;
+    width: 100%;
+}
+
+section#lateral .lateral-div .lateral-div-content .input-dropdown{
+    position: relative;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #333333;
+    margin-left: 20px;
+    width: 100%;
+    background-color: white;
+}
+
+section#lateral .lateral-div 
+.lateral-div-content .input-dropdown 
+.input-dropdown-fixed{
+    display: flex;
+
+    & > p{
+        flex: 1;
+    }
+}
+
+section#lateral .lateral-div 
+.lateral-div-content .input-dropdown 
+.input-dropdown-options{
+    position: absolute;
+    border: 1px solid #333333;
+    width: 100%;
+    top: calc(100% - 5px);
+    left: 0;
+    padding: 10px;
+    padding-top: 15px;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 1;
+}
