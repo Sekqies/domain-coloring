@@ -52,13 +52,18 @@
             </div>
 
             <div class="lateral-div-content">
-                <div class="lateral-div-content-option">
-                    <p>Intervalo</p>
-                </div>
                 <div class="input-interval">
+                    <input type="number" >
+                    <p> &lt; Re &lt; </p>
                     <input type="number">
-                    <p>a</p>
-                    <input type="number">
+                </div>
+            </div>
+
+            <div class="lateral-div-content">
+                <div class="input-interval">
+                    <input type="number" value="-2">
+                    <p> &lt; Im &lt; </p>
+                    <input type="number" value="2">
                 </div>
             </div>
 
@@ -70,6 +75,7 @@
                     <div class="input-dropdown-fixed">
                         <input type="number">
                         <div>
+                            <p>px</p>
                             <img src="../assets/Arrow.svg" alt="Seta ocultar">
                         </div>
                     </div>
@@ -83,8 +89,7 @@
                 <div class="lateral-div-content-option">
                     <p>Eixos cartesianos</p>
                 </div>
-                <div class="input-checkbox">
-                    <input type="checkbox">
+                <div class="input-checkbox" id="active">
                 </div>
             </div>
 
