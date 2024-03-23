@@ -37,12 +37,20 @@ input:focus{
     font-size: 22px;
     padding: 10px;
     color: white;
-}
+    transition: 0.2s;
 
+}
+.btn:hover{
+    cursor: pointer;
+    background-color: white;
+    color: #333333;
+    transition: 0.2s;
+}
 .btn.secondary{
     border: 3px solid #333333;
     background-color: white;
     color: #333333;
+    position: relative;
 }
 
 
@@ -84,13 +92,13 @@ section#lateral{
     left: 0;
     height: calc(100dvh - var(--navbar-size));
     margin-top: var(--navbar-size);
-    min-width: 40dvw;
+    width: 40dvw;
     border-right: 3px solid black;
     padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 50px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 section#lateral #lateral-desenhar{
@@ -116,15 +124,19 @@ section#lateral .lateral-div{
 
 section#lateral .lateral-div .lateral-div-header{
     display: flex;
-}
 
-section#lateral .lateral-div .lateral-div-header h2{
-    flex: 1;
-    font-size: 30px;
+    & h2{
+        flex: 1;
+        font-size: 30px;
+    }
+
+    & img{
+        transition: 0.2s;
+    }
 }
 
 section#lateral .lateral-div .lateral-div-content{
-    display: flex;
+    display: none;
     width: 100%;
     align-items: center;
     gap: 20px;
@@ -136,7 +148,6 @@ section#lateral .lateral-div .lateral-div-content{
         margin-left: 20px;
         width: 100%;
         background-color: white;
-        
         & .input-dropdown-fixed{
             display: flex;
 
@@ -158,6 +169,9 @@ section#lateral .lateral-div .lateral-div-content{
                 border: none;
                 flex: 1;
             }
+            & img{
+                transition: 0.2s;
+            }
 
         }
 
@@ -168,7 +182,7 @@ section#lateral .lateral-div .lateral-div-content{
             border-bottom-left-radius: 15px;
             border-bottom-right-radius: 15px;
             z-index: 0;
-            display: flex;
+            display: none;
             flex-direction: column;
 
             & h4{
@@ -180,6 +194,17 @@ section#lateral .lateral-div .lateral-div-content{
                 cursor: pointer;
                 transition: 0.2s;
             }
+        }
+    }
+
+    & .input-dropdown.active{
+        & .input-dropdown-options{
+            display: flex;
+        }
+
+        & .input-dropdown-fixed img{
+            rotate: 180deg;
+            transition: 0.2s;
         }
     }
 
@@ -228,5 +253,15 @@ section#lateral .lateral-div .lateral-div-content{
             border: 1px solid #333333;
             font-size: var(--font-small);
         }
+    }
+}
+
+section#lateral .lateral-div.active{
+    & .lateral-div-content{
+        display: flex;
+    }
+    & .lateral-div-header img{
+        rotate: 180deg;
+        transition: 0.2s;
     }
 }

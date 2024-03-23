@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+
     <section id="navbar">
         <div id="guppy1"></div>
         <div class="navbar-arrow">
@@ -25,12 +26,13 @@
             </div>
         </div>
 
-        <div id="lateral-opcoes" class="lateral-div">
+        <div id="lateral-opcoes" class="lateral-div active">
 
 
             <div class="lateral-div-header">
                 <h2>Opções: </h2>
-                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                <img src="../assets/Arrow.svg" alt="Seta ocultar"
+                id="LateralOpcoes">
             </div>
 
 
@@ -41,7 +43,7 @@
                 <div class="input-dropdown">
                     <div class="input-dropdown-fixed">
                         <p>Grafico normal</p>
-                        <div>
+                        <div id="CarregamentoGrafico">
                             <img src="../assets/Arrow.svg" alt="Seta ocultar">
                         </div>
                     </div>
@@ -53,9 +55,9 @@
 
             <div class="lateral-div-content">
                 <div class="input-interval">
-                    <input type="number" >
+                    <input type="number" value='-2'>
                     <p> &lt; Re &lt; </p>
-                    <input type="number">
+                    <input type="number" value="2">
                 </div>
             </div>
 
@@ -73,8 +75,8 @@
                 </div>
                 <div class="input-dropdown">
                     <div class="input-dropdown-fixed">
-                        <input type="number">
-                        <div>
+                        <input type="number" value='500'>
+                        <div id="TamanhoGrafico">
                             <p>px</p>
                             <img src="../assets/Arrow.svg" alt="Seta ocultar">
                         </div>
@@ -95,13 +97,14 @@
 
         </div>
 
-        <div id="lateral-animacao" class="lateral-div">
+        <div id="lateral-animacao" class="lateral-div active">
             <div class="lateral-div-header">
                 <h2>Animação</h2>
-                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                <img src="../assets/Arrow.svg" alt="Seta ocultar"
+                id="LateralAnimacao">
             </div>
 
-            <div class="lateral-div-frase">
+            <div class="lateral-div-content">
                 <h3>Utilize a letra 'k' na função para criar uma animação.</h3>
             </div>
 
@@ -141,7 +144,7 @@
                 <div class="input-dropdown">
                     <div class="input-dropdown-fixed">
                         <p>Normal</p>
-                        <div>
+                        <div id='TipoAnimacao'>
                             <img src="../assets/Arrow.svg" alt="Seta ocultar">
                         </div>
                     </div>
@@ -163,5 +166,8 @@
     <section id="domainColoring">
         <canvas id="domainColoringCanvas"></canvas>
     </section>
+
+
+    <script src="index.js" defer></script>
 </body>
 </html>
