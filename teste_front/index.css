@@ -38,21 +38,38 @@ input:focus{
     padding: 10px;
     color: white;
     transition: 0.2s;
+    display: flex;
+    justify-content: center;
 
-}
-.btn:hover{
-    cursor: pointer;
-    background-color: white;
-    color: #333333;
-    transition: 0.2s;
 }
 .btn.secondary{
     border: 3px solid #333333;
     background-color: white;
     color: #333333;
     position: relative;
-}
+    overflow-x: hidden;
 
+    & > p{
+        transition: 0.5s;
+    }
+    & > img{
+        width: 20px;
+        position: absolute;
+        right: 0;
+        transform: translateX(100%);
+        transition: 0.5s;
+    }
+}
+.btn.secondary:hover{
+    & > p{
+        transform: translateX(-40px);
+        transition: 0.5s;
+    }
+    & img{
+        transform: translateX(-100%);
+        transition: 0.5s;
+    }
+}
 
 section#navbar{
     position: fixed;
@@ -95,12 +112,22 @@ section#lateral{
     width: 40dvw;
     border-right: 3px solid black;
     padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
     overflow-y: scroll;
+    display: flex;
+    & .lateral-itens{
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
+    & > img{
+        height: 20px;
+        rotate: -90deg;
+        position: fixed;
+        top: 50%;
+        left: 40dvw;
+        transform: translateY(-300%);
+    }
 }
-
 section#lateral #lateral-desenhar{
     width: 100%;
     display: flex;

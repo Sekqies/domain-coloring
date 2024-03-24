@@ -2,6 +2,8 @@ function handleActiveClick(element){
     element.classList.toggle('active');
 }   
 
+
+
 // Definindo inputs:
 const carregamentoGrafico = document.getElementById('CarregamentoGrafico');
 const tamanhoGrafico = document.getElementById('TamanhoGrafico');
