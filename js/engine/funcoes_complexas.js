@@ -6,7 +6,6 @@ function isZero(z)
 
 
 //Operações ariméticas simples
-
 function soma(a,b)
 {
     return {
@@ -394,6 +393,7 @@ function modulo(z)
     return {real: Math.sqrt(z.imag**2 + z.real**2), imag:0};
 }
 
+
 var operacoes = {
     "+":function(args) //
     {
@@ -445,6 +445,7 @@ var operacoes = {
             if (args[0] == "i") return { real: 0, imag: 1 };
             if (args[0] == "e") return { real: Math.E, imag: 0 };
             if (args[0] == "pi") return { real: Math.PI, imag: 0 };
+            if (args[0] == "k") return {real: 1, imag:0};
             if (args[0] == "z") return vars.z;
             if (args[0] == "x") return {real: vars.z.real, imag: 0};
             if (args[0] == "y") return {real: vars.z.imag, imag: 0};
@@ -696,5 +697,21 @@ var operacoes = {
         {
             return modulo(args[0](vars));
         }
+    },
+    "factorial":function(args)
+    {
+        return function(vars)
+        {
+            return {real: 1, imag: 0};
+        }
+    },
+    "gamma":function(args)
+    {
+        return function(vars)
+        {
+            return {real:1, imag:0};
+        }
     }
 };
+
+export {operacoes};
