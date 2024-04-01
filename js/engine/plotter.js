@@ -1,6 +1,6 @@
 import { HSLtoRGB, getNumeroInteiro} from './color.js';
-import { operacoes } from './funcoes_complexas.js';
-//Receber um ponto e converte-lo para uma cor
+import {lista } from './funcoes_complexas.js';
+//Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
 function Domain_coloring(real, imag) {
 
@@ -140,4 +140,4 @@ function Plotter(funcaoHover) {
 }
 
 
-export { Plotter, operacoes };
+export { Plotter, lista };

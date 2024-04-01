@@ -1,5 +1,5 @@
 import { writeFragmentShader } from "./shaders.js";
-import { operacoes_gl } from "./funcoes_complexas_gl.js";
+import { listaFuncoes } from "./funcoes_complexas_gl.js";
 
 function PlotterGl(funcao, tamanhoCanvas) {
     let start = performance.now();
@@ -52,4 +52,4 @@ function PlotterGl(funcao, tamanhoCanvas) {
     console.log("Tempo do WEBGL");
     console.log(end - start);
 }
-export { PlotterGl, operacoes_gl }
+export { PlotterGl, listaFuncoes }

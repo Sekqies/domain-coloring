@@ -1,358 +1,128 @@
+
+class c_GSGLFunctionList {
+    constructor() {
+        this.functions = [];
+        this.declarations = '';
+        this.operations = {};
+    }
+
+    addFunction(func) {
+        this.functions.push(func);
+        this.declarations += func.GL_declaration + '\n';
+        this.operations[func.latex_name] = function(args) {
+            return function(vars) {
+                return func.runFunction(...args.map(arg => arg(vars)));
+            }
+        }
+    }
+    addOperation(name,funcDeclaration)
+    {
+        this.operations[name] = funcDeclaration;
+    }
+}
 class c_GSGLFunction
 {
-    constructor(name)
+    constructor(name,latex_name,GL_declaration)
     {
         this.name = name;
+        this.latex_name = latex_name;
+        this.GL_declaration = GL_declaration;
     }
     runFunction(...params){ 
         return `${this.name}(${params.join(',')})`;
+    }x
+}
+let listaFuncoes = new c_GSGLFunctionList();
+listaFuncoes.addOperation("var", 
+function(args){
+
+return function(vars)
+{
+    if (args[0] == 'z') return "vec2(a,b)";
+    if (args[0] == 'k') {animation_variable_exists = true; return "vec2(ANIMATION_VARIABLE,0.0)"}; 
+    if (args[0] == 'i') return "vec2(0.0,1.0)";
+    if (args[0] == 'e') return "vec2(E,0.0)";
+    if (args[0] == 'pi') return "vec2(PI,0.0)";
+    if (args[0] == 'x') return "vec2(a,0.0)";
+    if (args[0] == 'y') return "vec2(b,0.0)";
+    if (args[0] == 'a') return "vec2(a,0.0)";
+    if (args[0] == 'b') return "vec2(b,0.0)";
+
+}
+})
+listaFuncoes.addOperation("val", function(args) { return function(vars)
+{
+    return `vec2(${parseFloat(args[0]())},0.0)`;
+}})
+
+
+const GSGL_function_declarations = [
+    new c_GSGLFunction("cneg","neg","vec2 cneg(vec2 z) {return -z;}"),
+    new c_GSGLFunction("csum", "+", "vec2 csum(vec2 a, vec2 b) {return a+b;}"),
+    new c_GSGLFunction("csub", "-", "vec2 csub(vec2 a, vec2 b) {return a-b;}"),
+    new c_GSGLFunction("cmult", "*", "vec2 cmult(vec2 a, vec2 b) {return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);}"),
+    new c_GSGLFunction("cdiv", "fraction", "vec2 cdiv(vec2 a, vec2 b) {float denominador = pow(b.x,2.0) + pow(b.y,2.0); return vec2((a.x*b.x + a.y * b.y) / denominador, (a.y*b.x - a.x*b.y) / denominador);}"),
+    new c_GSGLFunction("cpow", "exponential", "vec2 cpow(vec2 a, vec2 b) {float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento));}"),
+    new c_GSGLFunction("csqrt", "sqrt", "vec2 csqrt(vec2 a) {return cpow(a,vec2(0.5,0.0));}"),
+    new c_GSGLFunction("clog", "log", "vec2 clog(vec2 a) {return vec2(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)), atan(a.y,a.x));}"),
+    new c_GSGLFunction("csen", "sin", "vec2 csen(vec2 a) {return vec2(sin(a.x)*cosh(a.y), cos(a.x)*sinh(a.y));}"),
+    new c_GSGLFunction("ccos", "cos", "vec2 ccos(vec2 a) {return vec2(cos(a.x)*cosh(a.y), -sin(a.x) * sinh(a.y));}"),
+    new c_GSGLFunction("ctan", "tan", "vec2 ctan(vec2 a) {return cdiv(csen(a),ccos(a));}"),
+    new c_GSGLFunction("csec", "sec", "vec2 csec(vec2 a) {return cdiv(vec2(2.0,0.0),ccos(a));}"),
+    new c_GSGLFunction("ccsc", "csc", "vec2 ccsc(vec2 a) {return cdiv(vec2(1.0,0.0),csen(a));}"),
+    new c_GSGLFunction("ccot", "cot", "vec2 ccot(vec2 a) {return cdiv(vec2(1.0,0.0),ctan(a));}"),
+    new c_GSGLFunction("csenh", "sinh", "vec2 csenh(vec2 a) {return vec2(sinh(a.x)*cos(a.y), cosh(a.x)*sin(a.y));}"),
+    new c_GSGLFunction("ccosh", "cosh", "vec2 ccosh(vec2 a) {return vec2(cosh(a.x)*cos(a.y), sinh(a.x)*sin(a.y));}"),
+    new c_GSGLFunction("ctanh", "tanh", "vec2 ctanh(vec2 a) {return cdiv(csenh(a),ccosh(a));}"),
+    new c_GSGLFunction("ccsch", "csch", "vec2 ccsch(vec2 a) {return cdiv(vec2(1.0,0.0),csenh(a));}"),
+    new c_GSGLFunction("csech", "sech", "vec2 csech(vec2 a) {return cdiv(vec2(1.0,0.0),ccosh(a));}"),
+    new c_GSGLFunction("ccoth", "coth", "vec2 ccoth(vec2 a) {return cdiv(vec2(1.0,0.0),ctanh(a));}"),
+    new c_GSGLFunction("carcsen", "arcsin", "vec2 carcsen(vec2 a) {return cmult(vec2(0.0,1.0), clog(csub(csqrt(csub(vec2(1.0,0.0), cmult(a, a))), cmult(a, vec2(0.0,1.0)))));}"),
+    new c_GSGLFunction("carccos", "arccos", "vec2 carccos(vec2 a) {return csum(vec2(PI/2.0,0.0), -carcsen(a));}"),
+    new c_GSGLFunction("carctan", "arctan", "vec2 carctan(vec2 a) {return cmult(vec2(0.0,-0.5), clog(cdiv(csum(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a)), csub(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a)))));}"),
+    new c_GSGLFunction("carccsc", "arccsc", "vec2 carccsc(vec2 a) {return carcsen(cdiv(vec2(1.0, 0.0), a));}"),
+    new c_GSGLFunction("carcsec", "arcsec", "vec2 carcsec(vec2 a) {return carccos(cdiv(vec2(1.0, 0.0), a));}"),
+    new c_GSGLFunction("carccot", "arccot", "vec2 carccot(vec2 a) {return carctan(cdiv(vec2(1.0, 0.0), a));}"),
+    new c_GSGLFunction("carcsenh", "arcsinh", "vec2 carcsenh(vec2 a) {return clog(csum(a, csqrt(csum(cmult(a,a),vec2(1.0,0.0)))));}"),
+    new c_GSGLFunction("carccosh", "arccosh", "vec2 carccosh(vec2 a) {return clog(csum(a, csqrt(csub(cmult(a,a),vec2(1.0,0.0)))));}"),
+    new c_GSGLFunction("carctanh", "arctanh", "vec2 carctanh(vec2 a) {return cmult(vec2(0.5,0.0), clog(cdiv(csum(vec2(1.0,0.0), a), csub(vec2(1.0,0.0), a))));}"),
+    new c_GSGLFunction("carccsch", "arccsch", "vec2 carccsch(vec2 a) {vec2 div = cdiv(vec2(1.0,0.0),a); return clog(csum(div,csqrt(csum(vec2(1.0,0.0),cmult(div,div)))));}"),
+    new c_GSGLFunction("carcsech", "arcsech", "vec2 carcsech(vec2 z) {vec2 div = cdiv(vec2(1.0,0.0),z); return clog(csum(div,cmult(csqrt(csum(vec2(1.0,0.0),div)),csqrt(csum(vec2(-1.0,0.0),div)))));}"),
+    new c_GSGLFunction("carccoth", "arccoth", "vec2 carccoth(vec2 a) {return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0)))));}"),
+    new c_GSGLFunction("cgamma","gamma",`vec2 cgamma_right(vec2 z) {
+        vec2 w = csub(z, vec2(1.0, 0.0));
+        vec2 t = cadd(w, vec2(7.5, 0.0));
+        vec2 x = vec2(GAMMA_COEFF[0], 0.0);
+        float sinal = 1.0;
+        for (int i=1 ; i<8 ; i++)
+        {
+            x = cadd(x, sinal*cmult(vec2(GAMMA_COEFF[i], 0.0), creciprocal(cadd(w, vec2(i, 0.0)))));
+            sinal = -sinal;
+        }
+        
+        return cmult(vec2(sqrt(2.0 * PI), 0.0), cmult(x, cexp(csub(cmult(clog(t), cadd(w, vec2(0.5, 0.0))), t))));
     }
+    vec2 cgamma_left(vec2 z) {
+        return cdiv(vec2(PI, 0.0), cmult(csin(cmult(z, vec2(PI, 0.0))), cgamma_right(csub(vec2(1.0, 0.0), z))));
+    }
+    vec2 cgamma(vec2 z) {
+        if (z.x < 0.5) {
+            return cgamma_left(z);
+        } else {
+            return cgamma_right(z);
+        }
+    }`),
+    new c_GSGLFunction("cfactorial","factorial","vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z));")
+];
+
+
+for (let i =0; i<GSGL_function_declarations.length; i++)
+{
+    listaFuncoes.addFunction(GSGL_function_declarations[i]);
 }
 
-const csum_gl = new c_GSGLFunction("csum");
-const csub_gl = new c_GSGLFunction("csub");
-const cmult_gl = new c_GSGLFunction("cmult");
-const cdiv_gl = new c_GSGLFunction("cdiv");
-const cpower_gl = new c_GSGLFunction("cpow");
-const csqrt_gl = new c_GSGLFunction("csqrt");
-const clog_gl = new c_GSGLFunction("clog");
-
-const csen_gl = new c_GSGLFunction("csen");
-const ccos_gl = new c_GSGLFunction("ccos");
-const ctan_gl = new c_GSGLFunction("ctan");
-
-const csec_gl = new c_GSGLFunction("csec");
-const ccsc_gl = new c_GSGLFunction("ccsc");
-const ccot_gl = new c_GSGLFunction("ccot");
-
-const csenh_gl = new c_GSGLFunction("csenh");
-const ccosh_gl = new c_GSGLFunction("ccosh");
-const ctanh_gl = new c_GSGLFunction("ctanh");
-
-const ccsch_gl = new c_GSGLFunction("ccsch");
-const csech_gl = new c_GSGLFunction("csech");
-const ccoth_gl = new c_GSGLFunction("ccoth");
-
-const carcsen_gl = new c_GSGLFunction("carcsen");
-const carccos_gl = new c_GSGLFunction("carccos");
-const carctan_gl = new c_GSGLFunction("carctan");
-
-const carccsc_gl = new c_GSGLFunction("carccsc");
-const carcsec_gl = new c_GSGLFunction("carcsec");
-const carccot_gl = new c_GSGLFunction("carccot");
-
-const carcsenh_gl = new c_GSGLFunction("carcsenh");
-const carccosh_gl = new c_GSGLFunction("carccosh");
-const carctanh_gl = new c_GSGLFunction("carctanh");
-
-const carccsch_gl = new c_GSGLFunction("carccsch");
-const carcsech_gl = new c_GSGLFunction("carcsech");
-const carccoth_gl = new c_GSGLFunction("carccoth");
+console.log(listaFuncoes.operations)
 
 
-var operacoes_gl = {
-    "var":function(args)
-    {
-        return function(vars)
-        {
-            if (args[0] == 'z') return "vec2(a,b)";
-            if (args[0] == 'k') {animation_variable_exists = true; return "vec2(ANIMATION_VARIABLE,0.0)"}; 
-            if (args[0] == 'i') return "vec2(0.0,1.0)";
-            if (args[0] == 'e') return "vec2(2.718281828459045,0.0)";
-            if (args[0] == 'pi') return "vec2(3.141592653589793,0.0)";
-            if (args[0] == 'x') return "vec2(a,0.0)";
-            if (args[0] == 'y') return "vec2(b,0.0)";
-            if (args[0] == 'a') return "vec2(a,0.0)";
-            if (args[0] == 'b') return "vec2(b,0.0)";
 
-        }
-    
-    },
-    "val":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(${parseFloat(args[0])},0.0)`;
-        }
-    }
-    ,   
-    "neg":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(-${args[0](vars)}.x,-${args[0](vars)}.y)`;
-        }
-    },
-    "+":function(args) //
-    {
-        return function(vars)
-        {
-            return csum_gl.runFunction(args[0](vars),args[1](vars))
-        }
-    }
-    ,
-    "-":function(args) //
-    {
-        return function(vars)
-        {
-            return csub_gl.runFunction(args[0](vars),args[1](vars))
-        }
-    }
-    ,
-    "*":function(args) //
-    {
-        return function(vars)
-        {
-            return cmult_gl.runFunction(args[0](vars),args[1](vars))
-        }
-    }
-    ,
-    "fraction":function(args) //
-    {
-        return function(vars)
-        {
-            return cdiv_gl.runFunction(args[0](vars),args[1](vars))
-        }
-    },
-    "exponential":function(args)//
-    {
-        return function(vars)
-        {
-            return cpower_gl.runFunction(args[0](vars),args[1](vars))
-        }
-    },
-    "sqrt":function(args)//
-    {
-        return function(vars)
-        {
-            return csqrt_gl.runFunction(args[0](vars))
-        }
-    },
-    "log":function(args)//
-    {
-        return function(vars)
-        {
-            return clog_gl.runFunction(args[0](vars))
-        }
-    },
-    "sin":function(args)//
-    {
-        return function(vars)
-        {
-            return csen_gl.runFunction(args[0](vars))
-        }
-    },
-    "cos":function(args)//
-    {
-        return function(vars)
-        {
-            return ccos_gl.runFunction(args[0](vars))
-        }
-    },
-    "tan":function(args)//
-    {
-        return function(vars)
-        {
-            return ctan_gl.runFunction(args[0](vars))
-        }
-    },
-    "cot":function(args)//
-    {
-        return function(vars)
-        {
-            return ccot_gl.runFunction(args[0](vars))
-        }
-    },
-    "csc":function(args)//
-    {
-        return function(vars)
-        {
-            return ccsc_gl.runFunction(args[0](vars))
-        }
-    },
-    "csch":function(args)//
-    {
-        return function(vars)
-        {
-            return ccsch_gl.runFunction(args[0](vars))
-        }
-    },
-    "sech":function(args)//
-    {
-        return function(vars)
-        {
-            return csech_gl.runFunction(args[0](vars))
-        }
-    },
-    "coth":function(args)//
-    {
-        return function(vars)
-        {
-            return ccoth_gl.runFunction(args[0](vars))
-        }
-    },
-    "sec":function(args)//
-    {
-        return function(vars)
-        {
-            return csec_gl.runFunction(args[0](vars))
-        }
-    },
-    "sinh":function(args)//
-    {
-        return function(vars)
-        {
-            return csenh_gl.runFunction(args[0](vars))
-        }
-    },
-    "cosh":function(args)//
-    {
-        return function(vars)
-        {
-            return ccosh_gl.runFunction(args[0](vars))
-        }
-    },
-    "tanh":function(args)//
-    {
-        return function(vars)
-        {
-            return ctanh_gl.runFunction(args[0](vars))
-        }
-    },
-    "arcsin":function(args)//
-    {
-        return function(vars)
-        {
-            return carcsen_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccos":function(args)//
-    {
-        return function(vars)
-        {
-            return carccos_gl.runFunction(args[0](vars))
-        }
-    },
-    "arctan":function(args)//
-    {
-        return function(vars)
-        {
-            return carctan_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccot":function(args)//
-    {
-        return function(vars)
-        {
-            return carccot_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccsc":function(args)//
-    {
-        return function(vars)
-        {
-            return carccsc_gl.runFunction(args[0](vars))
-        }
-    },
-    "arcsec":function(args)//
-    {
-        return function(vars)
-        {
-            return carcsec_gl.runFunction(args[0](vars))
-        }
-    },
-    "arcsinh":function(args)//
-    {
-        return function(vars)
-        {
-            return carcsenh_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccosh":function(args)//
-    {
-        return function(vars)
-        {
-            return carccosh_gl.runFunction(args[0](vars))
-        }
-    },
-    "arctanh":function(args)//
-    {
-        return function(vars)
-        {
-            return carctanh_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccoth":function(args)//
-    {
-        return function(vars)
-        {
-            return carccoth_gl.runFunction(args[0](vars))
-        }
-    },
-    "arccsch":function(args)//
-    {
-        return function(vars)
-        {
-            return carccsch_gl.runFunction(args[0](vars))
-        }
-    },
-    "arcsech":function(args)//
-    {
-        return function(vars)
-        {
-            return carcsech_gl.runFunction(args[0](vars))
-        }
-    },
-    "Re":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(${args[0](vars)}.x,0.0)`
-        }
-    },
-    "Im":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(0.0,${args[0](vars)}.x)`
-        }
-    },
-    "conj":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(${args[0](vars)}.x,-${args[0](vars)}.y)`
-        }
-    },
-    "arg":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(atan(${args[0](vars)}.y,${args[0](vars)}.x),0)`
-        }
-    },
-    "absolutevalue":function(args)
-    {
-        return function(vars)
-        {
-            return `vec2(length(${args[0](vars)}),0)`
-        }
-    },
-    "factorial":function(args)
-    {
-        return function(vars)
-        {
-            return `cfactorial(${args[0](vars)})`
-        }
-    },
-    "gamma":function(args)
-    {
-        return function(vars)
-        {
-            return `cgamma(${args[0](vars)})`
-        }
-    }
-    
-}
-
-export {operacoes_gl}
+export {listaFuncoes}

@@ -46,6 +46,15 @@ function conjugar(z)
 {
     return {real: z.real, imag: -z.imag}
 }
+function Re(z)
+{
+    return {real: z.real, imag: 0};
+}
+function Im(z)
+{
+    return{real:z.imag,imag:0}
+}
+
 
 //Funções hiperbólicas reais
 
@@ -386,6 +395,10 @@ function exponencial(a,b)
     return {real: x * Math.cos(y), imag: x * Math.sin(y)};
 }
 
+function sqrt(z)
+{
+    return exponencial(z, {real: 0.5, imag:0})
+}
 //Outras
 
 function modulo(z)
@@ -393,8 +406,115 @@ function modulo(z)
     return {real: Math.sqrt(z.imag**2 + z.real**2), imag:0};
 }
 
+function gamma(z)
+{
+    return z;
 
-var operacoes = {
+}
+
+function fatorial(z)
+{
+    return z;
+}
+
+
+
+class c_Function{
+    constructor(function_name,latex_name)
+    {
+        this.function_name = function_name;
+        this.latex_name = latex_name
+    }
+    runFunction(...params) {
+        return this.function_name(...params);
+    }
+}
+class c_FunctionList
+{
+    constructor()
+    {
+        this.operations = [];
+    }
+    addFunction(new_function)
+    {
+        this.operations[new_function.latex_name] = function(args)
+        {
+            return function(vars)
+            {
+                return new_function.runFunction(...args.map(arg => arg(vars)));
+            }
+        }
+    }
+    addOperation(name,operation)
+    {
+        this.operations[name] = operation;
+    }
+}
+
+const c_Functions = [
+    new c_Function(soma,"+"),
+    new c_Function(subtrair,"-"),
+    new c_Function(multiplicar, "*"),
+    new c_Function(dividir, "fraction"),
+    new c_Function(arg, "arg"),
+    new c_Function(conjugar, "conj"),
+    new c_Function(log, "log"),
+    new c_Function(sen, "sin"),
+    new c_Function(cos, "cos"),
+    new c_Function(tg, "tan"),
+    new c_Function(senh, "senh"),
+    new c_Function(cosh, "cosh"),
+    new c_Function(tanh, "tanh"),
+    new c_Function(sec, "sec"),
+    new c_Function(csc, "csc"),
+    new c_Function(cot, "cot"),
+    new c_Function(csch, "csch"),
+    new c_Function(sech, "sech"),
+    new c_Function(coth, "coth"),
+    new c_Function(arcsen, "arcsen"),
+    new c_Function(arccos, "arccos"),
+    new c_Function(arctan, "arctan"),
+    new c_Function(arcsenh, "arcsenh"),
+    new c_Function(arccosh, "arccosh"),
+    new c_Function(arctanh, "arctanh"),
+    new c_Function(arccsc, "arccsc"),
+    new c_Function(arcsec, "arcsec"),
+    new c_Function(arccot, "arccot"),
+    new c_Function(arccsch, "arccsch"),
+    new c_Function(arcsech, "arcsech"),
+    new c_Function(arccoth, "arccoth"),
+    new c_Function(exponencial, "exponential"),
+    new c_Function(sqrt, "squareroot"),
+    new c_Function(Re,"Re"),
+    new c_Function(Im,"Im"),
+    new c_Function(modulo, "absolutevalue"),
+    new c_Function(fatorial,"factorial"),
+    new c_Function(gamma,"gamma")
+];
+
+
+let lista = new c_FunctionList
+for(let fun in c_Functions)
+lista.addFunction(fun);
+
+lista.addOperation("val", function(args){return function(vars){return {real: args[0], imag:0}}})
+lista.addOperation("vars", function(args) {return function(vars) {
+    if (args[0] == "i") return { real: 0, imag: 1 };
+    if (args[0] == "e") return { real: Math.E, imag: 0 };
+    if (args[0] == "pi") return { real: Math.PI, imag: 0 };
+    if (args[0] == "k") return {real: 1, imag:0};
+    if (args[0] == "z") return vars.z;
+    if (args[0] == "x") return {real: vars.z.real, imag: 0};
+    if (args[0] == "y") return {real: vars.z.imag, imag: 0};
+    if (args[0] == "a") return {real: vars.z.real, imag: 0};
+    if (args[0] == "b") return {real: vars.z.imag, imag: 0 };
+
+}} );
+
+
+
+
+/*var operacoes = {
     "+":function(args) //
     {
         return function(vars)
@@ -438,7 +558,7 @@ var operacoes = {
             ],
             ["val",[2]]
         ]
-    ]*/
+    ]
 
     "var": function(args) {//
         return function(vars) {
@@ -711,7 +831,14 @@ var operacoes = {
         {
             return {real:1, imag:0};
         }
+    },
+    "lambertw":function(args)
+    {
+        return function(vars)
+        {
+            return subtrair(log(args[0](vars)),log(log(args[0](vars))));
+        }
     }
-};
+};*/
 
-export {operacoes};
+export {lista};

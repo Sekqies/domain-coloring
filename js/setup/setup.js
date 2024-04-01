@@ -1,7 +1,7 @@
 import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
-import { PlotterGl, operacoes_gl } from '/js/gl/plotter_gl.js';
-import { Plotter, operacoes } from '/js/engine/plotter.js';
+import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
+import { Plotter, lista } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
 
 function initializeVariables() 
@@ -44,11 +44,10 @@ function init() {
     canvas.height = tamanhoCanvas;
     tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
     qtndInteiros = document.getElementById('numero_inteiros').value;
-    funcaoHover = guppy.func(operacoes);
-
+    funcaoHover = guppy.func(lista.operations);
     Plotter(funcaoHover);
     animation_variable_exists = false;
-    const result_gl = guppy.func(operacoes_gl)();
+    const result_gl = guppy.func(listaFuncoes.operations)();
     console.log(`Função a ser renderizada ${result_gl}`);
     if (animationCheckbox.checked && animation_variable_exists)
     {
@@ -72,8 +71,8 @@ function createEventListeners()
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             console.log(guppy.engine.get_content("ast"));
-            console.log(guppy.func(operacoes));
-            console.log(guppy.func(operacoes)({ 'z': { real: 1, imag: 1 } }));
+            console.log(guppy.func(lista.operations));
+            console.log(guppy.func(lista.operations)({ 'z': { real: 1, imag: 1 } }));
             init();
         }
     });
