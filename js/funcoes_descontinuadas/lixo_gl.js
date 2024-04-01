@@ -352,7 +352,6 @@ var operacoes_gl_NOVO = {
     
 }
 
-console.log(operacoes_gl_NOVO)
 var operacoes_gl = {
     "var":function(args)
     {

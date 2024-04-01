@@ -49,7 +49,6 @@ function PlotterGl(funcao, tamanhoCanvas) {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     let end = performance.now();
-    console.log("Tempo do WEBGL");
-    console.log(end - start);
+    console.log("Tempo do WEBGL", end-start);
 }
 export { PlotterGl, listaFuncoes }

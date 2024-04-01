@@ -88,8 +88,7 @@ function Plotter(funcaoHover) {
     alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
 
 
-    console.log(funcaoHover);
-    console.log(funcaoHover({ z: { real: 1, imag: 1 } }))
+    console.log("Funcao: ", funcaoHover({ z: { real: 1, imag: 1 } }))
     const canvasContext2d = canvas.getContext("2d");
     const width = canvas.width;
 
@@ -132,7 +131,7 @@ function Plotter(funcaoHover) {
     }
 
     let FIM = performance.now();
-    console.log(FIM - INICIO);
+    console.log("Tempo de Plotter com JS:", FIM - INICIO);
     //Coloca a imagem no canvas 
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");

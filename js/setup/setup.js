@@ -4,6 +4,14 @@ import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
 import { Plotter, lista } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
 
+const testing = true;
+
+if(!testing)
+{
+    console.log = function(){}
+}
+
+
 function initializeVariables() 
 {
     canvas = document.getElementById("domainColorCanvas");
@@ -49,6 +57,7 @@ function init() {
     animation_variable_exists = false;
     const result_gl = guppy.func(listaFuncoes.operations)();
     console.log(`Função a ser renderizada ${result_gl}`);
+    console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
     if (animationCheckbox.checked && animation_variable_exists)
     {
         const minimo = parseFloat(limiteMinimo.value);
@@ -70,9 +79,6 @@ function createEventListeners()
 {
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
-            console.log(guppy.engine.get_content("ast"));
-            console.log(guppy.func(lista.operations));
-            console.log(guppy.func(lista.operations)({ 'z': { real: 1, imag: 1 } }));
             init();
         }
     });

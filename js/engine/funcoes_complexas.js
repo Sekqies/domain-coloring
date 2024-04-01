@@ -451,7 +451,7 @@ class c_FunctionList
     }
 }
 
-const c_Functions = [
+const c_Function_Declarations = [
     new c_Function(soma,"+"),
     new c_Function(subtrair,"-"),
     new c_Function(multiplicar, "*"),
@@ -494,8 +494,10 @@ const c_Functions = [
 
 
 let lista = new c_FunctionList
-for(let fun in c_Functions)
-lista.addFunction(fun);
+for (let i=0;i<c_Function_Declarations.length; i++)
+{
+    lista.addFunction(c_Function_Declarations[i]);
+}
 
 lista.addOperation("val", function(args){return function(vars){return {real: args[0], imag:0}}})
 lista.addOperation("vars", function(args) {return function(vars) {

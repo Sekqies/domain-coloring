@@ -3,7 +3,6 @@ import { getNumeroInteiro } from '/js/engine/color.js';
 function loadHover(funcaoHover, nomeStringCanvas) {
     let nomeCanvas = document.getElementById(nomeStringCanvas);
     let descricaoFuncao = nomeCanvas.parentElement.querySelector('p');
-    console.log(funcaoHover);
     //Usar as variaveis abaixo caso deseje tirar a linha de white-space: nowrap, e colocar um padidng: 250px ao invez.
     //let nomeCanvasContainerStyle = window.getComputedStyle(nomeCanvas.parentElement);
     //let nomeCanvasContainerStylePaddingLeft = Number(nomeCanvasContainerStyle.getPropertyValue('padding-left').split('px')[0]);

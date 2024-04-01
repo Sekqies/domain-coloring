@@ -52,7 +52,7 @@ return function(vars)
 })
 listaFuncoes.addOperation("val", function(args) { return function(vars)
 {
-    return `vec2(${parseFloat(args[0]())},0.0)`;
+    return `vec2(${parseFloat(args[0])},0.0)`;
 }})
 
 
@@ -121,7 +121,6 @@ for (let i =0; i<GSGL_function_declarations.length; i++)
     listaFuncoes.addFunction(GSGL_function_declarations[i]);
 }
 
-console.log(listaFuncoes.operations)
 
 
 
