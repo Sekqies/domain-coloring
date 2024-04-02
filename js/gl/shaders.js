@@ -1,5 +1,5 @@
 function writeFragmentShader(funcao, width, height, inteiros) {
-    console.log(width,height)
+    console.log("Proporções gráfico:", width,height)
     let continuo = tipo_grafico == 1;
     let vazio = funcao === '';
     return `
@@ -23,6 +23,14 @@ function writeFragmentShader(funcao, width, height, inteiros) {
     float senh(float x)
     {
         return sinh(x);
+    }
+    const float EPSILON = 1e-7;
+    float GAMMA_COEFF[9];
+    vec2 drop_imag(vec2 z)
+    {
+        if (abs(z.y)<=EPSILON)
+            z.y = 0.0;
+        return z;
     }
     vec2 csum(vec2 a, vec2 b) { return vec2(a.x + b.x, a.y + b.y); }
     vec2 cadd(vec2 a, vec2 b) { return csum(a,b);}
@@ -64,26 +72,17 @@ function writeFragmentShader(funcao, width, height, inteiros) {
         
     vec2 carccoth(vec2 a) { return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0))))); }
     
-const float EPSILON = 1e-7;
-
-vec2 drop_imag(vec2 z)
-{
-    if (abs(z.y)<=EPSILON)
-        z.y = 0.0;
-    return z;
-}
 vec2 cgamma_right(vec2 z) {
     vec2 w = csub(z, vec2(1.0, 0.0));
     vec2 t = cadd(w, vec2(7.5, 0.0));
-    vec2 x = vec2(0.99999999999980993, 0.0);
-    x = cadd(x, cmult(vec2(676.5203681218851, 0.0), creciprocal(cadd(w, vec2(1.0, 0.0)))));
-    x = csub(x, cmult(vec2(1259.1392167224028, 0.0), creciprocal(cadd(w, vec2(2.0, 0.0)))));
-    x = cadd(x, cmult(vec2(771.32342877765313, 0.0), creciprocal(cadd(w, vec2(3.0, 0.0)))));
-    x = csub(x, cmult(vec2(176.61502916214059, 0.0), creciprocal(cadd(w, vec2(4.0, 0.0)))));
-    x = cadd(x, cmult(vec2(12.507343278686905, 0.0), creciprocal(cadd(w, vec2(5.0, 0.0)))));
-    x = csub(x, cmult(vec2(0.13857109526572012, 0.0), creciprocal(cadd(w, vec2(6.0, 0.0)))));
-    x = cadd(x, cmult(vec2(9.9843695780195716e-6, 0.0), creciprocal(cadd(w, vec2(7.0, 0.0)))));
-    x = cadd(x, cmult(vec2(1.5056327351493116e-7, 0.0), creciprocal(cadd(w, vec2(8.0, 0.0)))));
+    vec2 x = vec2(GAMMA_COEFF[0], 0.0);
+    float sinal = 1.0;
+    for (int i=1 ; i<8 ; i++)
+    {
+        x = cadd(x, sinal*cmult(vec2(GAMMA_COEFF[i], 0.0), creciprocal(cadd(w, vec2(i, 0.0)))));
+        sinal = -sinal;
+    }
+    
     return cmult(vec2(sqrt(2.0 * PI), 0.0), cmult(x, cexp(csub(cmult(clog(t), cadd(w, vec2(0.5, 0.0))), t))));
 }
 vec2 cgamma_left(vec2 z) {
@@ -100,41 +99,22 @@ vec2 cfactorial(vec2 z)
 {
     return cgamma(cadd(z,vec2(1.0,0.0)));
 }
-/*
-vec2 cfactorial(vec2 z)
+vec2 lambertw(vec2 z)
 {
-    float g = 7.0;
-    float n = 9.0;
-    float GAMMA_COEFF[9];
+    return csub(clog(z),clog(clog(z)));
+}
+void initalizeArrays()
+{
     GAMMA_COEFF[0] = 0.99999999999980993;
     GAMMA_COEFF[1] = 676.5203681218851;
-    GAMMA_COEFF[2] = -1259.1392167224028;
+    GAMMA_COEFF[2] = 1259.1392167224028;
     GAMMA_COEFF[3] = 771.32342877765313;
-    GAMMA_COEFF[4] = -176.61502916214059;
+    GAMMA_COEFF[4] = 176.61502916214059;
     GAMMA_COEFF[5] = 12.507343278686905;
-    GAMMA_COEFF[6] = -0.13857109526572012;
+    GAMMA_COEFF[6] = 0.13857109526572012;
     GAMMA_COEFF[7] = 9.9843695780195716e-6;
     GAMMA_COEFF[8] = 1.5056327351493116e-7;
-    vec2 y;
-    vec2 x;
-    if (z.x < 0.5)
-    {
-        y = cdiv(vec2(PI,0.0),cmult(csin(cmult(z,vec2(PI,0.0))),(csub(z,vec2(1.0,0.0)))));
-    }
-    else {
-        z = csub(z,vec2(1.0,0.0));   
-        x = vec2(GAMMA_COEFF[0],0.0);
-        for (int i=1; i<9;i++)
-        {
-            x = csum(x,cdiv(vec2(GAMMA_COEFF[i],0.0),cadd(z,vec2(0.0,1.0))));
-        }
-        vec2 t = cadd(z,vec2(g+0.5,0.0));
-        y = cmult(cpow(t,cadd(z,vec2(0.5,0.0))),cexp(cmult(cneg(t),z)));
-    }
-    return drop_imag(y);
 }
-*/
-
 
     vec2 canvasSize = vec2(${width},${height});
     vec3 hsl2rgb(vec3 hsl) {
@@ -142,6 +122,7 @@ vec2 cfactorial(vec2 z)
         return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
     void main() {
+        initalizeArrays();
         float a = ${inteiros}.0 * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5);
         float b = ${inteiros}.0 * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
         float x = a;
