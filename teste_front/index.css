@@ -268,10 +268,13 @@ section#lateral .lateral-div .lateral-div-content{
         border-radius: 5px;
         aspect-ratio: 1;
         margin-left: 15px;
+        cursor: pointer;
+        transition: 0.2s;
     }
 
-    & .input-checkbox#active{
+    & .input-checkbox.active{
         background-color: #333333;
+        transition: 0.2s;
     }
 
     & .input-number{

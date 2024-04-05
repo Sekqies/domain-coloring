@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domain Coloring</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
 
     <section id="navbar">
@@ -29,17 +31,16 @@
                     </button>
                 </div>
             </div>
-    
+
             <div id="lateral-opcoes" class="lateral-div active">
-    
-    
+
+
                 <div class="lateral-div-header">
                     <h2>Opções: </h2>
-                    <img src="../assets/Arrow.svg" alt="Seta ocultar"
-                    id="LateralOpcoes">
+                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralOpcoes">
                 </div>
-    
-    
+
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Carregamento do gráfico: </p>
@@ -56,92 +57,91 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="input-interval">
-                        <input type="number" value='-2'>
+                        <input id="real-minimo" type="number" value='-2'>
                         <p> &lt; Re &lt; </p>
-                        <input type="number" value="2">
+                        <input id='real-maximo' type="number" value="2">
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="input-interval">
-                        <input type="number" value="-2">
+                        <input id="imag-minimo" type="number" value="-2">
                         <p> &lt; Im &lt; </p>
-                        <input type="number" value="2">
+                        <input id="imag-maximo" type="number" value="2">
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Tamanho do gráfico</p>
                     </div>
-                    <div class="input-dropdown">
+                    <div class="input-dropdown" id="">
                         <div class="input-dropdown-fixed">
-                            <input type="number" value='500'>
+                            <input id="tamanho-grafico" type="number" value='500'>
+                            <p style="display: none;">Grafico que ocupa a tela inteira</p>
                             <div id="TamanhoGrafico">
                                 <p>px</p>
                                 <img src="../assets/Arrow.svg" alt="Seta ocultar">
                             </div>
                         </div>
                         <div class="input-dropdown-options">
-                            <h4>Grafico ocupa a tela inteira</h4>
+                            <h4 onclick="alteraOpcaoTamanhoGrafico()">Grafico ocupa a tela inteira</h4>
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Eixos cartesianos</p>
                     </div>
-                    <div class="input-checkbox" id="active"
-                    onclick="">
+                    <div class="input-checkbox" onclick="changeEixosCartesianosActive(this)">
                     </div>
                 </div>
-    
+
             </div>
-    
+
             <div id="lateral-animacao" class="lateral-div active">
                 <div class="lateral-div-header">
                     <h2>Animação</h2>
-                    <img src="../assets/Arrow.svg" alt="Seta ocultar"
-                    id="LateralAnimacao">
+                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralAnimacao">
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <h3>Utilize a letra 'k' na função para criar uma animação.</h3>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Variação:</p>
                     </div>
                     <div class="input-interval">
-                        <input type="number">
+                        <input id="variacao-minimo" value='0' type="number">
                         <p>a</p>
-                        <input type="number">
+                        <input id="variacao-maximo" value='10' type="number">
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Incremento: </p>
                     </div>
                     <div class="input-number">
-                        <input type="number">
+                        <input id="incremento" value='0.5' type="number" step="0.1">
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>FPS: </p>
                     </div>
                     <div class="input-number">
-                        <input type="number">
+                        <input id="fps" value='30' step='10' type="number">
                     </div>
                 </div>
-                
+
                 <div class="lateral-div-content">
                     <div class="lateral-div-content-option">
                         <p>Tipo de animação: </p>
@@ -159,11 +159,11 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="lateral-div-content">
                     <button class="btn secondary">Baixar animação</button>
                 </div>
-    
+
             </div>
 
             <div style="min-height: 1px;"></div>
@@ -178,4 +178,5 @@
 
     <script src="index.js" defer></script>
 </body>
+
 </html>
