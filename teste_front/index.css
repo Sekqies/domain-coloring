@@ -91,7 +91,21 @@ input:focus {
     }
 }
 
+section#navbar.hidded{
+    transform: translateY(calc(-100% + calc(var(--padding-large) + var(--arrow-size))));
+    opacity: 0;
+    transition: 1s;
+    & img{
+        rotate: 180deg;
+    }
+}
+section#navbar.hidded:hover{
+    opacity: 1;
+    transition: 1s;
+}
+
 section#navbar {
+    transition: 1s;
     position: fixed;
     min-width: 100dvw;
     background-color: #fff;

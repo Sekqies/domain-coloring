@@ -4,11 +4,25 @@ function handleActiveClick(element) {
 
 //Função para ocultar as opções:
 const lateral = document.getElementById('lateral');
+const navbar = document.getElementById('navbar');
+const setaLateral = document.getElementById('setaLateral');
+const setaNavbar = document.getElementById('setaNavbar');
 const domainColoring = document.getElementById('domainColoring');
-function ocultaOpcoes(element) {
+function ocultaLateral() {
     lateral.classList.toggle('hidded');
     domainColoring.classList.toggle('hidded');
-    element.style.rotate = element.style.rotate == '90deg' ? '-90deg' : '90deg';
+    setaLateral.style.rotate = setaLateral.style.rotate == '90deg' ? '-90deg' : '90deg';
+}
+
+function ocultaNavbar(){
+    //Ocula opções se não estiver ocultada
+    if(!lateral.classList.contains('hidded')){
+        ocultaLateral();
+    }
+
+    //Oculta navbar
+    navbar.classList.toggle('hidded');
+    setaNavbar.style.rotate = setaNavbar.style.rotate == '180deg' ? '0deg' : '180deg';
 }
 
 // Definindo inputs:
@@ -66,7 +80,6 @@ var valorTipoAnimacao = 'normal';
 //Função para alterar o valor das variaveis quando o usuário clicar em um dos botões:
 function handleValueChange(element, type) {
     const value = element.value;
-    console.log("Elemento: ", element, "Valor: ", value, "Tipo: ", type, "\n");
     switch (type) {
         case 1:
             realMinimo = value;
@@ -142,9 +155,7 @@ opcoesTipoAnimacao['repeat'] = 'Repeat';
 
 
 const h4opcoesCarregamentoGrafico = carregamentoGrafico.parentElement.parentElement.querySelectorAll('.input-dropdown-options > h4');
-console.log(h4opcoesCarregamentoGrafico);
 const h1opcoesCarregamentoGrafico = carregamentoGrafico.parentElement.querySelector('p');
-console.log(h1opcoesCarregamentoGrafico);
 h1opcoesCarregamentoGrafico.innerHTML = opcoesCarregamento[opcoesCarregamento['ativo']];
 
 function createDropdownOptions(opcoes, element) {
