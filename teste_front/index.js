@@ -2,7 +2,12 @@ function handleActiveClick(element) {
     element.classList.toggle('active');
 }
 
-
+//Função para ocultar as opções:
+const lateral = document.getElementById('lateral');
+function ocultaOpcoes(element) {
+    lateral.classList.toggle('hidded');
+    element.style.rotate = element.style.rotate == '90deg' ? '-90deg' : '90deg';
+}
 
 // Definindo inputs:
 const carregamentoGrafico = document.getElementById('CarregamentoGrafico');
