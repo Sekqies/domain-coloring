@@ -3,6 +3,16 @@
     font-family: "Josefin Sans", sans-serif;
     --font-medium: 22px;
     --font-small: 18px;
+    --border-large-size: 3px;
+
+    --border-radius: 15px;
+    --padding-small: 10px;
+    --padding-large: 30px;
+
+    --gap: 50px;
+    --mini-gap: 20px;
+
+    --arrow-size: 20px;
 }
 
 *{
@@ -32,10 +42,10 @@ input:focus{
     outline: none;
     border: none;
     background-color: #333333;
-    border: 3px solid #333333;
-    border-radius: 15px;
-    font-size: 22px;
-    padding: 10px;
+    border: var(--border-large-size) solid #333333;
+    border-radius: var(--border-radius);
+    font-size: var(--font-medium);
+    padding: var(--padding-small);
     color: white;
     transition: 0.2s;
     display: flex;
@@ -43,7 +53,7 @@ input:focus{
 
 }
 .btn.secondary{
-    border: 3px solid #333333;
+    border: var(--border-large-size) solid #333333;
     background-color: white;
     color: #333333;
     position: relative;
@@ -53,7 +63,7 @@ input:focus{
         transition: 0.5s;
     }
     & > img{
-        width: 20px;
+        width: var(--arrow-size);
         position: absolute;
         right: 0;
         transform: translateX(100%);
@@ -62,7 +72,7 @@ input:focus{
 }
 .btn.secondary:hover{
     & > p{
-        transform: translateX(-40px);
+        transform: translateX(calc(var(--arrow-size) * -2));
         transition: 0.5s;
     }
     & img{
@@ -86,17 +96,17 @@ section#navbar{
     z-index: 2;
 }
 section#navbar #guppy1{
-    width: calc(100% - 20px);
+    width: calc(100% - var(--arrow-size));
     height: 60px;
     border: 1px solid #000;
-    margin: 10px;
+    margin: var(--padding-small);
 }
 
 section#navbar .navbar-arrow{
     display: flex;
     align-items: center;
     flex: 1;
-    margin-bottom: 10px;
+    margin-bottom: var(--padding-small);
     cursor: pointer;
 }
 
@@ -110,29 +120,22 @@ section#lateral{
     height: calc(100dvh - var(--navbar-size));
     margin-top: var(--navbar-size);
     width: 40dvw;
-    border-right: 3px solid black;
-    padding: 30px;
+    border-right: var(--border-large-size) solid black;
+    padding: var(--padding-large);
     overflow-y: scroll;
     display: flex;
     & .lateral-itens{
         display: flex;
         flex-direction: column;
-        gap: 50px;
-    }
-    & > img{
-        height: 20px;
-        rotate: -90deg;
-        position: fixed;
-        top: 50%;
-        left: 40dvw;
-        transform: translateY(-300%);
+        gap: var(--gap);
+        width: 100%;
     }
 }
 section#lateral #lateral-desenhar{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--mini-gap);
 }
 
 section#lateral #lateral-desenhar .lateral-desenhar-botao h4{
@@ -141,12 +144,12 @@ section#lateral #lateral-desenhar .lateral-desenhar-botao h4{
 }
 
 section#lateral .lateral-div{
-    padding: 30px;
+    padding: var(--padding-large);
     border: 2px solid #333333;
-    border-radius: 15px;
+    border-radius: var(--padding-large);
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: var(--mini-gap);
 }
 
 section#lateral .lateral-div .lateral-div-header{
