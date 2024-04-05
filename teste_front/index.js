@@ -4,8 +4,10 @@ function handleActiveClick(element) {
 
 //Função para ocultar as opções:
 const lateral = document.getElementById('lateral');
+const domainColoring = document.getElementById('domainColoring');
 function ocultaOpcoes(element) {
     lateral.classList.toggle('hidded');
+    domainColoring.classList.toggle('hidded');
     element.style.rotate = element.style.rotate == '90deg' ? '-90deg' : '90deg';
 }
 

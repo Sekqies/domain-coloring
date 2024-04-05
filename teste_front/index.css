@@ -119,6 +119,21 @@ section#navbar {
     }
 }
 
+section#domainColoring.hidded{
+    width: 100dvw;
+    margin-left: 0;
+    transition: 0.5s;
+}
+section#domainColoring{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    width: 60dvw;
+    margin-left: 40dvw;
+    background-color: #f0f0f0;
+    transition: 0.5s;
+}
 section#navbar #guppy1 {
     width: calc(100% - var(--arrow-size));
     height: 60px;
@@ -144,6 +159,7 @@ section#lateral.hidded{
 }
 
 section#lateral {
+    background-color: #fff;
     position: fixed;
     transition: 0.5s;
     left: 0;
@@ -336,4 +352,44 @@ section#lateral .lateral-div.active {
         rotate: 180deg;
         transition: 0.2s;
     }
+}
+
+
+
+#grafico {
+    position: relative;
+
+    /*para o JS compreender */
+
+    padding-bottom: 50px;
+    padding-top: 50px;
+    transition: 0.3s;
+}
+
+#grafico:has(canvas:hover)>p {
+    opacity: 1;
+    scale: 1;
+    transition: opacity, scale 0.3s;
+}
+
+#grafico canvas {
+    border: 3px solid black;
+    border-radius: 10px;
+    aspect-ratio: 1;
+}
+
+#grafico p {
+    position: absolute;
+    top: 50%;
+    font-family: 'KaTeX_Math';
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.5;
+    transition: 0.3s;
+    white-space: nowrap;
 }
