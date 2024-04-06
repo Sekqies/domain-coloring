@@ -37,7 +37,7 @@ function getNumeroInteiro(x, y) {
     let width = canvas.width;
     let centro = width / 2;
 
-    let pixelPorInteiro = (centro) / Number(qtndInteiros);
+    let pixelPorInteiro = (centro) / Number(variaveisGlobais.realMaximo);
     let real = (x - centro) / pixelPorInteiro;
     let imag = (y - centro) / pixelPorInteiro;
 

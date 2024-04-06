@@ -24,7 +24,7 @@ function Domain_coloring(real, imag) {
 
 
 
-    if (tipo_grafico == 2) {
+    if (variaveisGlobais.valorTipoGrafico != 'continuo') {
         //Modo 2 (com descontinuidade):
         dist = dist == "Infinity" ? 10e50 : dist;
         let expoente = Math.log2(dist);

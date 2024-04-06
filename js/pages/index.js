@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function download(){
+    init();
     const canvas = document.getElementById("domainColorCanvas");
     const dataURL = canvas.toDataURL('image/png');
     let link = document.createElement("a");
@@ -28,5 +29,5 @@ function download(){
     link.click();
 }
 
-document.getElementById("download").addEventListener("click", init);
+document.getElementById("download").addEventListener("click", download);
 document.getElementById("draw").addEventListener("click", init);

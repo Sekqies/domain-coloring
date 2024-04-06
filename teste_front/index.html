@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Coloring</title>
-    <link rel="stylesheet" href="index.css">
-</head>
+    <link type="text/css" rel="stylesheet" href="index.css">
 
+    <title>Funções complexas</title>
+</head>
 <body>
 
     <section id="navbar">
@@ -24,14 +24,14 @@
 
             <div id="lateral-desenhar">
                 <div class="lateral-desenhar-botao">
-                    <button id="desenhar" class="btn">
+                    <button id="draw" class="btn">
                         <p>Desenhar</p>
                         <img src="../assets/Pencil.svg" alt="Desenhar grafico">
                     </button>
                     <h4>Ou pressione 'Enter' dentro da caixa de função.</h4>
                 </div>
                 <div class="lateral-desenhar-botao">
-                    <button id="baixar" class="btn secondary">
+                    <button id="download" class="btn secondary">
                         <p>Baixar gráfico</p>
                         <img src="../assets/download.svg" alt="Baixar gráfico">
                     </button>
@@ -60,6 +60,23 @@
                         </div>
                         <div class="input-dropdown-options">
                             <h4>Renderização precisa (menor velocidade)</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Tipo do gráfico: </p>
+                    </div>
+                    <div class="input-dropdown">
+                        <div class="input-dropdown-fixed">
+                            <p>Continuo</p>
+                            <div id="TipoGrafico">
+                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                            </div>
+                        </div>
+                        <div class="input-dropdown-options">
+                            <h4>Descontinuo</h4>
                         </div>
                     </div>
                 </div>
@@ -183,6 +200,7 @@
     <section id="domainColoring">
             <div id="grafico">
                 <canvas id="domainColorCanvas" width="600" height="600"></canvas>
+                <canvas id="glCanvas" width="600" height="600"></canvas>
                 <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
             </div>
     </section>
@@ -191,4 +209,7 @@
     <script src="index.js" defer></script>
 </body>
 
+
 </html>
+
+<!-- Creditos para: The Big Int (Youtube) -->

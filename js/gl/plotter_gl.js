@@ -16,7 +16,7 @@ function PlotterGl(funcao, tamanhoCanvas) {
         gl_Position = vec4(a_position, 0, 1);
     }
     `;
-    var fragmentShaderSource = writeFragmentShader(funcao, canvas.width, canvas.height, qtndInteiros, listaFuncoes.declarations);
+    var fragmentShaderSource = writeFragmentShader(funcao, canvas.width, canvas.height, variaveisGlobais.realMaximo, listaFuncoes.declarations);
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);

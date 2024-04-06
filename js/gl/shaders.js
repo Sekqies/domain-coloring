@@ -1,6 +1,6 @@
 function writeFragmentShader(funcao, width, height, inteiros, declarations) {
     console.log("Proporções gráfico:", width,height)
-    let continuo = tipo_grafico == 1;
+    let continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
     let vazio = funcao === '';
     return `
     #ifdef GL_FRAGMENT_PRECISION_HIGH

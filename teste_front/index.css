@@ -152,9 +152,13 @@ section#domainColoring{
 }
 section#navbar #guppy1 {
     width: calc(100% - var(--arrow-size));
-    height: 60px;
+    min-height: 60px;
     border: 1px solid #000;
     margin: var(--padding-small);
+    font-size: var(--font-medium);
+}
+.guppy_help{
+    z-index: 2;
 }
 
 section#navbar .navbar-arrow {
@@ -186,6 +190,7 @@ section#lateral {
     padding: var(--padding-large);
     overflow-y: scroll;
     display: flex;
+    z-index: 1;
 
     & .lateral-itens {
         display: flex;
@@ -392,8 +397,11 @@ section#lateral .lateral-div.active {
     border: 3px solid black;
     border-radius: 10px;
     aspect-ratio: 1;
+    display: none;
 }
-
+#grafico canvas.active{
+    display: block;
+}
 #grafico p {
     position: absolute;
     top: 50%;
@@ -408,4 +416,20 @@ section#lateral .lateral-div.active {
     scale: 0.5;
     transition: 0.3s;
     white-space: nowrap;
+}
+
+#graficos-complexos { 
+    width: 100%;
+    height: calc(100% - var(--navbar-size));
+    margin-top: var(--navbar-size);
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    flex-wrap:wrap;
+    gap:50px;
+}
+
+#lateral-animacao .lateral-div-content.disabled{
+    opacity: 50%;
+    pointer-events: none;
 }

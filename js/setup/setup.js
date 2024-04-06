@@ -6,34 +6,32 @@ import { GlAnimation } from '/js/gl/animation.js';
 
 const testing = true;
 
-if(!testing)
-{
-    console.log = function(){}
+if (!testing) {
+    console.log = function () { }
 }
 
 
-function initializeVariables() 
-{
+function initializeVariables() {
     canvas = document.getElementById("domainColorCanvas");
     canvasGL = document.getElementById("glCanvas");
-    animationCheckbox = document.getElementById("animation-checkbox");
+    //animationCheckbox = document.getElementById("animation-checkbox");
     grafico = document.getElementById('grafico');
-    iteracao = document.getElementById('iteracao');
-    limiteMinimo = document.getElementById('limite-minimo');
-    limiteMaximo = document.getElementById('limite-maximo');
-    fps = document.getElementById('fps');
+    //iteracao = document.getElementById('iteracao');
+    //limiteMinimo = document.getElementById('limite-minimo');
+    //limiteMaximo = document.getElementById('limite-maximo');
+    //fps = document.getElementById('fps');
 }
 
 
 function init() {
     //alert(guppy)  
     let tamanhoCanvas;
-    if (graficoTelainteira) {
+    if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
         //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
         window.addEventListener('mousedown', function (event) {
             function handleMouseMove(event) {
-                window.scrollBy(-event.movementX / 2, -event.movementY / 2);
+                window.scrollBy(-event.movementX, -event.movementY);
             }
 
             window.addEventListener('mousemove', handleMouseMove);
@@ -46,63 +44,61 @@ function init() {
 
     }
     else {
-        tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+        tamanhoCanvas = variaveisGlobais.valorTamanhoGrafico;
     }
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
-    tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
-    qtndInteiros = document.getElementById('numero_inteiros').value;
     funcaoHover = guppy.func(lista.operations);
-    Plotter(funcaoHover);
-    animation_variable_exists = false;
+
+    //animation_variable_exists = false;
     const result_gl = guppy.func(listaFuncoes.operations)();
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
-    if (animationCheckbox.checked && animation_variable_exists)
-    {
-        const minimo = parseFloat(limiteMinimo.value);
-        const maximo = parseFloat(limiteMaximo.value);
-        const it = parseFloat(iteracao.value);
-        const framerate = parseFloat(fps.value);
+    if (variaveisGlobais.animacaoLigada && animation_variable_exists) {
+        const minimo = parseFloat(variaveisGlobais.variacaoInicio);
+        const maximo = parseFloat(variaveisGlobais.variacaoFim);
+        const it = parseFloat(variaveisGlobais.incremento);
+        const framerate = parseFloat(variaveisGlobais.fps);
         let animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
-        animation.animate(result_gl, minimo,maximo,it);
-        animation.playAnimation(framerate, "continue");
+        animation.animate(result_gl, minimo, maximo, it);
+        animation.playAnimation(framerate, variaveisGlobais.valorTipoAnimacao);
+
+        canvas.classList.add('active');
+        canvasGL.classList.remove('active');
     }
-    else
-    {
-        PlotterGl(result_gl, tamanhoCanvas, result_gl);
+    else {
+        if (variaveisGlobais.tipoCarregamento == 'normal') {
+            Plotter(funcaoHover);
+            canvas.classList.add('active');
+            canvasGL.classList.remove('active');
+        }
+        else if (variaveisGlobais.tipoCarregamento == 'webgl') {
+            PlotterGl(result_gl, tamanhoCanvas, result_gl);
+            canvas.classList.remove('active');
+            canvasGL.classList.add('active');
+        }
+        else {
+            Plotter(funcaoHover);
+            PlotterGl(result_gl, tamanhoCanvas, result_gl);
+            canvas.classList.add('active');
+            canvasGL.classList.add('active');
+        }
+
+        loadHover(funcaoHover, "domainColorCanvas");
+        loadHover(funcaoHover, "glCanvas");
     }
-    loadHover(funcaoHover, "domainColorCanvas");
-    loadHover(funcaoHover, "glCanvas");
+
+
 }
-function createEventListeners()
-{
+function createEventListeners() {
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             init();
         }
     });
-    const arrow = document.getElementById('arrow');
-    const form = document.getElementById('form');
-    const grafico = document.getElementById('grafico');
 
-    arrow.addEventListener('click', function () {
-        form.classList.toggle('active');
-        arrow.classList.toggle('active');
-        grafico.classList.toggle('active');
-    });
-
-    const checkbox = document.querySelector('.inputcheckbox > div');
-    const gsize = document.getElementById('gsize');
-    checkbox.addEventListener('click', function () {
-        checkbox.classList.toggle('active');
-        gsize.classList.toggle('disabled');
-        gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
-        graficoTelainteira = !graficoTelainteira;
-        grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
-    });
-
-    document.getElementById('BAIXAR').addEventListener('click', function () {
+    //Não está funcionando (Não sei pq)
+    document.getElementById('animation-download').addEventListener('click', function () {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
