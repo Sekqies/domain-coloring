@@ -50,7 +50,7 @@ const elementos = [carregamentoGrafico, tipoGrafico, tamanhoGrafico,
 
 //Chamando a função:
 elementos.forEach((elemento) => {
-    elemento.addEventListener('click', () => {
+    elemento.parentElement.addEventListener('click', () => {
         handleActiveClick(elemento.parentElement.parentElement);
     });
 });

@@ -274,6 +274,7 @@ section#lateral .lateral-div .lateral-div-content {
 
             & img {
                 transition: 0.2s;
+                cursor: pointer;
             }
 
         }

@@ -145,8 +145,8 @@ function Eixos(){
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        ctx.font = "15px Arial";
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = "bold 15px Arial";
         ctx.fillRect(width / 2, 0, 1, height);
         ctx.fillRect(0, height / 2, width, 1);
         let centro = width / 2;
@@ -156,32 +156,41 @@ function Eixos(){
             let x = real;
             let y = (height / 2)-3;
 
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(x, y, 1, 6);
 
-            ctx.fillStyle = 'rgba(0,0,0,1)';
+            ctx.fillStyle = 'rgba(255,255,255,1)';
             let texto = Math.round((real - centro) / pixelPorInteiro);
             ctx.fillText(texto, x+4, y - 4);
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.strokeText(texto, x+4, y - 4);
 
             //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.fillRect(x, 0, 1, height);
+
         }
 
 
         for (let imag = pixelPorInteiro; imag < height; imag += pixelPorInteiro) {
             let x = (width / 2)-3;
             let y = imag;
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(x, y, 6, 1);
 
-            ctx.fillStyle = 'rgba(0,0,0,1)';
+            ctx.fillStyle = 'rgba(255,255,255,1)';
             let texto = Math.round((imag - centro) / pixelPorInteiro);
             if(Math.round((imag - centro) / pixelPorInteiro) != 0)
+            {
                 ctx.fillText(texto, x + 8, y - 4);
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.strokeText(texto, x + 8, y - 4);
+
+            }
+                
 
             //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.fillRect(0, y, width, 1);
         }
 
