@@ -1,4 +1,4 @@
-import { HSLtoRGB, getNumeroInteiro} from './color.js';
+import { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro} from './color.js';
 import {lista } from './funcoes_complexas.js';
 //Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
@@ -138,5 +138,66 @@ function Plotter(funcaoHover) {
 
 }
 
+function Eixos(){
+    const eixosCanvas = document.getElementsByClassName('eixosCanvas');
+    for(let i = 0; i < eixosCanvas.length; i++) {
+        const canvas = eixosCanvas[i];
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        ctx.fillStyle = 'black';
+        ctx.fillRect(width / 2, 0, 1, height);
+        ctx.fillRect(0, height / 2, width, 1);
+        let centro = width / 2;
+        let pixelPorInteiro = getPixelPorInteiro();
 
-export { Plotter, lista };
+        for (let real = (centro + pixelPorInteiro); real < width; real += pixelPorInteiro) {
+            let x = real;
+            let y = (height / 2)-3;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(x, y, 1, 6);
+
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(x, 0, 1, height);
+        }
+        for (let real = (centro - pixelPorInteiro); real >0; real -= pixelPorInteiro) {
+            let x = real;
+            let y = (height / 2)-3;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(x, y, 1, 6);
+
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(x, 0, 1, height);
+
+        }
+
+        for (let imag = (centro + pixelPorInteiro); imag < height; imag += pixelPorInteiro) {
+            let x = (width / 2)-3;
+            let y = imag;
+            ctx.fillStyle = 'black';
+            ctx.fillRect(x, y, 6, 1);
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(0, y, width, 1);
+        }
+        for (let imag = (centro - pixelPorInteiro); imag >0; imag -= pixelPorInteiro) {
+            let x = (width / 2)-3;
+            let y = imag-0.5;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(x, y, 6, 1);
+
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(0, y, width, 1);
+        }
+
+    }
+    console.log("Eixos desenhados");
+}
+
+export { Plotter, lista, Eixos};

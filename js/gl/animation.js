@@ -11,6 +11,7 @@ class GlAnimation
         this.iteration = 0;
         this.frames = [];
         this.fps = 30;
+        //console.log("Construtor GlAnimation");
     }
 
     addFrame()
@@ -113,6 +114,11 @@ class GlAnimation
         };
     
         requestAnimationFrame(displayFrame);
+    }
+
+    stopAnimation()
+    {
+        this.frames = [];
     }
 }
 

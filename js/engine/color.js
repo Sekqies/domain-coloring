@@ -43,4 +43,14 @@ function getNumeroInteiro(x, y) {
 
     return [real, imag];
 }
-export { HSLtoRGB, getNumeroInteiro};
+
+function getPixelPorInteiro() {
+    let width = canvas.width;
+    let centro = width / 2;
+
+    let pixelPorInteiro = (centro) / Number(variaveisGlobais.realMaximo);
+
+    return pixelPorInteiro;
+}
+
+export { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro};

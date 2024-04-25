@@ -147,7 +147,7 @@ section#domainColoring{
     height: 100dvh;
     width: 60dvw;
     margin-left: 40dvw;
-    background-color: #f0f0f0;
+    background-color: transparent;
     transition: 0.5s;
 }
 section#navbar #guppy1 {
@@ -392,14 +392,25 @@ section#lateral .lateral-div.active {
     scale: 1;
     transition: opacity, scale 0.3s;
 }
+#grafico{
+    display: none;
+}
+
+.eixosCanvas{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
 
 #grafico canvas {
     border: 3px solid black;
     border-radius: 10px;
     aspect-ratio: 1;
-    display: none;
+    
 }
-#grafico canvas.active{
+#grafico.active{
     display: block;
 }
 #grafico p {
@@ -427,6 +438,7 @@ section#lateral .lateral-div.active {
     display:flex;
     flex-wrap:wrap;
     gap:50px;
+    position: relative;
 }
 
 #lateral-animacao .lateral-div-content.disabled{

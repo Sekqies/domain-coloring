@@ -1,5 +1,7 @@
 
+
 let canvas, canvasGL;
+let eixosCanvas = [];
 let guppy;
 let grafico;
 var funcaoHover;
@@ -17,6 +19,8 @@ let limiteMinimo;
 let limiteMaximo;
 let iteracao;
 let fps;*/
+
+let animation = null;
 let animation_variable_exists = false;
 
 
