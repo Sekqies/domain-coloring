@@ -177,7 +177,7 @@ function Eixos(){
 
             ctx.fillStyle = 'rgba(0,0,0,1)';
             let texto = Math.round((imag - centro) / pixelPorInteiro);
-            if((imag - centro) / pixelPorInteiro != 0)
+            if(Math.round((imag - centro) / pixelPorInteiro) != 0)
                 ctx.fillText(texto, x + 8, y - 4);
 
             //Colocar uma cor mais transparente por toda a linha
