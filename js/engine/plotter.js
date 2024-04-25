@@ -145,56 +145,46 @@ function Eixos(){
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.font = "15px Arial";
         ctx.fillRect(width / 2, 0, 1, height);
         ctx.fillRect(0, height / 2, width, 1);
         let centro = width / 2;
         let pixelPorInteiro = getPixelPorInteiro();
 
-        for (let real = (centro + pixelPorInteiro); real < width; real += pixelPorInteiro) {
+        for (let real = pixelPorInteiro; real < width; real += pixelPorInteiro) {
             let x = real;
             let y = (height / 2)-3;
 
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.fillRect(x, y, 1, 6);
+
+            ctx.fillStyle = 'rgba(0,0,0,1)';
+            let texto = Math.round((real - centro) / pixelPorInteiro);
+            ctx.fillText(texto, x+4, y - 4);
 
             //Colocar uma cor mais transparente por toda a linha
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
             ctx.fillRect(x, 0, 1, height);
         }
-        for (let real = (centro - pixelPorInteiro); real >0; real -= pixelPorInteiro) {
-            let x = real;
-            let y = (height / 2)-3;
 
-            ctx.fillStyle = 'black';
-            ctx.fillRect(x, y, 1, 6);
 
-            //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
-            ctx.fillRect(x, 0, 1, height);
-
-        }
-
-        for (let imag = (centro + pixelPorInteiro); imag < height; imag += pixelPorInteiro) {
+        for (let imag = pixelPorInteiro; imag < height; imag += pixelPorInteiro) {
             let x = (width / 2)-3;
             let y = imag;
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.fillRect(x, y, 6, 1);
-            //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
-            ctx.fillRect(0, y, width, 1);
-        }
-        for (let imag = (centro - pixelPorInteiro); imag >0; imag -= pixelPorInteiro) {
-            let x = (width / 2)-3;
-            let y = imag-0.5;
 
-            ctx.fillStyle = 'black';
-            ctx.fillRect(x, y, 6, 1);
+            ctx.fillStyle = 'rgba(0,0,0,1)';
+            let texto = Math.round((imag - centro) / pixelPorInteiro);
+            if((imag - centro) / pixelPorInteiro != 0)
+                ctx.fillText(texto, x + 8, y - 4);
 
             //Colocar uma cor mais transparente por toda a linha
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
             ctx.fillRect(0, y, width, 1);
         }
+
 
     }
     console.log("Eixos desenhados");
