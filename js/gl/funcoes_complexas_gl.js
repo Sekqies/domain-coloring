@@ -57,6 +57,7 @@ listaFuncoes.addOperation("val", function(args) { return function(vars)
 
 
 const GSGL_function_declarations = [
+    new c_GSGLFunction("cconj","conj","vec2 cconj(vec2 z) {return vec2(z.x,-z.y);}" ),
     new c_GSGLFunction("cneg","neg","vec2 cneg(vec2 z) {return -z;}"),
     new c_GSGLFunction("csum", "+", "vec2 csum(vec2 a, vec2 b) {return vec2(a.x+b.x, a.y-b.y);}"),
     new c_GSGLFunction("cadd", "SUPPLEMENTAL_ADD ", "vec2 cadd(vec2 a, vec2 b) {return csum(a,b);}"),
