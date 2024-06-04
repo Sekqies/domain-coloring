@@ -500,7 +500,7 @@ for (let i=0;i<c_Function_Declarations.length; i++)
 }
 
 lista.addOperation("val", function(args){return function(vars){return {real: args[0], imag:0}}})
-lista.addOperation("vars", function(args) {return function(vars) {
+lista.addOperation("var", function(args) {return function(vars) {
     if (args[0] == "i") return { real: 0, imag: 1 };
     if (args[0] == "e") return { real: Math.E, imag: 0 };
     if (args[0] == "pi") return { real: Math.PI, imag: 0 };
@@ -509,11 +509,11 @@ lista.addOperation("vars", function(args) {return function(vars) {
     if (args[0] == "x") return {real: vars.z.real, imag: 0};
     if (args[0] == "y") return {real: vars.z.imag, imag: 0};
     if (args[0] == "a") return {real: vars.z.real, imag: 0};
-    if (args[0] == "b") return {real: vars.z.imag, imag: 0 };
-
+    if (args[0] == "b") return {real: vars.z.imag, imag: 0};
 }} );
 
 
+export {lista};
 
 
 /*var operacoes = {
@@ -842,5 +842,3 @@ lista.addOperation("vars", function(args) {return function(vars) {
         }
     }
 };*/
-
-export {lista};
