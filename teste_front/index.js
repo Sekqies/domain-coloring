@@ -122,9 +122,9 @@ fpsInput.addEventListener('change', () => {
 //Definindo os dropdowns:
 const opcoesCarregamento = {};
 opcoesCarregamento['tipo'] = 1;
-opcoesCarregamento['ativo'] = 'normal';
-opcoesCarregamento['normal'] = 'Grafico normal';
-opcoesCarregamento['webgl'] = 'Renderização precisa (menor velocidade)';
+opcoesCarregamento['ativo'] = 'webgl';
+opcoesCarregamento['webgl'] = 'Grafico normal';
+opcoesCarregamento['normal'] = 'Renderização precisa (menor velocidade)';
 opcoesCarregamento['ambos'] = 'Ambos';
 
 const opcoesTipoAnimacao = {};

@@ -21,13 +21,13 @@ function initializeVariables() {
     //limiteMinimo = document.getElementById('limite-minimo');
     //limiteMaximo = document.getElementById('limite-maximo');
     //fps = document.getElementById('fps');
-    
-    
+
+
 }
 
 
 function init() {
-    
+
     //alert(guppy)  
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
@@ -53,27 +53,27 @@ function init() {
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
 
-    for(let i = 0; i < eixosCanvas.length; i++) {
+    for (let i = 0; i < eixosCanvas.length; i++) {
         eixosCanvas[i].width = tamanhoCanvas;
         eixosCanvas[i].height = tamanhoCanvas;
     }
 
 
     funcaoHover = guppy.func(lista.operations);
-    
+
     animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
     animation_variable_exists = false;
     const result_gl = guppy.func(listaFuncoes.operations)();
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
-    
+
 
 
     if (variaveisGlobais.animacaoLigada && animation_variable_exists) {
         const minimo = parseFloat(variaveisGlobais.variacaoInicio);
         const maximo = parseFloat(variaveisGlobais.variacaoFim);
         const it = parseFloat(variaveisGlobais.incremento);
-        const framerate = parseFloat(variaveisGlobais.fps); 
+        const framerate = parseFloat(variaveisGlobais.fps);
         animation.animate(result_gl, minimo, maximo, it);
         animation.playAnimation(framerate, variaveisGlobais.valorTipoAnimacao);
         canvas.parentElement.classList.add('active');
@@ -84,11 +84,13 @@ function init() {
         animation.stopAnimation();
         //document.body.style.backgroundColor = "blue";
         if (variaveisGlobais.tipoCarregamento == 'normal') {
+            //alert("não web-gl")
             Plotter(funcaoHover);
             canvas.parentElement.classList.add('active');
             canvasGL.parentElement.classList.remove('active');
         }
         else if (variaveisGlobais.tipoCarregamento == 'webgl') {
+            //alert('webgl');
             PlotterGl(result_gl, tamanhoCanvas, result_gl);
             canvas.parentElement.classList.remove('active');
             canvasGL.parentElement.classList.add('active');
@@ -104,7 +106,7 @@ function init() {
         loadHover(funcaoHover, "glCanvas");
     }
 
-    if(variaveisGlobais.eixosCartesianos){
+    if (variaveisGlobais.eixosCartesianos) {
         Eixos();
     }
 
