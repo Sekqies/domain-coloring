@@ -33,19 +33,6 @@ function init() {
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
         //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
-        window.addEventListener('mousedown', function (event) {
-            function handleMouseMove(event) {
-                window.scrollBy(-event.movementX, -event.movementY);
-            }
-
-            window.addEventListener('mousemove', handleMouseMove);
-
-            window.addEventListener('mouseup', function () {
-                window.removeEventListener('mousemove', handleMouseMove);
-            });
-        });
-
-
     }
     else {
         tamanhoCanvas = variaveisGlobais.valorTamanhoGrafico;
@@ -83,7 +70,7 @@ function init() {
     else {
         animation.stopAnimation();
         //document.body.style.backgroundColor = "blue";
-        if (variaveisGlobais.tipoCarregamento == 'normal') {
+        if (variaveisGlobais.tipoCarregamento == 'preciso') {
             //alert("não web-gl")
             Plotter(funcaoHover);
             canvas.parentElement.classList.add('active');

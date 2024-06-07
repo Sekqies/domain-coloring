@@ -32,6 +32,7 @@ const tamanhoGrafico = document.getElementById('TamanhoGrafico');
 const tipoAnimacao = document.getElementById('TipoAnimacao');
 const lateralOpcoes = document.getElementById('LateralOpcoes');
 const lateralAnimacao = document.getElementById('LateralAnimacao');
+const eixosCartesianos = document.getElementById('EixosCartesianos');
 
 const realMinimoInput = document.getElementById('real-minimo');
 const realMaximoInput = document.getElementById('real-maximo');
@@ -124,14 +125,14 @@ const opcoesCarregamento = {};
 opcoesCarregamento['tipo'] = 1;
 opcoesCarregamento['ativo'] = 'webgl';
 opcoesCarregamento['webgl'] = 'Grafico normal';
-opcoesCarregamento['normal'] = 'Renderização precisa (menor velocidade)';
+opcoesCarregamento['preciso'] = 'Renderização precisa (menor velocidade)';
 opcoesCarregamento['ambos'] = 'Ambos';
 
 const opcoesTipoAnimacao = {};
 opcoesTipoAnimacao['tipo'] = 2;
-opcoesTipoAnimacao['ativo'] = 'normal';
+opcoesTipoAnimacao['ativo'] = 'continue';
 opcoesTipoAnimacao['continue'] = 'Normal';
-opcoesTipoAnimacao['bounce'] = 'Bouncy';
+opcoesTipoAnimacao['bounce'] = 'Bouncy'; 
 opcoesTipoAnimacao['loop'] = 'Repeat';
 
 const opcoesTipoGrafico = {};
@@ -142,6 +143,9 @@ opcoesTipoGrafico['descontinuo'] = 'Descontinuo';
 
 
 function createDropdownOptions(opcoes, element) {
+    const dropdownFixedParaghaph = element.parentElement.querySelector('.input-dropdown-fixed p');
+    dropdownFixedParaghaph.innerHTML = opcoes[opcoes['ativo']];
+
     const dropdownOptions = element.parentElement.parentElement.querySelector('.input-dropdown-options');
     dropdownOptions.innerHTML = '';
     Object.keys(opcoes).forEach((key) => {
@@ -171,10 +175,6 @@ function createDropdownOptions(opcoes, element) {
     });
 }
 
-createDropdownOptions(opcoesCarregamento, carregamentoGrafico);
-createDropdownOptions(opcoesTipoAnimacao, tipoAnimacao);
-createDropdownOptions(opcoesTipoGrafico, tipoGrafico);
-
 function alteraOpcaoTamanhoGrafico() {
     let div = tamanhoGrafico.parentElement.parentElement;
     if (div.id == 'active') {
@@ -200,9 +200,16 @@ function chegaValoresGlobais() {
     console.log(variaveisGlobais);
 }
 
-function changeEixosCartesianosActive(element) {
-    variaveisGlobais.eixosCartesianos = !variaveisGlobais.eixosCartesianos;
-    element.classList.toggle('active');
+function initializeEixosCartesianos() {
+    eixosCartesianos.classList.remove('active');
+    if(variaveisGlobais.eixosCartesianos) {
+        eixosCartesianos.classList.add('active');
+    }
+
+    eixosCartesianos.addEventListener('click', () => {
+        variaveisGlobais.eixosCartesianos = !variaveisGlobais.eixosCartesianos;
+        eixosCartesianos.classList.toggle('active');
+    });
 }
 
 const elementosDaAnimacoView = document.querySelectorAll("#lateral-animacao .lateral-div-content:not(:nth-child(2))");
@@ -213,4 +220,29 @@ function changeAnimacaoActive(element) {
     elementosDaAnimacoView.forEach((elemento) => {
         elemento.classList.toggle('disabled');
     });
+}
+
+function pageInit(){
+    opcoesCarregamento['ativo'] = variaveisGlobais.tipoCarregamento;
+    opcoesTipoAnimacao['ativo'] = variaveisGlobais.valorTipoAnimacao;
+    opcoesTipoGrafico['ativo'] = variaveisGlobais.valorTipoGrafico;
+    
+    realMaximoInput.value = variaveisGlobais.realMaximo;
+    realMinimoInput.value = variaveisGlobais.realMinimo;
+    imagMaximoInput.value = variaveisGlobais.imagMaximo;
+    imagMinimoInput.value = variaveisGlobais.imagMinimo;
+
+    tamanhoGraficoInput.value = variaveisGlobais.valorTamanhoGrafico;
+    variacaoMinimoInput.value = variaveisGlobais.variacaoInicio;
+    variacaoMaximoInput.value = variaveisGlobais.variacaoFim;
+    incrementoInput.value = variaveisGlobais.incremento;
+    fpsInput.value = variaveisGlobais.fps;
+
+    initializeEixosCartesianos();
+
+    createDropdownOptions(opcoesCarregamento, carregamentoGrafico);
+    createDropdownOptions(opcoesTipoAnimacao, tipoAnimacao);
+    createDropdownOptions(opcoesTipoGrafico, tipoGrafico);
+
+    chegaValoresGlobais();
 }

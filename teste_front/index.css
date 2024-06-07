@@ -93,15 +93,17 @@ input:focus {
     }
 }
 
-section#navbar.hidded{
+section#navbar.hidded {
     transform: translateY(calc(-100% + calc(var(--padding-large) + var(--arrow-size))));
     opacity: 0;
     transition: 1s;
-    & img{
+
+    & img {
         rotate: 180deg;
     }
 }
-section#navbar.hidded:hover{
+
+section#navbar.hidded:hover {
     opacity: 1;
     transition: 1s;
 }
@@ -121,13 +123,16 @@ section#navbar {
 
     min-height: var(--navbar-size);
     z-index: 2;
-    & .content{
+
+    & .content {
         display: flex;
         width: 100%;
-        & #guppy1{
+
+        & #guppy1 {
             flex: 1;
         }
-        & img{
+
+        & img {
             rotate: -90deg;
             width: var(--arrow-size);
             transition: 0.5s;
@@ -135,12 +140,13 @@ section#navbar {
     }
 }
 
-section#domainColoring.hidded{
+section#domainColoring.hidded {
     width: 100dvw;
     margin-left: 0;
     transition: 0.5s;
 }
-section#domainColoring{
+
+section#domainColoring {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,6 +156,7 @@ section#domainColoring{
     background-color: transparent;
     transition: 0.5s;
 }
+
 section#navbar #guppy1 {
     width: calc(100% - var(--arrow-size));
     min-height: 60px;
@@ -157,7 +164,8 @@ section#navbar #guppy1 {
     margin: var(--padding-small);
     font-size: var(--font-medium);
 }
-.guppy_help{
+
+.guppy_help {
     z-index: 2;
 }
 
@@ -174,7 +182,7 @@ section#navbar .navbar-arrow {
     }
 }
 
-section#lateral.hidded{
+section#lateral.hidded {
     transform: translateX(-100%);
 }
 
@@ -393,11 +401,12 @@ section#lateral .lateral-div.active {
     scale: 1;
     transition: opacity, scale 0.3s;
 }
-#grafico{
+
+#grafico {
     display: none;
 }
 
-.eixosCanvas{
+.eixosCanvas {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -405,15 +414,24 @@ section#lateral .lateral-div.active {
     pointer-events: none;
 }
 
-#grafico canvas {
+#domainColorCanvas {
+    border: 3px solid white;
+}
+
+#glCanvas {
     border: 3px solid black;
+}
+
+#grafico canvas {
     border-radius: 10px;
     aspect-ratio: 1;
-    
+
 }
-#grafico.active{
+
+#grafico.active {
     display: block;
 }
+
 #grafico p {
     position: absolute;
     top: 50%;
@@ -430,19 +448,19 @@ section#lateral .lateral-div.active {
     white-space: nowrap;
 }
 
-#graficos-complexos { 
+#graficos-complexos {
     width: 100%;
     height: calc(100% - var(--navbar-size));
     margin-top: var(--navbar-size);
     align-items: center;
     justify-content: center;
-    display:flex;
-    flex-wrap:wrap;
-    gap:50px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
     position: relative;
 }
 
-#lateral-animacao .lateral-div-content.disabled{
+#lateral-animacao .lateral-div-content.disabled {
     opacity: 50%;
     pointer-events: none;
 }

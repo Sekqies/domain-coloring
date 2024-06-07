@@ -32,12 +32,12 @@ let variaveisGlobais = {
     imagMaximo: 2,
     valorTamanhoGrafico: 500,
     graficoOcupaTelaInteiraActive: false,
-    eixosCartesianos: false,
+    eixosCartesianos: true,
     animacaoLigada: true,
     variacaoInicio: 0,
     variacaoFim: 10,
     incremento: 0.5,
     fps: 30,
-    valorTipoAnimacao: 'normal',
+    valorTipoAnimacao: 'continue',
     valorTipoGrafico: 'continuo'
 };

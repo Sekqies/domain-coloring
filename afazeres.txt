@@ -1,10 +1,9 @@
 FRONTEND:
--> Criar funções JavaScript para inicializar os dropdowns, 
-que por ora estão sendo inicializados pelo HTML e apenas modificados pelo JS.
--> Fazer o site mudar relativo ao que esta em global.js ao inicializar(Ex. mudei animação ligada para false mas não mudou no html)
 -> Melhorar eixos cartesianos
 
 -> Função de feedbacks
--> Melhorar função de drag (Por exemplo, mudar o mouse)
--> Botão de "Baixar animação" FUncionar (Está comentado)
+-> Fazer função de drag
+-> Botão de "Baixar animação" Funcionar (Está comentado)
 -> "Baixar gráfico" com WEBGL não funciona
+-> Remover os console.log
+-> Numero de interiros mudar para Re < X < Re e Im < X < Im
