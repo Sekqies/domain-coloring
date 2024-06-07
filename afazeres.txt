@@ -1,9 +1,17 @@
-FRONTEND:
--> Melhorar eixos cartesianos
 
+-> Melhorar eixos cartesianos
+-> Responsividade
 -> Função de feedbacks
+-> Função de contagem de usuarios
 -> Fazer função de drag
 -> Botão de "Baixar animação" Funcionar (Está comentado)
--> "Baixar gráfico" com WEBGL não funciona
--> Remover os console.log
 -> Numero de interiros mudar para Re < X < Re e Im < X < Im
+
+
+Observações:
+-> Botões do guppy (no input, direita inferior do input) não funcionam (quando clica ele fecha)
+-> Grafico não faz o download quando o tamanho é maior que 5760
+
+
+Para a entrega do projeto:
+-> Remover os console.log

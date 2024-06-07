@@ -72,6 +72,10 @@ function init() {
         //document.body.style.backgroundColor = "blue";
         if (variaveisGlobais.tipoCarregamento == 'preciso') {
             //alert("não web-gl")
+            console.log("Tamanho do canvas:", variaveisGlobais.valorTamanhoGrafico);
+            if(variaveisGlobais.valorTamanhoGrafico > 3000){
+                alert("O tamanho do canvas é maior do que o recomendado, a renderização pode demorar mais tempo.");
+            }
             Plotter(funcaoHover);
             canvas.parentElement.classList.add('active');
             canvasGL.parentElement.classList.remove('active');
