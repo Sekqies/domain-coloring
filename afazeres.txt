@@ -6,7 +6,7 @@
 -> Fazer função de drag
 -> Botão de "Baixar animação" Funcionar (Está comentado)
 -> Numero de interiros mudar para Re < X < Re e Im < X < Im
-
+-> Checar se a função do "keyup" -> Enter executa mais de uma vez (No TCC está executando de 20 - 40 vezes por click)
 
 Observações:
 -> Botões do guppy (no input, direita inferior do input) não funcionam (quando clica ele fecha)
