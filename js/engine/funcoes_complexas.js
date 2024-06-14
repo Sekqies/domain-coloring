@@ -377,7 +377,9 @@ function fatorial(z) {
     return z;
 }
 
-
+function neg (z){
+    return {real: -z.real, imag: -z.imag};
+}
 
 class c_Function {
     constructor(function_name, latex_name) {
@@ -445,7 +447,8 @@ const c_Function_Declarations = [
     new c_Function(Im, "Im"),
     new c_Function(modulo, "absolutevalue"),
     new c_Function(fatorial, "factorial"),
-    new c_Function(gamma, "gamma")
+    new c_Function(gamma, "gamma"),
+    new c_Function(neg,"neg")
 ];
 
 

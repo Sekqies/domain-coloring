@@ -58,8 +58,8 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("cconj", "conj", "vec2 cconj(vec2 z) {return vec2(z.x,-z.y);}"),
     new c_GSGLFunction("creal", "Re", "vec2 creal(vec2 z) {return vec2(z.x,0.0);}"),
     new c_GSGLFunction("cimag", "Im", "vec2 cimag(vec2 z) {return vec2(z.y,0.0);}"),
-    new c_GSGLFunction("cneg", "neg", "vec2 cneg(vec2 z) {return -z;}"),
-    new c_GSGLFunction("csum", "+", "vec2 csum(vec2 a, vec2 b) {return vec2(a.x+b.x, a.y-b.y);}"),
+    new c_GSGLFunction("cneg", "neg", "vec2 cneg(vec2 z) {return vec2(-z.x,-z.y);}"),
+    new c_GSGLFunction("csum", "+", "vec2 csum(vec2 a, vec2 b) {return vec2(a.x+b.x, a.y+b.y);}"),
     new c_GSGLFunction("cadd", "SUPPLEMENTAL_ADD ", "vec2 cadd(vec2 a, vec2 b) {return csum(a,b);}"),
     new c_GSGLFunction("csub", "-", "vec2 csub(vec2 a, vec2 b) {return vec2(a.x-b.x,a.y-b.y);}"),
     new c_GSGLFunction("cmult", "*", "vec2 cmult(vec2 a, vec2 b) {return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);}"),
@@ -67,7 +67,7 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("creciprocal", "SUPPLEMENTAL_FRACTION", "vec2 creciprocal(vec2 a){return cdiv(vec2(1.0,0.0),a);}"),
     new c_GSGLFunction("cpow", "exponential", "vec2 cpow(vec2 a, vec2 b) {float logmag = (0.5 * log(pow(a.x,2.0) + pow(a.y,2.0))); float argumento = atan(a.y,a.x); return vec2(exp(b.x * logmag - b.y * argumento) * cos(b.y * logmag + b.x * argumento), exp(b.x * logmag - b.y * argumento) * sin(b.y * logmag + b.x * argumento));}"),
     new c_GSGLFunction("cexp", "exp", "vec2 cexp(vec2 a) {return vec2(exp(a.x) * cos(a.y), exp(a.x) * sin(a.y));}"),
-    new c_GSGLFunction("csqrt", "sqrt", "vec2 csqrt(vec2 a) {return cpow(a,vec2(0.5,0.0));}"),
+    new c_GSGLFunction("csqrt", "squareroot", "vec2 csqrt(vec2 a) {return cpow(a,vec2(0.5,0.0));}"),
     new c_GSGLFunction("clog", "log", "vec2 clog(vec2 a) {return vec2(0.5 * log(pow(a.x,2.0) + pow(a.y,2.0)), atan(a.y,a.x));}"),
     new c_GSGLFunction("csin", "sin", "vec2 csin(vec2 a) {return vec2(sin(a.x)*cosh(a.y), cos(a.x)*sinh(a.y));}"),
     new c_GSGLFunction("csen", "SUPPLEMENTAL_SIN", "vec2 csen(vec2 a) {return csin(a);}"),
@@ -94,7 +94,7 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("carccot", "arccot", "vec2 carccot(vec2 a) {return carctan(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carcsenh", "arcsinh", `vec2 carcsenh(vec2 z) {
         return clog(z+csqrt(cpow(z,vec2(2.0,0.0))+vec2(1.0,0.0)));}`),
-    new c_GSGLFunction("carccosh", "arccosh", "vec2 carccosh(vec2 a) {return clog(csum(a, csqrt(csub(cmult(a,a),vec2(1.0,0.0)))));}"),
+    new c_GSGLFunction("carccosh", "arccosh", "vec2 carccosh(vec2 z) {if(z.x<1.0 && true){return clog(z+cmult(csqrt(z+one),csqrt(z-one)));} else return clog(z+csqrt(cpow(z,vec2(2.0,0.0))-one));}"),
     new c_GSGLFunction("carctanh", "arctanh", `vec2 carctanh(vec2 z)
     {
         return cmult(meio,clog(cdiv(cadd(z,one),csub(one,z))));
