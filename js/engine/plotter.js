@@ -80,6 +80,7 @@ function Domain_coloring(real, imag) {
 
 //Receber o canvas, rodar por todos os pixels e colocar a cor
 function Plotter(funcaoHover) {
+    //alert('Plotter');
     /*alert('Guppy: ' + guppy)
     const f = guppy.func(operacoes);
     alert(guppy.engine.get_content('ast'));
