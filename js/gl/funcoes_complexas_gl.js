@@ -9,58 +9,55 @@ class c_GSGLFunctionList {
     addFunction(func) {
         this.functions.push(func);
         this.declarations += func.GL_declaration + '\n';
-        this.operations[func.latex_name] = function(args) {
-            return function(vars) {
+        this.operations[func.latex_name] = function (args) {
+            return function (vars) {
                 return func.runFunction(...args.map(arg => arg(vars)));
             }
         }
     }
-    addOperation(name,funcDeclaration)
-    {
+    addOperation(name, funcDeclaration) {
         this.operations[name] = funcDeclaration;
     }
 }
-class c_GSGLFunction
-{
-    constructor(name,latex_name,GL_declaration)
-    {
+class c_GSGLFunction {
+    constructor(name, latex_name, GL_declaration) {
         this.name = name;
         this.latex_name = latex_name;
         this.GL_declaration = GL_declaration;
     }
-    runFunction(...params){ 
+    runFunction(...params) {
         return `${this.name}(${params.join(',')})`;
-    }x
+    } x
 }
 let listaFuncoes = new c_GSGLFunctionList();
-listaFuncoes.addOperation("var", 
-function(args){
+listaFuncoes.addOperation("var",
+    function (args) {
 
-return function(vars)
-{
-    if (args[0] == 'z') return "vec2(a,b)";
-    if (args[0] == 'k') {animation_variable_exists = true; return "vec2(ANIMATION_VARIABLE,0.0)"}; 
-    if (args[0] == 'i') return "vec2(0.0,1.0)";
-    if (args[0] == 'e') return "vec2(E,0.0)";
-    if (args[0] == 'pi') return "vec2(PI,0.0)";
-    if (args[0] == 'x') return "vec2(a,0.0)";
-    if (args[0] == 'y') return "vec2(b,0.0)";
-    if (args[0] == 'a') return "vec2(a,0.0)";
-    if (args[0] == 'b') return "vec2(b,0.0)";
+        return function (vars) {
+            if (args[0] == 'z') return "vec2(a,b)";
+            if (args[0] == 'k') { animation_variable_exists = true; return "vec2(ANIMATION_VARIABLE,0.0)" };
+            if (args[0] == 'i') return "vec2(0.0,1.0)";
+            if (args[0] == 'e') return "vec2(E,0.0)";
+            if (args[0] == 'pi') return "vec2(PI,0.0)";
+            if (args[0] == 'x') return "vec2(a,0.0)";
+            if (args[0] == 'y') return "vec2(b,0.0)";
+            if (args[0] == 'a') return "vec2(a,0.0)";
+            if (args[0] == 'b') return "vec2(b,0.0)";
 
-}
+        }
+    })
+listaFuncoes.addOperation("val", function (args) {
+    return function (vars) {
+        return `vec2(${parseFloat(args[0])},0.0)`;
+    }
 })
-listaFuncoes.addOperation("val", function(args) { return function(vars)
-{
-    return `vec2(${parseFloat(args[0])},0.0)`;
-}})
 
 
 const GSGL_function_declarations = [
-    new c_GSGLFunction("cconj","conj","vec2 cconj(vec2 z) {return vec2(z.x,-z.y);}" ),
-    new c_GSGLFunction("creal","Re","vec2 creal(vec2 z) {return vec2(z.x,0.0);}"),
-    new c_GSGLFunction("cimag","Im","vec2 cimag(vec2 z) {return vec2(z.y,0.0);}"),
-    new c_GSGLFunction("cneg","neg","vec2 cneg(vec2 z) {return -z;}"),
+    new c_GSGLFunction("cconj", "conj", "vec2 cconj(vec2 z) {return vec2(z.x,-z.y);}"),
+    new c_GSGLFunction("creal", "Re", "vec2 creal(vec2 z) {return vec2(z.x,0.0);}"),
+    new c_GSGLFunction("cimag", "Im", "vec2 cimag(vec2 z) {return vec2(z.y,0.0);}"),
+    new c_GSGLFunction("cneg", "neg", "vec2 cneg(vec2 z) {return -z;}"),
     new c_GSGLFunction("csum", "+", "vec2 csum(vec2 a, vec2 b) {return vec2(a.x+b.x, a.y-b.y);}"),
     new c_GSGLFunction("cadd", "SUPPLEMENTAL_ADD ", "vec2 cadd(vec2 a, vec2 b) {return csum(a,b);}"),
     new c_GSGLFunction("csub", "-", "vec2 csub(vec2 a, vec2 b) {return vec2(a.x-b.x,a.y-b.y);}"),
@@ -96,7 +93,7 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("carccsch", "arccsch", "vec2 carccsch(vec2 a) {vec2 div = cdiv(vec2(1.0,0.0),a); return clog(csum(div,csqrt(csum(vec2(1.0,0.0),cmult(div,div)))));}"),
     new c_GSGLFunction("carcsech", "arcsech", "vec2 carcsech(vec2 z) {vec2 div = cdiv(vec2(1.0,0.0),z); return clog(csum(div,cmult(csqrt(csum(vec2(1.0,0.0),div)),csqrt(csum(vec2(-1.0,0.0),div)))));}"),
     new c_GSGLFunction("carccoth", "arccoth", "vec2 carccoth(vec2 a) {return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0)))));}"),
-    new c_GSGLFunction("cgamma","gamma",`vec2 cgamma_right(vec2 z) {
+    new c_GSGLFunction("cgamma", "gamma", `vec2 cgamma_right(vec2 z) {
         vec2 w = csub(z, vec2(1.0, 0.0));
         vec2 t = cadd(w, vec2(7.5, 0.0));
         vec2 x = vec2(GAMMA_COEFF[0], 0.0);
@@ -119,15 +116,14 @@ const GSGL_function_declarations = [
             return cgamma_right(z);
         }
     }`),
-    new c_GSGLFunction("cfactorial","factorial","vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z)); }")
+    new c_GSGLFunction("cfactorial", "factorial", "vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z)); }")
 ];
 
-for (let i =0; i<GSGL_function_declarations.length; i++)
-{
+for (let i = 0; i < GSGL_function_declarations.length; i++) {
     listaFuncoes.addFunction(GSGL_function_declarations[i]);
 }
 
 
 
 
-export {listaFuncoes}
+export { listaFuncoes }
