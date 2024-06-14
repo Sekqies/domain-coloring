@@ -88,7 +88,8 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("carccsc", "arccsc", "vec2 carccsc(vec2 a) {return carcsen(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carcsec", "arcsec", "vec2 carcsec(vec2 a) {return carccos(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carccot", "arccot", "vec2 carccot(vec2 a) {return carctan(cdiv(vec2(1.0, 0.0), a));}"),
-    new c_GSGLFunction("carcsenh", "arcsinh", "vec2 carcsenh(vec2 a) {return clog(csum(a, csqrt(csum(cmult(a,a),vec2(1.0,0.0)))));}"),
+    new c_GSGLFunction("carcsenh", "arcsinh", `vec2 carcsenh(vec2 z) {
+        return clog(z+csqrt(cpow(z,vec2(2.0,0.0))+vec2(1.0,0.0)));}`),
     new c_GSGLFunction("carccosh", "arccosh", "vec2 carccosh(vec2 a) {return clog(csum(a, csqrt(csub(cmult(a,a),vec2(1.0,0.0)))));}"),
     new c_GSGLFunction("carctanh", "arctanh", `vec2 carctanh(vec2 z)
     {
