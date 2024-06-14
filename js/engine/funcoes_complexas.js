@@ -291,7 +291,7 @@ function arccsch(z) {
 }
 
 function arcsech(z) {
-    const a = z.real;
+    /*const a = z.real;
     const b = z.imag;
     const denominador = (a + 1) ** 2 + b ** 2;
     //const raizQuarta = Math.pow(((a-1)**2 + b**2)/denominador,0.25);
@@ -307,7 +307,10 @@ function arcsech(z) {
     return {
         real: 0.5 * Math.log(argReal ** 2 + argImag ** 2),
         imag: Math.atan2(argImag, argReal)
-    }
+    }*/
+    const umreal = { real: 1, imag: 0 }
+    const numerador = soma(umreal,sqrt(subtrair(umreal,exponencial(z, { real: 2, imag: 0 }))));
+    return log(dividir(numerador,z));
 }
 
 function arccoth(z) {
