@@ -54,6 +54,7 @@ listaFuncoes.addOperation("val", function (args) {
 
 
 const GSGL_function_declarations = [
+    new c_GSGLFunction("NOT_MEANT_FOR_IMPLEMENTATION","LIST_OF_CONSTANTS","vec2 one = vec2(1.0,0.0); vec2 meio = vec2(0.5,0.0); vec2 i = vec2(0.0,1.0); vec2 zero = vec2(0.0,0.0); vec2 pi = vec2(PI,0.0); vec2 e = vec2(E,0.0);"),
     new c_GSGLFunction("cconj", "conj", "vec2 cconj(vec2 z) {return vec2(z.x,-z.y);}"),
     new c_GSGLFunction("creal", "Re", "vec2 creal(vec2 z) {return vec2(z.x,0.0);}"),
     new c_GSGLFunction("cimag", "Im", "vec2 cimag(vec2 z) {return vec2(z.y,0.0);}"),
@@ -89,7 +90,12 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("carccot", "arccot", "vec2 carccot(vec2 a) {return carctan(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carcsenh", "arcsinh", "vec2 carcsenh(vec2 a) {return clog(csum(a, csqrt(csum(cmult(a,a),vec2(1.0,0.0)))));}"),
     new c_GSGLFunction("carccosh", "arccosh", "vec2 carccosh(vec2 a) {return clog(csum(a, csqrt(csub(cmult(a,a),vec2(1.0,0.0)))));}"),
-    new c_GSGLFunction("carctanh", "arctanh", "vec2 carctanh(vec2 a) {return cmult(vec2(0.5,0.0), clog(cdiv(csum(vec2(1.0,0.0), a), csub(vec2(1.0,0.0), a))));}"),
+    new c_GSGLFunction("carctanh", "arctanh", `vec2 carctanh(vec2 z)
+    {
+        return cmult(meio,clog(cdiv(cadd(z,one),csub(one,z))));
+    }
+        `
+    ),
     new c_GSGLFunction("carccsch", "arccsch", "vec2 carccsch(vec2 a) {vec2 div = cdiv(vec2(1.0,0.0),a); return clog(csum(div,csqrt(csum(vec2(1.0,0.0),cmult(div,div)))));}"),
     new c_GSGLFunction("carcsech", "arcsech", "vec2 carcsech(vec2 z) {vec2 div = cdiv(vec2(1.0,0.0),z); return clog(csum(div,cmult(csqrt(csum(vec2(1.0,0.0),div)),csqrt(csum(vec2(-1.0,0.0),div)))));}"),
     new c_GSGLFunction("carccoth", "arccoth", "vec2 carccoth(vec2 a) {return cmult(vec2(0.5,0), clog(cdiv(csum(a,vec2(1.0,0.0)),csub(a,vec2(1.0,0.0)))));}"),
