@@ -25,7 +25,7 @@ let animation_variable_exists = false;
 
 
 let variaveisGlobais = {
-    tipoCarregamento: 'webgl',
+    tipoCarregamento: 'preciso',
     realMinimo: -2,
     realMaximo: 2,
     imagMinimo: -2,
