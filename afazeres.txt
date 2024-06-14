@@ -15,9 +15,6 @@
 -> termo 'ln' não existe
 
 
--> arccos (invertido)
--> arctan (invertido)
--> harcsen (diferente do outro)
 -> harccos (diferente um do outro)
 -> harcan (diferente do outro)
 -> harcsec (aparece um azul que n deveria no webgl)

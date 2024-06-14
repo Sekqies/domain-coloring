@@ -82,9 +82,13 @@ const GSGL_function_declarations = [
     new c_GSGLFunction("ccsch", "csch", "vec2 ccsch(vec2 a) {return cdiv(vec2(1.0,0.0),csenh(a));}"),
     new c_GSGLFunction("csech", "sech", "vec2 csech(vec2 a) {return cdiv(vec2(1.0,0.0),ccosh(a));}"),
     new c_GSGLFunction("ccoth", "coth", "vec2 ccoth(vec2 a) {return cdiv(vec2(1.0,0.0),ctanh(a));}"),
-    new c_GSGLFunction("carcsen", "arcsin", "vec2 carcsen(vec2 a) {return cmult(vec2(0.0,1.0), clog(csub(csqrt(csub(vec2(1.0,0.0), cmult(a, a))), cmult(a, vec2(0.0,1.0)))));}"),
-    new c_GSGLFunction("carccos", "arccos", "vec2 carccos(vec2 a) {return csum(vec2(PI/2.0,0.0), -carcsen(a));}"),
-    new c_GSGLFunction("carctan", "arctan", "vec2 carctan(vec2 a) {return cmult(vec2(0.0,-0.5), clog(cdiv(csum(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a)), csub(vec2(1.0,0.0), cmult(vec2(0.0,1.0), a)))));}"),
+    new c_GSGLFunction("carcsen", "arcsin", `vec2 carcsen(vec2 z){
+        return cmult(i,clog(csqrt(one-cmult(z,z))-cmult(i,z)));
+    }`),
+    new c_GSGLFunction("carccos", "arccos", "vec2 carccos(vec2 z) {return vec2(PI/2.0,0.0) - carcsen(z);}"),
+    new c_GSGLFunction("carctan", "arctan", `vec2 carctan(vec2 z) {
+        return cmult(vec2(0.0,-0.5), clog(cdiv(one+cmult(i,z),one-cmult(i,z))));
+    }`),
     new c_GSGLFunction("carccsc", "arccsc", "vec2 carccsc(vec2 a) {return carcsen(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carcsec", "arcsec", "vec2 carcsec(vec2 a) {return carccos(cdiv(vec2(1.0, 0.0), a));}"),
     new c_GSGLFunction("carccot", "arccot", "vec2 carccot(vec2 a) {return carctan(cdiv(vec2(1.0, 0.0), a));}"),
