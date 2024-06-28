@@ -127,6 +127,14 @@ const GSGL_function_declarations = [
             return cgamma_right(z);
         }
     }`),
+    new c_GSGLFunction("czeta","zeta",`vec2 czeta(vec2 s){
+            vec2 resul = vec2(1.0,0.0);
+            for (int i=2; i<=10; i++)
+            {
+                resul = cadd(resul, cpow(vec2(i,0.0),cneg(s)));
+            }
+            return resul;
+        }`),
     new c_GSGLFunction("cfactorial", "factorial", "vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z)); }")
 ];
 

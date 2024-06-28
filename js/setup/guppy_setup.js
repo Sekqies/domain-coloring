@@ -83,6 +83,7 @@ function loadGuppy() {
     adicionarFuncao(guppy, "harsec", "arsech", "arcsech");
     //Outras funções
     adicionarFuncao_Latex(guppy, "gamma", "\\Gamma({$1})", "gamma($1)", "gamma");
+    adicionarFuncao_Latex(guppy,"zeta","\\zeta({$1})", "zeta($1)", "zeta");
     adicionarFuncao(guppy,"W","W","lambertw");
     adicionarFuncao(guppy,"w","W","lambertw");
     adicionarFuncao(guppy,"lambert","W","lambertw");
