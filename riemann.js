@@ -368,6 +368,19 @@ function modulo(z) {
     return { real: Math.sqrt(z.imag ** 2 + z.real ** 2), imag: 0 };
 }
 
+
+function zeta(z)
+{
+    let resul = {real:1,imag:0};
+    for(let i=1;i<=8;i++)
+    {
+        // resul += 1/(i^z) 
+        resul = soma(resul,exponencial({real:i,imag:0},neg(z)));
+    }
+    resul = {real: resul.real-1, imag:resul.imag};
+    return resul;
+}
+
 function gamma(z) {
     return z;
 
@@ -401,7 +414,7 @@ class c_FunctionList {
                 return new_function.runFunction(...args.map(arg => arg(vars)));
             }
         }
-        this.functions[new_function.function_name.toString()] = new_function.function_name;
+        this.functions[new_function.function_name] = new_function.function_name;
     }
     addOperation(name, operation) {
         this.operations[name] = operation;
@@ -409,7 +422,9 @@ class c_FunctionList {
     runFunction(name,...params)
     {
         if(this.functions[name])
-            this.functions[name].runFunction(...params)
+            return this.functions[name].runFunction(...params)
+        else
+            console.log("Eu dei a bunda");
     }
 }
 
@@ -480,7 +495,6 @@ lista.addOperation("var", function (args) {
 });
 
 
-export { lista };
 
 
 /*var operacoes = {

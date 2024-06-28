@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="riemann.js"></script>
+</head>
+<body>
+    <button onclick="provarAHipoteseDeRiemann()">Testar</button>
+    <script>
+    function findRepeated(complexos) {
+    const countMap = new Map();
+    const repeatedWithCountAndPosition = [];
+
+    // Count occurrences and track positions
+    complexos.forEach((num, index) => {
+        const key = `${num.real},${num.imag}`;
+        if (!countMap.has(key)) {
+            countMap.set(key, { count: 1, positions: [index + 1] }); // +1 to make positions human-readable (1-based)
+        } else {
+            const data = countMap.get(key);
+            data.count++;
+            data.positions.push(index + 1);
+            countMap.set(key, data);
+        }
+    });
+
+    // Find repeated numbers, include their counts and positions
+    countMap.forEach((data, key) => {
+        if (data.count > 1) {
+            const [real, imag] = key.split(',').map(Number);
+            repeatedWithCountAndPosition.push({ real, imag, count: data.count, positions: data.positions });
+        }
+    });
+
+    return repeatedWithCountAndPosition;
+}
+        function provarAHipoteseDeRiemann() {
+
+            let reais = [];
+            let imaginarios = [];
+            const precisao = 1e-10;
+            function equal(x, y) {
+                return Math.abs(x - y) < precisao;
+            }
+            function round(value, decimals) {
+                return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+            }
+            console.log("Iniciando...");
+            for (let i=3; i<100; i+=0.001)
+            {
+                const val = zeta({real:0.5,imag:i});
+                const resul = {real: round(val.real,10), imag: round(val.imag,10)};
+                reais.push(resul.real);
+                imaginarios.push(resul.imag);
+                /*if (vistoR.has(resul.real) && vistoI.has(resul.imag) ){
+                    //console.warn("Result already seen: " + resul.real + " + " + resul.imag + "i");
+                } else {
+                    vistoR.add(resul.real);
+                    vistoI.add(resul.imag);
+                }*/
+                //console.log(resul);
+            }
+            let complexos = [];	
+            for(let i=0;i<reais.length;i++){
+                complexos.push({real:reais[i],imag:imaginarios[i]});
+            }
+            console.log(findRepeated(complexos));
+            console.log("Finalizado.");
+        }
+    </script>
+</body>
+</html>
