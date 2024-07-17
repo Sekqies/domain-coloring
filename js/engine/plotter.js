@@ -141,42 +141,70 @@ function Plotter(funcaoHover) {
 
 function Eixos(){
     const eixosCanvas = document.getElementsByClassName('eixosCanvas');
-    for(let i = 0; i < eixosCanvas.length; i++) {
+    for(let i = 0; i < eixosCanvas.length ; i++) {
         const canvas = eixosCanvas[i];
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
         ctx.fillStyle = 'rgba(255,255,255,0.5)';
         ctx.font = "bold 15px Arial";
-        ctx.fillRect(width / 2, 0, 1, height);
-        ctx.fillRect(0, height / 2, width, 1);
+
         const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
         const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
         const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+        //diff consequentemente contém o número de inteiros na imagem
         let centro = width/2;
         const fernandoMode = true;
         let pixelPorInteiro = getPixelPorInteiro();
+        const numeroDeValores = 4;
+        const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
         let centrox = width / 2 - somar*pixelPorInteiro/2;
-        let centroy = width /2 - somai*pixelPorInteiro/2;
-
-        for (let real = pixelPorInteiro; real < width; real += pixelPorInteiro) {
-            if (fernandoMode) {
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                ctx.fillRect(0,centroy,width,1);
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                ctx.fillRect(centrox,0,1,height);
-
-                ctx.fillStyle = 'rgba(255,255,255,0.2)';
-                //continue;
+        let centroy = height /2 + somai*pixelPorInteiro/2;
+        if (fernandoMode) {
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(0,centroy,width,1);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(centrox,0,1,height);
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.font = '15px Arial'
+            ctx.fillStyle = 'rgba(255,255,255,0.5)'
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; // Example: black border with 50% opacity
+            ctx.lineWidth = 1;
+            for (let real = centrox; real < width; real += dist) {
+                ctx.fillRect(real, 0, 1, height);
+                const distancia = real-centrox;
+                ctx.fillRect(centrox-distancia,0,1,height);
+                let texto = distancia/pixelPorInteiro;
+                texto = texto==0? 0 : texto.toFixed(1);
+                ctx.fillText(texto, real+4, centroy-4);
+                ctx.strokeText(texto,real+4, centroy-4)
+                if(texto == 0) continue;
+                ctx.fillText("-" + String(texto), centrox-distancia+4, centroy-4);
+                ctx.strokeText("-" + String(texto), centrox - distancia + 4, centroy - 4);
             }
+            for(let imag = centroy;imag<height;imag+=dist){
+                ctx.fillRect(0,imag,width,1);
+                const distancia = imag - centroy
+                ctx.fillRect(0,centroy-distancia,width,1);
+                let texto = distancia/pixelPorInteiro;
+                texto = texto==0? 0 : texto.toFixed(1);
+                if(texto == 0) continue;
+                ctx.fillText(texto, centrox+4, imag+4);
+                ctx.strokeText(texto,centrox+4,imag+4)
+                ctx.fillText("-" + String(texto), centrox + 4, centroy-distancia+4);
+                ctx.strokeText("-" + String(texto), centrox + 4, centroy - distancia + 4);
+            
+            }
+        }
+        for (let real = pixelPorInteiro; real < width && false; real += pixelPorInteiro) {
             let x = real;
-            let y = (height / 2)-3;
+            let y = centroy-3;
 
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(x, y, 1, 6);
 
             ctx.fillStyle = 'rgba(255,255,255,1)';
-            let texto = Math.round((real - centro) / pixelPorInteiro);
+            let texto = Math.round((real - centrox) / pixelPorInteiro);
             ctx.fillText(texto, x+4, y - 4);
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.strokeText(texto, x+4, y - 4);
@@ -188,19 +216,19 @@ function Eixos(){
         }
 
 
-        for (let imag = pixelPorInteiro; imag < height; imag += pixelPorInteiro) {
-            let x = (width / 2)-3;
+        for (let imag = pixelPorInteiro; imag < height && false; imag += pixelPorInteiro) {
+            let x = centrox-3;
             let y = imag;
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(x, y, 6, 1);
 
             ctx.fillStyle = 'rgba(255,255,255,1)';
-            let texto = Math.round((imag - centro) / pixelPorInteiro);
-            if(Math.round((imag - centro) / pixelPorInteiro) != 0)
+            let texto = Math.round((imag-centroy) / pixelPorInteiro);
+            if(Math.round((imag - centroy) / pixelPorInteiro) != 0)
             {
-                ctx.fillText(texto, x + 8, y - 4);
+                ctx.fillText(texto, x + 4, y - 4);
                 ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                ctx.strokeText(texto, x + 8, y - 4);
+                ctx.strokeText(texto, x + 4, y - 4);
 
             }
                 

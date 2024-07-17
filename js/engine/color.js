@@ -39,10 +39,10 @@ function getNumeroInteiro(x, y) {
     const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
     const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
     let centrox = width / 2 + somar;
-    let centroy = width/2 + somai;
+    let centroy = width/2 - somai;
     let pixelPorInteiro = (centrox) / Number(diff/2);
     let real = (x - centrox) / pixelPorInteiro + somar/2;
-    let imag = (y - centroy) / pixelPorInteiro + somai/2;
+    let imag = (y - centroy) / pixelPorInteiro - somai/2;
 
     return [real, imag];
 }

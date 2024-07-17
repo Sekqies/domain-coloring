@@ -29,11 +29,19 @@ function normalizeValues()
 {
     const diffreal = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
     const diffimag = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
-    const diff = diffreal - diffimag;
+    const diff = Math.abs(diffreal - diffimag);
+    if (diffreal > diffimag) {
     variaveisGlobais.delimitadores.inicio_imag -= diff/2;
     variaveisGlobais.delimitadores.fim_imag += diff/2;
     document.getElementById('imag-minimo').value = variaveisGlobais.delimitadores.inicio_imag;
     document.getElementById('imag-maximo').value = variaveisGlobais.delimitadores.fim_imag;
+    }
+    else {
+    variaveisGlobais.delimitadores.inicio_real -= diff/2;
+    variaveisGlobais.delimitadores.fim_real += diff/2;
+    document.getElementById('real-minimo').value = variaveisGlobais.delimitadores.inicio_real;
+    document.getElementById('real-maximo').value = variaveisGlobais.delimitadores.fim_real;
+    }
 }
 function init() {
 
