@@ -146,6 +146,7 @@ function Eixos(){
         const ctx = canvas.getContext('2d');
         const width = canvas.width;
         const height = canvas.height;
+        ctx.clearRect(0,0,canvas.width,canvas.height)
         ctx.fillStyle = 'rgba(255,255,255,0.5)';
         ctx.font = "bold 15px Arial";
 
@@ -168,11 +169,13 @@ function Eixos(){
             ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.font = '15px Arial'
             ctx.fillStyle = 'rgba(255,255,255,0.5)'
-            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; // Example: black border with 50% opacity
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
             ctx.lineWidth = 1;
-            for (let real = centrox; real < width; real += dist) {
+            const increasing = width - centrox > width/2
+            const increasingY = height - centroy > height/2
+            for (let real = centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
                 ctx.fillRect(real, 0, 1, height);
-                const distancia = real-centrox;
+                let distancia = real-centrox;
                 ctx.fillRect(centrox-distancia,0,1,height);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
@@ -182,17 +185,17 @@ function Eixos(){
                 ctx.fillText("-" + String(texto), centrox-distancia+4, centroy-4);
                 ctx.strokeText("-" + String(texto), centrox - distancia + 4, centroy - 4);
             }
-            for(let imag = centroy;imag<height;imag+=dist){
+            for(let imag = centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
                 ctx.fillRect(0,imag,width,1);
                 const distancia = imag - centroy
                 ctx.fillRect(0,centroy-distancia,width,1);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
                 if(texto == 0) continue;
-                ctx.fillText(texto, centrox+4, imag+4);
-                ctx.strokeText(texto,centrox+4,imag+4)
-                ctx.fillText("-" + String(texto), centrox + 4, centroy-distancia+4);
-                ctx.strokeText("-" + String(texto), centrox + 4, centroy - distancia + 4);
+                ctx.fillText(texto, centrox+4, centroy-distancia+4);
+                ctx.strokeText(texto,centrox+4,centroy-distancia+4)
+                ctx.fillText("-" + String(texto), centrox + 4, imag+4);
+                ctx.strokeText("-" + String(texto), centrox + 4, imag+4);
             
             }
         }

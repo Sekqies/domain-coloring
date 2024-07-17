@@ -44,9 +44,21 @@ function normalizeValues()
     document.getElementById('real-maximo').value = variaveisGlobais.delimitadores.fim_real;
     }
 }
-function init() {
+
+
+function init(modoRapido = false) {
 
     //alert(guppy)  
+    if(modoRapido && true)
+    {
+        normalizeValues()
+        PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)
+        
+        if (variaveisGlobais.eixosCartesianos) {
+            Eixos();
+        }
+        return;
+    }
     normalizeValues()
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
@@ -56,6 +68,7 @@ function init() {
     else {
         tamanhoCanvas = variaveisGlobais.valorTamanhoGrafico;
     }
+    variaveisGlobais.tamanhoCanvas = tamanhoCanvas;
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
 
@@ -70,6 +83,7 @@ function init() {
     animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
     animation_variable_exists = false;
     const result_gl = guppy.func(listaFuncoes.operations)();
+    variaveisGlobais.glFunction = result_gl;
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
 
@@ -148,18 +162,24 @@ canvasGL.addEventListener('mousedown', (e) => {
     startY = e.offsetY;
     //alert("ai****-*-")
 });
-
+const FPS_LIMIT = 50;
+const minInterval = 1000/FPS_LIMIT
+let lastCall = 0;
 canvasGL.addEventListener('mousemove', (e) => {
     if (isDragging) {
+        const now = Date.now();
+        if(now-lastCall<minInterval) return;
+        lastCall = now;
+
         const dx = startX - e.offsetX;
         const dy = e.offsetY - startY;
         const pixelPorInteiro = getPixelPorInteiro();
-        variaveisGlobais.delimitadores.inicio_real += dx/getPixelPorInteiro();
-        variaveisGlobais.delimitadores.fim_real += dx/getPixelPorInteiro();
-        variaveisGlobais.delimitadores.inicio_imag += dy/getPixelPorInteiro();
-        variaveisGlobais.delimitadores.fim_imag += dy/getPixelPorInteiro();
+        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro;
+        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro;
+        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro;
+        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro;
         //alert("oi")
-        init()
+        init(true)
         startX = e.offsetX;
         startY = e.offsetY;
     }
@@ -196,7 +216,7 @@ canvasGL.addEventListener('wheel', (e) => {
     variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
 
     // Redraw the graph with the new zoom level
-    init();
+    init(true);
 });
 
 

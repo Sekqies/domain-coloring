@@ -36,7 +36,9 @@ let variaveisGlobais = {
     fps: 30,
     valorTipoAnimacao: 'continue',
     valorTipoGrafico: 'continuo',
-    delimitadores: {inicio_real: -2, fim_real: 2, inicio_imag: -2, fim_imag: 2}
+    delimitadores: {inicio_real: -2, fim_real: 2, inicio_imag: -2, fim_imag: 2},
+    glFunction: '',
+    tamanhoCanvas: 500
 };
 
 console.log = function(){}
