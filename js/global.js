@@ -25,7 +25,7 @@ let animation_variable_exists = false;
 
 
 let variaveisGlobais = {
-    tipoCarregamento: 'ambos',
+    tipoCarregamento: 'webgl',
     valorTamanhoGrafico: 500,
     graficoOcupaTelaInteiraActive: false,
     eixosCartesianos: true,
@@ -38,3 +38,5 @@ let variaveisGlobais = {
     valorTipoGrafico: 'continuo',
     delimitadores: {inicio_real: -2, fim_real: 2, inicio_imag: -2, fim_imag: 2}
 };
+
+console.log = function(){}

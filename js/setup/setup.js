@@ -3,6 +3,7 @@ import { loadHover } from './hover_setup.js';
 import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
 import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
+import { getPixelPorInteiro } from '../engine/color.js';
 
 const testing = true;
 
@@ -132,37 +133,70 @@ function createEventListeners() {
 
     //Não está funcionando (Não sei pq)
     //Eu sei porque
-    document.getElementById('animation-download').addEventListener('click', function () {
+    document.getElementById('download').addEventListener('click', function () {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
     let isDragging = false;
-let dragStart = { x: 0, y: 0 };
-let viewOffset = { x: 0, y: 0 };
+
+let startX,startY
 let zoomLevel = 1.0;
 
-canvas.addEventListener('mousedown', (e) => {
+canvasGL.addEventListener('mousedown', (e) => {
     isDragging = true;
-    dragStart.x = e.clientX - viewOffset.x;
-    dragStart.y = e.clientY - viewOffset.y;
+    startX = e.offsetX;
+    startY = e.offsetY;
+    //alert("ai****-*-")
 });
 
-canvas.addEventListener('mousemove', (e) => {
+canvasGL.addEventListener('mousemove', (e) => {
     if (isDragging) {
-        viewOffset.x = e.clientX - dragStart.x;
-        viewOffset.y = e.clientY - dragStart.y;
-        //updateGraph(); // Function to re-render the graph with new viewOffset
+        const dx = startX - e.offsetX;
+        const dy = e.offsetY - startY;
+        const pixelPorInteiro = getPixelPorInteiro();
+        variaveisGlobais.delimitadores.inicio_real += dx/getPixelPorInteiro();
+        variaveisGlobais.delimitadores.fim_real += dx/getPixelPorInteiro();
+        variaveisGlobais.delimitadores.inicio_imag += dy/getPixelPorInteiro();
+        variaveisGlobais.delimitadores.fim_imag += dy/getPixelPorInteiro();
+        //alert("oi")
+        init()
+        startX = e.offsetX;
+        startY = e.offsetY;
     }
 });
 
-canvas.addEventListener('mouseup', () => {
+canvasGL.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
-canvas.addEventListener('wheel', (e) => {
-    zoomLevel += e.deltaY * -0.01;
-    zoomLevel = Math.min(Math.max(.125, zoomLevel), 4); // Constrain zoom level
-    //PlotterGl()
+canvasGL.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const zoomIntensity = 0.5;
+    const direction = e.deltaY > 0 ? -1 : 1;
+    const oldZoomLevel = zoomLevel;
+    zoomLevel += direction * zoomIntensity;
+    zoomLevel = Math.max(0.1, zoomLevel); // Prevent zooming out too much
+
+    const rect = canvasGL.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const graphWidth = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const graphHeight = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const graphX = variaveisGlobais.delimitadores.inicio_real + (mouseX / canvasGL.width) * graphWidth;
+    const graphY = variaveisGlobais.delimitadores.inicio_imag + (mouseY / canvasGL.height) * graphHeight;
+
+    const adjustFactor = oldZoomLevel / zoomLevel;
+    const width = graphWidth * adjustFactor;
+    const height = graphHeight * adjustFactor;
+
+    variaveisGlobais.delimitadores.inicio_real = graphX - (mouseX / canvasGL.width) * width;
+    variaveisGlobais.delimitadores.fim_real = variaveisGlobais.delimitadores.inicio_real + width;
+    variaveisGlobais.delimitadores.inicio_imag = graphY - (mouseY / canvasGL.height) * height;
+    variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
+
+    // Redraw the graph with the new zoom level
+    init();
 });
 
 

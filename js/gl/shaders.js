@@ -58,8 +58,8 @@ void initalizeArrays()
     }
     void main() {
         initalizeArrays();
-        float a = ${freal-ireal}.0 * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5) + ${freal+ireal}.0;
-        float b = ${fimag-iimag}.0 * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5) + ${fimag+iimag}.0;
+        float a = ${(freal-ireal).toFixed(2)} * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5) + ${(freal+ireal).toFixed(2)};
+        float b = ${(fimag-iimag).toFixed(2)} * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5) + ${(fimag+iimag).toFixed(2)};
         float x = a;
         float y = b;
         vec2 z = ${vazio ? "vec2(a,b)" : funcao};
