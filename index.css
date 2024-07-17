@@ -52,8 +52,14 @@ a:hover {
     transition: opacity, scale 0.3s;
 }
 
-#grafico canvas {
+#domainColorCanvas canvas{
     border: 3px solid black;
+}
+#glCanvas canvas{
+    border: 3px solid brown;
+}
+#grafico canvas {
+
     border-radius: 10px;
     aspect-ratio: 1;
 }

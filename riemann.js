@@ -363,17 +363,23 @@ function sqrt(z) {
     return exponencial(z, { real: 0.5, imag: 0 })
 }
 //Outras
+
 function modulo(z) {
     return { real: Math.sqrt(z.imag ** 2 + z.real ** 2), imag: 0 };
 }
 
-function neg (z){
-    return {real: -z.real, imag: -z.imag};
+
+function zeta(z)
+{
+    let resul = {real:1,imag:0};
+    for(let i=1;i<=8;i++)
+    {
+        // resul += 1/(i^z) 
+        resul = soma(resul,exponencial({real:i,imag:0},neg(z)));
+    }
+    resul = {real: resul.real-1, imag:resul.imag};
+    return resul;
 }
-
-
-//Não elementares
-
 
 function gamma(z) {
     return z;
@@ -384,14 +390,8 @@ function fatorial(z) {
     return z;
 }
 
-function zeta(s)
-{
-    let resul = {real:1,imag:0}
-    for (let i=2;i<=8;i++)
-    {
-        resul = soma(resul,exponencial({real:i,imag:0},neg(s)));
-    }
-    return resul;
+function neg (z){
+    return {real: -z.real, imag: -z.imag};
 }
 
 class c_Function {
@@ -414,7 +414,7 @@ class c_FunctionList {
                 return new_function.runFunction(...args.map(arg => arg(vars)));
             }
         }
-        this.functions[new_function.function_name.toString()] = new_function.function_name;
+        this.functions[new_function.function_name] = new_function.function_name;
     }
     addOperation(name, operation) {
         this.operations[name] = operation;
@@ -422,7 +422,9 @@ class c_FunctionList {
     runFunction(name,...params)
     {
         if(this.functions[name])
-            this.functions[name].runFunction(...params)
+            return this.functions[name].runFunction(...params)
+        else
+            console.log("Eu dei a bunda");
     }
 }
 
@@ -468,7 +470,6 @@ const c_Function_Declarations = [
     new c_Function(modulo, "absolutevalue"),
     new c_Function(fatorial, "factorial"),
     new c_Function(gamma, "gamma"),
-    new c_Function(zeta,"zeta"),
     new c_Function(neg,"neg")
 ];
 
@@ -494,7 +495,6 @@ lista.addOperation("var", function (args) {
 });
 
 
-export { lista };
 
 
 /*var operacoes = {

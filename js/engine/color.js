@@ -35,12 +35,25 @@ function HSLtoRGB(h, s, l) {
 //Recebe um pixel (real e imag) e retorna o valor real e imag em numeros inteiros.
 function getNumeroInteiro(x, y) {
     let width = canvas.width;
-    let centro = width / 2;
-
-    let pixelPorInteiro = (centro) / Number(qtndInteiros);
-    let real = (x - centro) / pixelPorInteiro;
-    let imag = (y - centro) / pixelPorInteiro;
+    const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
+    const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
+    let centrox = width / 2 + somar;
+    let centroy = width/2 - somai;
+    let pixelPorInteiro = (centrox) / Number(diff/2);
+    let real = (x - centrox) / pixelPorInteiro + somar/2;
+    let imag = (y - centroy) / pixelPorInteiro - somai/2;
 
     return [real, imag];
 }
-export { HSLtoRGB, getNumeroInteiro};
+
+function getPixelPorInteiro() {
+    let width = canvas.width;
+    let centro = width / 2;
+    const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    let pixelPorInteiro = (centro) / Number(diff/2);
+
+    return pixelPorInteiro;
+}
+
+export { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro};

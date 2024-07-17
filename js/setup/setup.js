@@ -1,112 +1,226 @@
 import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
 import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
-import { Plotter, lista } from '/js/engine/plotter.js';
+import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
+import { getPixelPorInteiro } from '../engine/color.js';
 
 const testing = true;
 
-if(!testing)
-{
-    console.log = function(){}
+if (!testing) {
+    console.log = function () { }
 }
 
 
-function initializeVariables() 
-{
+function initializeVariables() {
     canvas = document.getElementById("domainColorCanvas");
     canvasGL = document.getElementById("glCanvas");
-    animationCheckbox = document.getElementById("animation-checkbox");
+    //animationCheckbox = document.getElementById("animation-checkbox");
     grafico = document.getElementById('grafico');
-    iteracao = document.getElementById('iteracao');
-    limiteMinimo = document.getElementById('limite-minimo');
-    limiteMaximo = document.getElementById('limite-maximo');
-    fps = document.getElementById('fps');
+    eixosCanvas = document.getElementsByClassName('eixosCanvas');
+    //iteracao = document.getElementById('iteracao');
+    //limiteMinimo = document.getElementById('limite-minimo');
+    //limiteMaximo = document.getElementById('limite-maximo');
+    //fps = document.getElementById('fps');
+
+
 }
 
-
-function init() {
-    //alert(guppy)  
-    let tamanhoCanvas;
-    if (graficoTelainteira) {
-        tamanhoCanvas = window.innerWidth;
-        //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
-        window.addEventListener('mousedown', function (event) {
-            function handleMouseMove(event) {
-                window.scrollBy(-event.movementX / 2, -event.movementY / 2);
-            }
-
-            window.addEventListener('mousemove', handleMouseMove);
-
-            window.addEventListener('mouseup', function () {
-                window.removeEventListener('mousemove', handleMouseMove);
-            });
-        });
-
-
+function normalizeValues()
+{
+    const diffreal = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const diffimag = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const diff = Math.abs(diffreal - diffimag);
+    if (diffreal > diffimag) {
+    variaveisGlobais.delimitadores.inicio_imag -= diff/2;
+    variaveisGlobais.delimitadores.fim_imag += diff/2;
+    document.getElementById('imag-minimo').value = variaveisGlobais.delimitadores.inicio_imag;
+    document.getElementById('imag-maximo').value = variaveisGlobais.delimitadores.fim_imag;
     }
     else {
-        tamanhoCanvas = document.getElementById("tamanho_grafico").value;
+    variaveisGlobais.delimitadores.inicio_real -= diff/2;
+    variaveisGlobais.delimitadores.fim_real += diff/2;
+    document.getElementById('real-minimo').value = variaveisGlobais.delimitadores.inicio_real;
+    document.getElementById('real-maximo').value = variaveisGlobais.delimitadores.fim_real;
     }
+}
+
+
+function init(modoRapido = false) {
+
+    //alert(guppy)  
+    if(modoRapido && true)
+    {
+        normalizeValues()
+        PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)
+        
+        if (variaveisGlobais.eixosCartesianos) {
+            Eixos();
+        }
+        return;
+    }
+    normalizeValues()
+    let tamanhoCanvas;
+    if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
+        tamanhoCanvas = window.innerWidth;
+        //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
+    }
+    else {
+        tamanhoCanvas = variaveisGlobais.valorTamanhoGrafico;
+    }
+    variaveisGlobais.tamanhoCanvas = tamanhoCanvas;
     canvas.width = tamanhoCanvas;
     canvas.height = tamanhoCanvas;
-    tipo_grafico = document.querySelector('input[name="tp_g"]:checked').value;
-    qtndInteiros = document.getElementById('numero_inteiros').value;
+
+    for (let i = 0; i < eixosCanvas.length; i++) {
+        eixosCanvas[i].width = tamanhoCanvas;
+        eixosCanvas[i].height = tamanhoCanvas;
+    }
+
+
     funcaoHover = guppy.func(lista.operations);
-    Plotter(funcaoHover);
+
+    animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
     animation_variable_exists = false;
     const result_gl = guppy.func(listaFuncoes.operations)();
+    variaveisGlobais.glFunction = result_gl;
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
-    if (animationCheckbox.checked && animation_variable_exists)
-    {
-        const minimo = parseFloat(limiteMinimo.value);
-        const maximo = parseFloat(limiteMaximo.value);
-        const it = parseFloat(iteracao.value);
-        const framerate = parseFloat(fps.value);
-        let animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
-        animation.animate(result_gl, minimo,maximo,it);
-        animation.playAnimation(framerate, "continue");
+
+
+
+    if (variaveisGlobais.animacaoLigada && animation_variable_exists) {
+        const minimo = parseFloat(variaveisGlobais.variacaoInicio);
+        const maximo = parseFloat(variaveisGlobais.variacaoFim);
+        const it = parseFloat(variaveisGlobais.incremento);
+        const framerate = parseFloat(variaveisGlobais.fps);
+        animation.animate(result_gl, minimo, maximo, it);
+        animation.playAnimation(framerate, variaveisGlobais.valorTipoAnimacao);
+        canvas.parentElement.classList.add('active');
+        canvasGL.parentElement.classList.remove('active');
+        //document.body.style.backgroundColor = "black";
     }
-    else
-    {
-        PlotterGl(result_gl, tamanhoCanvas, result_gl);
+    else {
+        animation.stopAnimation();
+        //document.body.style.backgroundColor = "blue";
+        if (variaveisGlobais.tipoCarregamento == 'preciso') {
+            //alert("não web-gl")
+            console.log("Tamanho do canvas:", variaveisGlobais.valorTamanhoGrafico);
+            if(variaveisGlobais.valorTamanhoGrafico > 3000){
+                alert("O tamanho do canvas é maior do que o recomendado, a renderização pode demorar mais tempo.");
+            }
+            Plotter(funcaoHover);
+            canvas.parentElement.classList.add('active');
+            canvasGL.parentElement.classList.remove('active');
+        }
+        else if (variaveisGlobais.tipoCarregamento == 'webgl') {
+            //alert('webgl');
+            PlotterGl(result_gl, tamanhoCanvas, result_gl);
+            canvas.parentElement.classList.remove('active');
+            canvasGL.parentElement.classList.add('active');
+        }
+        else {
+            Plotter(funcaoHover);
+            PlotterGl(result_gl, tamanhoCanvas, result_gl);
+            canvas.parentElement.classList.add('active');
+            canvasGL.parentElement.classList.add('active');
+        }
+
+        loadHover(funcaoHover, "domainColorCanvas");
+        loadHover(funcaoHover, "glCanvas");
     }
-    loadHover(funcaoHover, "domainColorCanvas");
-    loadHover(funcaoHover, "glCanvas");
+
+    if (variaveisGlobais.eixosCartesianos) {
+        Eixos();
+    }
+
+
 }
-function createEventListeners()
-{
+
+
+function createEventListeners() {
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             init();
         }
     });
-    const arrow = document.getElementById('arrow');
-    const form = document.getElementById('form');
-    const grafico = document.getElementById('grafico');
 
-    arrow.addEventListener('click', function () {
-        form.classList.toggle('active');
-        arrow.classList.toggle('active');
-        grafico.classList.toggle('active');
-    });
-
-    const checkbox = document.querySelector('.inputcheckbox > div');
-    const gsize = document.getElementById('gsize');
-    checkbox.addEventListener('click', function () {
-        checkbox.classList.toggle('active');
-        gsize.classList.toggle('disabled');
-        gsize.querySelector('input').disabled = !gsize.querySelector('input').disabled;
-        graficoTelainteira = !graficoTelainteira;
-        grafico.style.cursor = graficoTelainteira ? 'grab' : 'default';
-    });
-
-    document.getElementById('BAIXAR').addEventListener('click', function () {
+    //Não está funcionando (Não sei pq)
+    //Eu sei porque
+    document.getElementById('download').addEventListener('click', function () {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
+    let isDragging = false;
 
+let startX,startY
+let zoomLevel = 1.0;
+
+canvasGL.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.offsetX;
+    startY = e.offsetY;
+    //alert("ai****-*-")
+});
+const FPS_LIMIT = 50;
+const minInterval = 1000/FPS_LIMIT
+let lastCall = 0;
+canvasGL.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        const now = Date.now();
+        if(now-lastCall<minInterval) return;
+        lastCall = now;
+
+        const dx = startX - e.offsetX;
+        const dy = e.offsetY - startY;
+        const pixelPorInteiro = getPixelPorInteiro();
+        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro;
+        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro;
+        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro;
+        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro;
+        //alert("oi")
+        init(true)
+        startX = e.offsetX;
+        startY = e.offsetY;
+    }
+});
+
+canvasGL.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+canvasGL.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const zoomIntensity = 0.5;
+    const direction = e.deltaY > 0 ? -1 : 1;
+    const oldZoomLevel = zoomLevel;
+    zoomLevel += direction * zoomIntensity;
+    zoomLevel = Math.max(0.1, zoomLevel); // Prevent zooming out too much
+
+    const rect = canvasGL.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const graphWidth = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const graphHeight = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const graphX = variaveisGlobais.delimitadores.inicio_real + (mouseX / canvasGL.width) * graphWidth;
+    const graphY = variaveisGlobais.delimitadores.inicio_imag + (mouseY / canvasGL.height) * graphHeight;
+
+    const adjustFactor = oldZoomLevel / zoomLevel;
+    const width = graphWidth * adjustFactor;
+    const height = graphHeight * adjustFactor;
+
+    variaveisGlobais.delimitadores.inicio_real = graphX - (mouseX / canvasGL.width) * width;
+    variaveisGlobais.delimitadores.fim_real = variaveisGlobais.delimitadores.inicio_real + width;
+    variaveisGlobais.delimitadores.inicio_imag = graphY - (mouseY / canvasGL.height) * height;
+    variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
+
+    // Redraw the graph with the new zoom level
+    init(true);
+});
+
+
+    
 }
 
 function load() {

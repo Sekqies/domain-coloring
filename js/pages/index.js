@@ -20,13 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function download(){
-    const canvas = document.getElementById("domainColorCanvas");
-    const dataURL = canvas.toDataURL('image/png');
+    if(variaveisGlobais.valorTamanhoGrafico > 5760){
+        alert("Não é possivel baixar gráficos maiores que 5760px");
+        return;
+    }
+    init();
+    const canvasImage = variaveisGlobais.tipoCarregamento == 'webgl' ? canvasGL : canvas;
+    const dataURL = canvasImage.toDataURL('image/png');
     let link = document.createElement("a");
     link.href = dataURL;
     link.download = "domainColor.png";
     link.click();
 }
 
-document.getElementById("download").addEventListener("click", init);
-document.getElementById("draw").addEventListener("click", init);
+document.getElementById("download").addEventListener("click", download);
+document.getElementById("draw").addEventListener("click", init);    

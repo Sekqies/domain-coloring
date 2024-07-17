@@ -1,4 +1,5 @@
 import {PlotterGl} from "./plotter_gl.js";
+
 class GlAnimation
 {
     constructor(canvas, width, height)
@@ -10,6 +11,7 @@ class GlAnimation
         this.iteration = 0;
         this.frames = [];
         this.fps = 30;
+        //console.log("Construtor GlAnimation");
     }
 
     addFrame()
@@ -53,11 +55,12 @@ class GlAnimation
         }
         if (this.gl.isContextLost())
             console.log("Contexto perdido");
-        else
-        this.downloadAnimation();
+        //else
+            //this.downloadAnimation();
 
     }
     downloadAnimation() {
+
         let capturer = new CCapture({ format: 'webm', framerate: this.fps });
     
         capturer.start();
@@ -111,6 +114,11 @@ class GlAnimation
         };
     
         requestAnimationFrame(displayFrame);
+    }
+
+    stopAnimation()
+    {
+        this.frames = [];
     }
 }
 

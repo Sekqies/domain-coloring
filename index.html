@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="index.css">
+    <link type="text/css" rel="stylesheet" href="./teste_front/index.css">
     <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
     <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
     <script src=".\js\lib\ccapture.min.js"></script>
@@ -16,83 +16,232 @@
     <title>Funções complexas</title>
 </head>
 
-<body>
-    <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
-    <section>
-        <div id="guppyfunction">
-            <img src="assets/arrow.svg" alt="arrow" id="arrow" class="active">
-            <div>
-                <div id="guppy1"></div>
-                <p>Digite uma função complexa e pressione 'enter'. Para uma lista de simbolos aceitos clique <a
-                        href="Docs.html">aqui</a></p>
+<body onload="pageInit()">
+
+    <section id="navbar">
+        <div class="content">
+            <img src="../assets/Arrow.svg" alt="Seta mostrar" id="setaLateral" onclick="ocultaLateral()">
+            <div id="guppy1"></div>
+        </div>
+        <div class="navbar-arrow">
+            <img src="../assets/Arrow.svg" id="setaNavbar" alt="Seta ocultar" onclick="ocultaNavbar()">
+        </div>
+    </section>
+    <section id="lateral">
+        <div class="lateral-itens">
+
+            <div id="lateral-desenhar">
+                <div class="lateral-desenhar-botao">
+                    <button id="draw" class="btn" onclick="chegaValoresGlobais()">
+                        <p>Desenhar</p>
+                        <img src="../assets/Pencil.svg" alt="Desenhar grafico">
+                    </button>
+                    <h4>Ou pressione 'Enter' dentro da caixa de função.</h4>
+                </div>
+                <div class="lateral-desenhar-botao">
+                    <button id="download" class="btn secondary">
+                        <p>Baixar gráfico</p>
+                        <img src="../assets/download.svg" alt="Baixar gráfico">
+                    </button>
+                </div>
             </div>
 
-        </div>
-        <div id="opcoes">
-            <form id="form" class="active">
-                <div id="options">
-                    <div class="tipo">
-                        <p>Tipo do Gráfico: </p>
-                        <div class="active">
-                            <input id='continuo' type="radio" value="1" checked name="tp_g">
-                            <label for="continuo">Contínuo</label>
-                        </div>
-                        <div>
-                            <input id='descontinuo' type="radio" value="2" name="tp_g">
-                            <label for="descontinuo">Descontínuo</label>
-                        </div>
-                    </div>
+            <div id="lateral-opcoes" class="lateral-div active">
 
-                    <div class="inputcheckbox">
-                        <div></div>
-                        <p>Grafico ocupa a tela inteira</p>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="animation-checkbox" name="fullscreen"><label for='animation-checkbox'>animar</label>
-                        <label for="limite_minimo">Limite minimo</label> <input type="number" id="limite-minimo" value="0"> 
-                        <label for="limite_maximo">Limite maximo</label> <input type="number" id="limite-maximo" value="5"> 
-                        <label for="iteracao">Iteração</label> <input type="number" id="iteracao" value="0.2"> 
-                        <label for="fps">FPS</label> <input type="number" id="fps" value="30">
-                        <button id="BAIXAR">BAIXAKI</button>
-                    </div>
 
-                    <div class="funcao">
+                <div class="lateral-div-header">
+                    <h2>Opções: </h2>
+                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralOpcoes">
+                </div>
+
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Carregamento do gráfico: </p>
+                    </div>
+                    <div class="input-dropdown">
+                        <div class="input-dropdown-fixed">
+                            <p>Grafico normal</p>
+                            <div id="CarregamentoGrafico">
+                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                            </div>
+                        </div>
+                        <div class="input-dropdown-options">
+                            <h4>Renderização precisa (menor velocidade)</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Tipo do gráfico: </p>
+                    </div>
+                    <div class="input-dropdown">
+                        <div class="input-dropdown-fixed">
+                            <p>Continuo</p>
+                            <div id="TipoGrafico">
+                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                            </div>
+                        </div>
+                        <div class="input-dropdown-options">
+                            <h4>Descontinuo</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lateral-div-content" style="display:hidden">
+                    <div class="lateral-div-content-option">
                         <p>Numero de inteiros: </p>
-                        <input type="number" id="numero_inteiros" value="2" min="1" max="100">
                     </div>
-
-                    <div class="funcao" id="gsize">
-                        <p>Tamanho do gráfico:</p>
-                        <input type="number" id="tamanho_grafico" value="500" min="100" max="4000" step="100">
+                    <div class="input-number">
+                        <input id="real-maximos" value='2' step='1' type="number">
                     </div>
                 </div>
 
-
-                <a href="Docs.html">Documentação</a>
-                <div id="submit">
-                    <input type="button" value="Desenhar" >
-                    <input type="button" value="Baixar o gráfico"   >
+                <div class="lateral-div-content" style="display: block;">
+                    <div class="input-interval">
+                        <input id="real-minimo" type="number" value='-2'>
+                        <p> &lt; Re &lt; </p>
+                        <input id='real-maximo' type="number" value="2">
+                    </div>
                 </div>
-            </form>
 
+                <div class="lateral-div-content" style="display: block;">
+                    <div class="input-interval">
+                        <input id="imag-minimo" type="number" value="-2" >
+                        <p> &lt; Im &lt; </p>
+                        <input id="imag-maximo" type="number" value="2" >
+                    </div>
+                </div>
 
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Tamanho do gráfico</p>
+                    </div>
+                    <div class="input-dropdown" id="">
+                        <div class="input-dropdown-fixed">
+                            <input id="tamanho-grafico" type="number" value='500'>
+                            <p style="display: none;">Grafico que ocupa a tela inteira</p>
+                            <div id="TamanhoGrafico">
+                                <p>px</p>
+                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                            </div>
+                        </div>
+                        <div class="input-dropdown-options">
+                            <h4 onclick="alteraOpcaoTamanhoGrafico()">Grafico ocupa a tela inteira</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lateral-div-content" id="donotchange">
+                    <div class="lateral-div-content-option">
+                        <p>Eixos cartesianos</p>
+                    </div>
+                    <div class="input-checkbox" id="EixosCartesianos">
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="lateral-animacao" class="lateral-div active">
+                <div class="lateral-div-header">
+                    <h2>Animação</h2>
+                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralAnimacao">
+                </div>
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Animação ligada</p>
+                    </div>
+                    <div class="input-checkbox active" onclick="changeAnimacaoActive(this)">
+                    </div>
+                </div>
+                <div class="lateral-div-content">
+                    <h3>Utilize a letra 'k' na função para criar uma animação.</h3>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Variação:</p>
+                    </div>
+                    <div class="input-interval">
+                        <input id="variacao-minimo" value='0' type="number">
+                        <p>a</p>
+                        <input id="variacao-maximo" value='10' type="number">
+                    </div>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Incremento: </p>
+                    </div>
+                    <div class="input-number">
+                        <input id="incremento" value='0.5' type="number" step="0.1">
+                    </div>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>FPS: </p>
+                    </div>
+                    <div class="input-number">
+                        <input id="fps" value='30' step='10' type="number">
+                    </div>
+                </div>
+
+                <div class="lateral-div-content">
+                    <div class="lateral-div-content-option">
+                        <p>Tipo de animação: </p>
+                    </div>
+                    <div class="input-dropdown">
+                        <div class="input-dropdown-fixed">
+                            <p>Normal</p>
+                            <div id='TipoAnimacao'>
+                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+                            </div>
+                        </div>
+                        <div class="input-dropdown-options">
+                            <h4>Bouncy</h4>
+                            <h4>Repeat</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!---<div class="lateral-div-content">
+                    <button class="btn secondary" id="animation-download">
+                        <p>Baixar animação</p>
+                        <img src="../assets/download.svg" alt="Baixar gráfico">
+                    </button>
+                </div>-->
+
+            </div>
+
+            <div style="min-height: 1px;"></div>
         </div>
+    </section>
+
+
+    <section id="domainColoring">
         <div id="graficos-complexos">
 
             <div id="grafico">
                 <canvas id="domainColorCanvas" width="600" height="600"></canvas>
+                <canvas class="eixosCanvas" width="600" height="600"></canvas>
                 <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
             </div>
 
             <div id="grafico">
-                <canvas id="glCanvas" width="600" height="600"></canvas>
+                <canvas class='draggable'id="glCanvas" width="600" height="600"></canvas>
+                <canvas class="eixosCanvas" width="600" height="600"></canvas>
                 <p id="descricaoFuncao"><i>f ( a + bi ) = a + bi</i></p>
             </div>
+
         </div>
-
-
     </section>
+
+
+    <script src="./teste_front/index.js" defer></script>
 </body>
+
 
 </html>
 

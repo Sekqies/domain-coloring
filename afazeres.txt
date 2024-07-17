@@ -1,0 +1,34 @@
+
+-> Melhorar eixos cartesianos
+-> Responsividade
+-> Função de feedbacks
+-> Função de contagem de usuarios
+-> Fazer função de drag
+-> Botão de "Baixar animação" Funcionar (Está comentado)
+-> Numero de interiros mudar para Re < X < Re e Im < X < Im
+-> Eu tenho a imporessão de que a lista de funções complexas é o webGL em ambos os casos.
+    (A função real não estava implementada só no webgl e em nenhum funcionada)
+    (checar isso)
+
+-> Termo "ctg" não existe mas o guppy acha que sim
+-> Termo arctg ou harctg não existe (só 'tan')
+-> termo 'ln' não existe
+
+
+-> harccos (diferente um do outro)
+-> harcan (diferente do outro)
+-> harcsec (aparece um azul que n deveria no webgl)
+-> harccsc (invertido)
+
+
+Observações:
+-> Botões do guppy (no input, direita inferior do input) não funcionam (quando clica ele fecha)
+-> Grafico não faz o download quando o tamanho é maior que 5760
+
+
+Para a entrega do projeto:
+-> Remover os console.log
+
+IDEIAS (BRAINSTORMING)
+-> Criar um botão "Proxima função" que ele vai passeando (mais pra gente debugar, mas serve pro fim do projeto)
+    Ai tipo, ele começa em z, faz z², sen(z), cos(z), tg(z), sec(z), ...

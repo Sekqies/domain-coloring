@@ -1,4 +1,4 @@
-import { HSLtoRGB, getNumeroInteiro} from './color.js';
+import { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro} from './color.js';
 import {lista } from './funcoes_complexas.js';
 //Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
@@ -24,7 +24,7 @@ function Domain_coloring(real, imag) {
 
 
 
-    if (tipo_grafico == 2) {
+    if (variaveisGlobais.valorTipoGrafico != 'continuo') {
         //Modo 2 (com descontinuidade):
         dist = dist == "Infinity" ? 10e50 : dist;
         let expoente = Math.log2(dist);
@@ -80,6 +80,7 @@ function Domain_coloring(real, imag) {
 
 //Receber o canvas, rodar por todos os pixels e colocar a cor
 function Plotter(funcaoHover) {
+    //alert('Plotter');
     /*alert('Guppy: ' + guppy)
     const f = guppy.func(operacoes);
     alert(guppy.engine.get_content('ast'));
@@ -138,5 +139,111 @@ function Plotter(funcaoHover) {
 
 }
 
+function Eixos(){
+    const eixosCanvas = document.getElementsByClassName('eixosCanvas');
+    for(let i = 0; i < eixosCanvas.length ; i++) {
+        const canvas = eixosCanvas[i];
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = "bold 15px Arial";
 
-export { Plotter, lista };
+        const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
+        const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
+        const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+        //diff consequentemente contém o número de inteiros na imagem
+        let centro = width/2;
+        const fernandoMode = true;
+        let pixelPorInteiro = getPixelPorInteiro();
+        const numeroDeValores = 4;
+        const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
+        let centrox = width / 2 - somar*pixelPorInteiro/2;
+        let centroy = height /2 + somai*pixelPorInteiro/2;
+        if (fernandoMode) {
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(0,centroy,width,1);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(centrox,0,1,height);
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.font = '15px Arial'
+            ctx.fillStyle = 'rgba(255,255,255,0.5)'
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
+            ctx.lineWidth = 1;
+            const increasing = width - centrox > width/2
+            const increasingY = height - centroy > height/2
+            for (let real = centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+                ctx.fillRect(real, 0, 1, height);
+                let distancia = real-centrox;
+                ctx.fillRect(centrox-distancia,0,1,height);
+                let texto = distancia/pixelPorInteiro;
+                texto = texto==0? 0 : texto.toFixed(1);
+                ctx.fillText(texto, real+4, centroy-4);
+                ctx.strokeText(texto,real+4, centroy-4)
+                if(texto == 0) continue;
+                ctx.fillText("-" + String(texto), centrox-distancia+4, centroy-4);
+                ctx.strokeText("-" + String(texto), centrox - distancia + 4, centroy - 4);
+            }
+            for(let imag = centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+                ctx.fillRect(0,imag,width,1);
+                const distancia = imag - centroy
+                ctx.fillRect(0,centroy-distancia,width,1);
+                let texto = distancia/pixelPorInteiro;
+                texto = texto==0? 0 : texto.toFixed(1);
+                if(texto == 0) continue;
+                ctx.fillText(texto, centrox+4, centroy-distancia+4);
+                ctx.strokeText(texto,centrox+4,centroy-distancia+4)
+                ctx.fillText("-" + String(texto), centrox + 4, imag+4);
+                ctx.strokeText("-" + String(texto), centrox + 4, imag+4);
+            
+            }
+        }
+        for (let real = pixelPorInteiro; real < width && false; real += pixelPorInteiro) {
+            let x = real;
+            let y = centroy-3;
+
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(x, y, 1, 6);
+
+            ctx.fillStyle = 'rgba(255,255,255,1)';
+            let texto = Math.round((real - centrox) / pixelPorInteiro);
+            ctx.fillText(texto, x+4, y - 4);
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.strokeText(texto, x+4, y - 4);
+
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(x, 0, 1, height);
+
+        }
+
+
+        for (let imag = pixelPorInteiro; imag < height && false; imag += pixelPorInteiro) {
+            let x = centrox-3;
+            let y = imag;
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(x, y, 6, 1);
+
+            ctx.fillStyle = 'rgba(255,255,255,1)';
+            let texto = Math.round((imag-centroy) / pixelPorInteiro);
+            if(Math.round((imag - centroy) / pixelPorInteiro) != 0)
+            {
+                ctx.fillText(texto, x + 4, y - 4);
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.strokeText(texto, x + 4, y - 4);
+
+            }
+                
+
+            //Colocar uma cor mais transparente por toda a linha
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(0, y, width, 1);
+        }
+
+
+    }
+    console.log("Eixos desenhados");
+}
+
+export { Plotter, lista, Eixos};
