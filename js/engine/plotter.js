@@ -150,10 +150,25 @@ function Eixos(){
         ctx.font = "bold 15px Arial";
         ctx.fillRect(width / 2, 0, 1, height);
         ctx.fillRect(0, height / 2, width, 1);
-        let centro = width / 2;
+        const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
+        const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
+        const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+        let centro = width/2;
+        const fernandoMode = true;
         let pixelPorInteiro = getPixelPorInteiro();
+        let centrox = width / 2 - somar*pixelPorInteiro/2;
+        let centroy = width /2 - somai*pixelPorInteiro/2;
 
         for (let real = pixelPorInteiro; real < width; real += pixelPorInteiro) {
+            if (fernandoMode) {
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fillRect(0,centroy,width,1);
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fillRect(centrox,0,1,height);
+
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                //continue;
+            }
             let x = real;
             let y = (height / 2)-3;
 

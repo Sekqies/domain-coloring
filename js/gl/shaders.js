@@ -1,6 +1,11 @@
-function writeFragmentShader(funcao, width, height, inteiros, declarations) {
+function writeFragmentShader(funcao, width, height, delimitador, declarations) {
     console.log("Proporções gráfico:", width,height)
     let continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
+    console.log(delimitador)
+    const ireal = delimitador.inicio_real
+    const iimag = delimitador.inicio_imag
+    const freal = delimitador.fim_real
+    const fimag = delimitador.fim_imag
     let vazio = funcao === '';
     return `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -53,8 +58,8 @@ void initalizeArrays()
     }
     void main() {
         initalizeArrays();
-        float a = ${inteiros}.0 * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5);
-        float b = ${inteiros}.0 * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5);
+        float a = ${freal-ireal}.0 * 2.0 * ((gl_FragCoord.x)/canvasSize.x - 0.5) + ${freal+ireal}.0;
+        float b = ${fimag-iimag}.0 * 2.0 * ((gl_FragCoord.y)/canvasSize.y - 0.5) + ${fimag+iimag}.0;
         float x = a;
         float y = b;
         vec2 z = ${vazio ? "vec2(a,b)" : funcao};

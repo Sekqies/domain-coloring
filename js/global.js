@@ -25,11 +25,7 @@ let animation_variable_exists = false;
 
 
 let variaveisGlobais = {
-    tipoCarregamento: 'preciso',
-    realMinimo: -2,
-    realMaximo: 2,
-    imagMinimo: -2,
-    imagMaximo: 2,
+    tipoCarregamento: 'ambos',
     valorTamanhoGrafico: 500,
     graficoOcupaTelaInteiraActive: false,
     eixosCartesianos: true,
@@ -39,5 +35,6 @@ let variaveisGlobais = {
     incremento: 0.5,
     fps: 30,
     valorTipoAnimacao: 'continue',
-    valorTipoGrafico: 'continuo'
+    valorTipoGrafico: 'continuo',
+    delimitadores: {inicio_real: -2, fim_real: 2, inicio_imag: -2, fim_imag: 2}
 };

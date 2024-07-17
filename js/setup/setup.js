@@ -25,10 +25,20 @@ function initializeVariables() {
 
 }
 
-
+function normalizeValues()
+{
+    const diffreal = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const diffimag = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const diff = diffreal - diffimag;
+    variaveisGlobais.delimitadores.inicio_imag -= diff/2;
+    variaveisGlobais.delimitadores.fim_imag += diff/2;
+    document.getElementById('imag-minimo').value = variaveisGlobais.delimitadores.inicio_imag;
+    document.getElementById('imag-maximo').value = variaveisGlobais.delimitadores.fim_imag;
+}
 function init() {
 
     //alert(guppy)  
+    normalizeValues()
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
@@ -103,6 +113,8 @@ function init() {
 
 
 }
+
+
 function createEventListeners() {
     document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
@@ -111,11 +123,42 @@ function createEventListeners() {
     });
 
     //Não está funcionando (Não sei pq)
+    //Eu sei porque
     document.getElementById('animation-download').addEventListener('click', function () {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
+    let isDragging = false;
+let dragStart = { x: 0, y: 0 };
+let viewOffset = { x: 0, y: 0 };
+let zoomLevel = 1.0;
 
+canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragStart.x = e.clientX - viewOffset.x;
+    dragStart.y = e.clientY - viewOffset.y;
+});
+
+canvas.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        viewOffset.x = e.clientX - dragStart.x;
+        viewOffset.y = e.clientY - dragStart.y;
+        //updateGraph(); // Function to re-render the graph with new viewOffset
+    }
+});
+
+canvas.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+canvas.addEventListener('wheel', (e) => {
+    zoomLevel += e.deltaY * -0.01;
+    zoomLevel = Math.min(Math.max(.125, zoomLevel), 4); // Constrain zoom level
+    //PlotterGl()
+});
+
+
+    
 }
 
 function load() {

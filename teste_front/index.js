@@ -62,16 +62,33 @@ function handleValueChange(element, type) {
     const value = element.value;
     switch (type) {
         case 1:
-            variaveisGlobais.realMinimo = value;
+            variaveisGlobais.delimitadores.inicio_real = Number(value);
+            /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
+            variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
+            imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
+            imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
             break;
         case 2:
-            variaveisGlobais.realMaximo = value;
+            variaveisGlobais.delimitadores.fim_real = Number(value);
+            /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
+            variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
+            imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
+            imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
             break;
         case 3:
-            variaveisGlobais.imagMinimo = value;
+            variaveisGlobais.delimitadores.inicio_imag = Number(value);
+            /*variaveisGlobais.delimitadores.fim_real += diffimag/2;
+            variaveisGlobais.delimitadores.inicio_real -=diffimag/2
+            realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
+            realMinimoInput.value = variaveisGlobais.delimitadores.fim_imag;*/
             break;
         case 4:
-            variaveisGlobais.imagMaximo = value;
+            variaveisGlobais.delimitadores.fim_imag = Number(value);
+           /* const diff4 = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+            variaveisGlobais.delimitadores.fim_real += diffimag/2;
+            variaveisGlobais.delimitadores.inicio_real -=diffimag/2
+            realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
+            realMinimoInput.value = variaveisGlobais.delimitadores.fim_imag;*/
             break;
         case 5:
             variaveisGlobais.valorTamanhoGrafico = value;
@@ -227,10 +244,10 @@ function pageInit(){
     opcoesTipoAnimacao['ativo'] = variaveisGlobais.valorTipoAnimacao;
     opcoesTipoGrafico['ativo'] = variaveisGlobais.valorTipoGrafico;
     
-    realMaximoInput.value = variaveisGlobais.realMaximo;
-    realMinimoInput.value = variaveisGlobais.realMinimo;
-    imagMaximoInput.value = variaveisGlobais.imagMaximo;
-    imagMinimoInput.value = variaveisGlobais.imagMinimo;
+    realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
+    realMinimoInput.value = variaveisGlobais.delimitadores.inicio_real;
+    imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
+    imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;
 
     tamanhoGraficoInput.value = variaveisGlobais.valorTamanhoGrafico;
     variacaoMinimoInput.value = variaveisGlobais.variacaoInicio;
