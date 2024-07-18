@@ -185,6 +185,10 @@ canvasGL.addEventListener('mousemove', (e) => {
     }
 });
 
+canvasGL.addEventListener('mouseout',()=> {
+    isDragging = false;
+})
+
 canvasGL.addEventListener('mouseup', () => {
     isDragging = false;
 });
@@ -214,7 +218,7 @@ canvasGL.addEventListener('wheel', (e) => {
     variaveisGlobais.delimitadores.fim_real = variaveisGlobais.delimitadores.inicio_real + width;
     variaveisGlobais.delimitadores.inicio_imag = graphY - (mouseY / canvasGL.height) * height;
     variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
-
+ 
     // Redraw the graph with the new zoom level
     init(true);
 });

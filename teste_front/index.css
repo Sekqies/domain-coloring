@@ -430,6 +430,12 @@ section#lateral .lateral-div.active {
     aspect-ratio: 1;
 
 }
+#glCanvas {
+    cursor:grab;
+}
+#glCanvas:active {
+    cursor:grabbing
+}
 
 #grafico.active {
     display: block;
