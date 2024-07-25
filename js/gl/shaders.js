@@ -56,8 +56,10 @@ void initalizeArrays()
         vec3 rgb = clamp( abs(mod(hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
         return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
+    const float MAX_SAFE_VALUE = 1.7e+38;
     void main() {
         initalizeArrays();
+
         float a = ${(freal-ireal).toFixed(2)} * ((gl_FragCoord.x)/canvasSize.x - 0.5) + ${(freal+ireal).toFixed(2)};
         float b = ${(fimag-iimag).toFixed(2)} * ((gl_FragCoord.y)/canvasSize.y - 0.5) + ${(fimag+iimag).toFixed(2)};
         float x = a;
@@ -78,7 +80,7 @@ void initalizeArrays()
         light = mod(light,1.0);
 
 ` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
-        if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10)
+        if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10 || abs(f.x) < 0.0 || abs(f.y) < 0.0)
         {
             sat = 1.0;
             light = 1.0;
