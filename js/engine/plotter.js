@@ -179,8 +179,6 @@ function Eixos(){
                 let distancia = real-centrox;
                 ctx.fillRect(centrox-distancia,0,1,height);
                 let texto = distancia/pixelPorInteiro;
-                console.warn(texto)
-                console.warn(increasing)
                 texto = texto==0? 0 : texto.toFixed(1);
                 let texto2 = sinal*distancia/pixelPorInteiro
                 texto2 = texto2==0? 0 : texto2.toFixed(1);
