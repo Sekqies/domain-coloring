@@ -1,6 +1,8 @@
 import { writeFragmentShader, updateDelimiters } from "./shaders.js";
 import { listaFuncoes } from "./funcoes_complexas_gl.js";
 
+
+
 function PlotterGl(funcao, tamanhoCanvas) {
     const vgd = variaveisGlobais.delimitadores;
     const delimiters = [vgd.inicio_real, vgd.fim_real, vgd.inicio_imag, vgd.fim_imag];
@@ -17,8 +19,11 @@ function PlotterGl(funcao, tamanhoCanvas) {
     // Set canvas size
     glCanvas.width = tamanhoCanvas;
     glCanvas.height = tamanhoCanvas;
-    const functionKey  = funcao + String(tamanhoCanvas);
+    const functionKey  = funcao;
+    variaveisGlobais.sizeCache[tamanhoCanvas] = true;
     const cache = variaveisGlobais.functionCache[functionKey];
+    if(variaveisGlobais.sizeCache[tamanhoCanvas])
+        gl.viewport(0, 0, glCanvas.width, glCanvas.height);
     if (cache) { 
         const {shaderProgram, vao, vertexBuffer, indexBuffer} = cache;
         vaoExt.bindVertexArrayOES(vao);
@@ -33,7 +38,6 @@ function PlotterGl(funcao, tamanhoCanvas) {
 
         
     } else {
-        gl.viewport(0, 0, glCanvas.width, glCanvas.height);
         // Vertex shader source
         var vertexShaderSource = `
         attribute vec2 a_position;

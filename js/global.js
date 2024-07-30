@@ -43,7 +43,8 @@ let variaveisGlobais = {
     functionCache: {},
     currentFunction: "vec2(a,b)",
     glCanvas: {},
-    canvas: {}
+    canvas: {},
+    sizeCache: {}
 };
 
 console.log = function(){}
