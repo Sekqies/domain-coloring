@@ -159,8 +159,8 @@ function Eixos(){
         let pixelPorInteiro = getPixelPorInteiro();
         const numeroDeValores = 4;
         const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
-        let centrox = width / 2 - somar*pixelPorInteiro/2;
-        let centroy = height /2 + somai*pixelPorInteiro/2;
+        let centrox = width / 2 - somar*pixelPorInteiro;
+        let centroy = height /2 + somai*pixelPorInteiro;
         if (fernandoMode) {
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(0,centroy,width,1);

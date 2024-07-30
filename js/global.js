@@ -38,7 +38,12 @@ let variaveisGlobais = {
     valorTipoGrafico: 'continuo',
     delimitadores: {inicio_real: -2, fim_real: 2, inicio_imag: -2, fim_imag: 2},
     glFunction: '',
-    tamanhoCanvas: 500
+    tamanhoCanvas: 500,
+    glContext: "",
+    functionCache: {},
+    currentFunction: "vec2(a,b)",
+    glCanvas: {},
+    canvas: {}
 };
 
 console.log = function(){}

@@ -1,12 +1,12 @@
 function writeFragmentShader(funcao, width, height, delimitador, declarations) {
     console.log("Proporções gráfico:", width,height)
-    let continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
+    const continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
     console.log(delimitador)
-    const ireal = delimitador.inicio_real
-    const iimag = delimitador.inicio_imag
-    const freal = delimitador.fim_real
-    const fimag = delimitador.fim_imag
-    let vazio = funcao === '';
+    const vazio = funcao === '';
+    const ireal = delimitador.inicio_real;
+    const freal = delimitador.fim_real;
+    const iimag = delimitador.inicio_imag;
+    const fimag = delimitador.fim_imag;
     return `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;
@@ -57,18 +57,19 @@ void initalizeArrays()
         return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
     const float MAX_SAFE_VALUE = 1.7e+38;
+    uniform vec4 u_delimiters;
     void main() {
         initalizeArrays();
 
-        float a = ${(freal-ireal).toFixed(2)} * ((gl_FragCoord.x)/canvasSize.x - 0.5) + ${(freal+ireal).toFixed(2)};
-        float b = ${(fimag-iimag).toFixed(2)} * ((gl_FragCoord.y)/canvasSize.y - 0.5) + ${(fimag+iimag).toFixed(2)};
+        float a = abs(u_delimiters.y - u_delimiters.x) * ((gl_FragCoord.x)/canvasSize.x - 0.5) + (u_delimiters.y + u_delimiters.x);
+        float b = abs(u_delimiters.w - u_delimiters.z) * ((gl_FragCoord.y)/canvasSize.y - 0.5) + (u_delimiters.w + u_delimiters.z);
         float x = a;
         float y = b;
         vec2 z = ${vazio ? "vec2(a,b)" : funcao};
         vec2 f = z; 
         float hue =  atan(f.y, f.x) / (2.0 * PI);
         float sat = 1.0;
-        ${!continuo ? `
+        ${!continuo ? ` 
         float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e+10 : length(f); 
         float logaritmo = mod(log2(dist), 1.0); 
         float expoente_decimal = 1.0;
@@ -93,4 +94,11 @@ void initalizeArrays()
     `
 }
 
-export { writeFragmentShader }
+function updateDelimiters(gl,delimiters,shaderProgram)
+{
+    let uDelimitersLocation = gl.getUniformLocation(shaderProgram, "u_delimiters");
+    gl.uniform4f(uDelimitersLocation,delimiters[0],delimiters[1],delimiters[2],delimiters[3]);
+}
+
+
+export { writeFragmentShader, updateDelimiters }

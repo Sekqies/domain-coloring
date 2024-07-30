@@ -41,8 +41,8 @@ function getNumeroInteiro(x, y) {
     let centrox = width / 2 + somar;
     let centroy = width/2 - somai;
     let pixelPorInteiro = (centrox) / Number(diff/2);
-    let real = (x - centrox) / pixelPorInteiro + somar/2;
-    let imag = (y - centroy) / pixelPorInteiro - somai/2;
+    let real = (x - centrox) / pixelPorInteiro + somar;
+    let imag = (y - centroy) / pixelPorInteiro - somai;
 
     return [real, imag];
 }

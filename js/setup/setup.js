@@ -4,6 +4,7 @@ import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
 import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
 import { getPixelPorInteiro } from '../engine/color.js';
+import { updateDelimiters } from '../gl/shaders.js';
 
 const testing = true;
 
@@ -13,8 +14,11 @@ if (!testing) {
 
 
 function initializeVariables() {
-    canvas = document.getElementById("domainColorCanvas");
-    canvasGL = document.getElementById("glCanvas");
+    variaveisGlobais.canvas = document.getElementById("domainColorCanvas");
+    variaveisGlobais.glCanvas = document.getElementById("glCanvas");
+    canvas = variaveisGlobais.canvas;
+    canvasGL = variaveisGlobais.glCanvas;   
+    variaveisGlobais.glContext = canvasGL.getContext('webgl');
     //animationCheckbox = document.getElementById("animation-checkbox");
     grafico = document.getElementById('grafico');
     eixosCanvas = document.getElementsByClassName('eixosCanvas');
@@ -49,7 +53,7 @@ function normalizeValues()
 function init(modoRapido = false) {
 
     //alert(guppy)  
-    if(modoRapido && true)
+    if(modoRapido)
     {
         normalizeValues()
         PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)
@@ -174,12 +178,15 @@ canvasGL.addEventListener('mousemove', (e) => {
         const dx = startX - e.offsetX;
         const dy = e.offsetY - startY;
         const pixelPorInteiro = getPixelPorInteiro();
-        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro;
-        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro;
-        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro;
-        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro;
+        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro/2;
+        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro/2;
+        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro/2;
+        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
+        
         //alert("oi")
+
         init(true)
+        console.log("oi")
         startX = e.offsetX;
         startY = e.offsetY;
     }
