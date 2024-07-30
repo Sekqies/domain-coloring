@@ -17,8 +17,9 @@ function PlotterGl(funcao, tamanhoCanvas) {
     // Set canvas size
     glCanvas.width = tamanhoCanvas;
     glCanvas.height = tamanhoCanvas;
-    const cache = variaveisGlobais.functionCache[funcao];
-    if (cache) {
+    const functionKey  = funcao + String(tamanhoCanvas);
+    const cache = variaveisGlobais.functionCache[functionKey];
+    if (cache) { 
         const {shaderProgram, vao, vertexBuffer, indexBuffer} = cache;
         vaoExt.bindVertexArrayOES(vao);
         gl.useProgram(shaderProgram);
@@ -33,7 +34,6 @@ function PlotterGl(funcao, tamanhoCanvas) {
         
     } else {
         gl.viewport(0, 0, glCanvas.width, glCanvas.height);
-
         // Vertex shader source
         var vertexShaderSource = `
         attribute vec2 a_position;
@@ -97,7 +97,7 @@ function PlotterGl(funcao, tamanhoCanvas) {
         vaoExt.bindVertexArrayOES(vao);
         gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
         vaoExt.bindVertexArrayOES(null);
-        variaveisGlobais.functionCache[funcao] = {
+        variaveisGlobais.functionCache[functionKey] = {
             shaderProgram: shaderProgram,
             vao: vao,
             vertexBuffer: vertexBuffer,
