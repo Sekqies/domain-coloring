@@ -16,7 +16,7 @@ function loadHover(funcaoHover, nomeStringCanvas) {
         let realAntes = getNumeroInteiro(x, y)[0];
         let imagAntes = getNumeroInteiro(x, y)[1];
 
-        let z = funcaoHover({ 'z': { real: realAntes, imag: -imagAntes } });
+        let z = funcaoHover({ 'z': { real: realAntes, imag: imagAntes } });
         real = z.real;
         imag = z.imag;
 

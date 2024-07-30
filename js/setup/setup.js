@@ -3,7 +3,7 @@ import { loadHover } from './hover_setup.js';
 import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
 import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
-import { getPixelPorInteiro } from '../engine/color.js';
+import { getNumeroInteiro, getPixelPorInteiro } from '../engine/color.js';
 import { updateDelimiters } from '../gl/shaders.js';
 
 const testing = true;
@@ -106,7 +106,7 @@ function init(modoRapido = false) {
     }
     else {
         animation.stopAnimation();
-        //document.body.style.backgroundColor = "blue";
+        //document.body.style.backgroundColorc = "blue";
         if (variaveisGlobais.tipoCarregamento == 'preciso') {
             //alert("não web-gl")
             console.log("Tamanho do canvas:", variaveisGlobais.valorTamanhoGrafico);
@@ -166,7 +166,7 @@ canvasGL.addEventListener('mousedown', (e) => {
     startY = e.offsetY;
     //alert("ai****-*-")
 });
-const FPS_LIMIT = 50;
+const FPS_LIMIT = 70;
 const minInterval = 1000/FPS_LIMIT
 let lastCall = 0;
 canvasGL.addEventListener('mousemove', (e) => {
@@ -186,7 +186,6 @@ canvasGL.addEventListener('mousemove', (e) => {
         //alert("oi")
 
         init(true)
-        console.log("oi")
         startX = e.offsetX;
         startY = e.offsetY;
     }
@@ -201,30 +200,35 @@ canvasGL.addEventListener('mouseup', () => {
 });
 
 canvasGL.addEventListener('wheel', (e) => {
+    const now = Date.now();
+        if(now-lastCall<minInterval) return;
+        lastCall = now;
+    const fernandomode = true;
     e.preventDefault();
-    const zoomIntensity = 0.5;
+    const zoomPercentage = 1;
+    const zoomValue = zoomPercentage / 100;
     const direction = e.deltaY > 0 ? -1 : 1;
     const oldZoomLevel = zoomLevel;
-    zoomLevel += direction * zoomIntensity;
-    zoomLevel = Math.max(0.1, zoomLevel); // Prevent zooming out too much
+    const pixelPorInteiro = getPixelPorInteiro();
+    const screenCenter = { x: canvasGL.width / 2 / pixelPorInteiro, y: canvasGL.height / 2 / pixelPorInteiro };
 
     const rect = canvasGL.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    const graphWidth = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
-    const graphHeight = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
-    const graphX = variaveisGlobais.delimitadores.inicio_real + (mouseX / canvasGL.width) * graphWidth;
-    const graphY = variaveisGlobais.delimitadores.inicio_imag + (mouseY / canvasGL.height) * graphHeight;
+    const diffX = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const diffY = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const valX  = diffX * (1 + direction * zoomValue);
+    const valY = diffY * (1 + direction * zoomValue);
+    const numInteiro = getNumeroInteiro(mouseX,mouseY);
+    const x = numInteiro[0];
+    const y = numInteiro[1];
+    variaveisGlobais.delimitadores.inicio_real = x - valX/2;
+    variaveisGlobais.delimitadores.fim_real = x + valX/2;
+    variaveisGlobais.delimitadores.inicio_imag = y - valX/2;
+    variaveisGlobais.delimitadores.fim_imag = y + valX/2;
 
-    const adjustFactor = oldZoomLevel / zoomLevel;
-    const width = graphWidth * adjustFactor;
-    const height = graphHeight * adjustFactor;
-
-    variaveisGlobais.delimitadores.inicio_real = graphX - (mouseX / canvasGL.width) * width;
-    variaveisGlobais.delimitadores.fim_real = variaveisGlobais.delimitadores.inicio_real + width;
-    variaveisGlobais.delimitadores.inicio_imag = graphY - (mouseY / canvasGL.height) * height;
-    variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
+    
  
     // Redraw the graph with the new zoom level
     init(true);

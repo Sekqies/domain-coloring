@@ -113,7 +113,7 @@ function Plotter(funcaoHover) {
 
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = funcaoHover({ 'z': { real: realAntes, imag: -imagAntes } });
+            let z = funcaoHover({ 'z': { real: realAntes, imag: imagAntes } });
             real = z.real;
             imag = z.imag;
 
