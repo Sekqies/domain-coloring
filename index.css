@@ -59,7 +59,7 @@ input:focus {
     cursor: pointer;
 
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &>p {
         transition: 0.5s;
