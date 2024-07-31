@@ -113,4 +113,4 @@ function PlotterGl(funcao, tamanhoCanvas) {
     let end = performance.now();
     console.log(`Rendering time: ${end - start} ms`);
 }
-export { PlotterGl, listaFuncoes }
+export { PlotterGl, listaFuncoes as listaFuncoesGL }

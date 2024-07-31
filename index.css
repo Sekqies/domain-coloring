@@ -149,7 +149,7 @@ section#domainColoring.hidded {
 section#domainColoring {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100dvh;
     width: 60dvw;
     margin-left: 40dvw;
@@ -393,9 +393,6 @@ section#lateral .lateral-div.active {
     position: relative;
 
     /*para o JS compreender */
-
-    padding-bottom: 50px;
-    padding-top: 50px;
     transition: 0.3s;
 }
 
@@ -467,6 +464,11 @@ section#lateral .lateral-div.active {
     flex-wrap: wrap;
     gap: 50px;
     position: relative;
+}
+#graficos-complexos.full-screen{
+    margin-top: 0;
+    overflow: hidden;
+    height: 100%;
 }
 
 #lateral-animacao .lateral-div-content.disabled {

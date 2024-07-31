@@ -1,5 +1,5 @@
 import { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro} from './color.js';
-import {lista } from './funcoes_complexas.js';
+import { lista } from './funcoes_complexas.js';
 //Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
 function Domain_coloring(real, imag) {
@@ -12,12 +12,15 @@ function Domain_coloring(real, imag) {
 
 
     //NÃO MEXE NISSO
+
     let hue = (Math.atan2(imag, real)) / (2 * Math.PI);
+
     //PERIGO !!! PERIGO!!!!! NÃO MEXE!!!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 
 
     //Calcula a distancia do ponto até o centro (modulo)
+
     let dist = Math.sqrt(real * real + imag * imag);
 
     let modulo;
@@ -28,8 +31,6 @@ function Domain_coloring(real, imag) {
         //Modo 2 (com descontinuidade):
         dist = dist == "Infinity" ? 10e50 : dist;
         let expoente = Math.log2(dist);
-
-        //Isso faz com que numeros menores que aprox 1/2 fiquem sem desconitnuidade, porem é inperceptivel.
         let expoente_decimal = 1;
 
         if (dist != 0) {
@@ -94,11 +95,11 @@ function Plotter(funcaoHover) {
     const width = canvas.width;
 
     //define o scroll vertical e horizontal da tela para metade do total
-    window.scroll((document.documentElement.scrollWidth - window.innerWidth) / 2,
-        (document.documentElement.scrollHeight - window.innerHeight) / 2);
+    //window.scroll((document.documentElement.scrollWidth - window.innerWidth) / 2,
+    //(document.documentElement.scrollHeight - window.innerHeight) / 2);
 
     const height = canvas.height;
-    let INICIO = performance.now();
+    //let INICIO = performance.now();
     //Cria um array de pixels
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
@@ -131,8 +132,8 @@ function Plotter(funcaoHover) {
         }
     }
 
-    let FIM = performance.now();
-    console.log("Tempo de Plotter com JS:", FIM - INICIO);
+    //let FIM = performance.now();
+    //console.log("Tempo de Plotter com JS:", FIM - INICIO);
     //Coloca a imagem no canvas 
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");
@@ -164,7 +165,7 @@ function Eixos(){
         if (fernandoMode) {
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(0,centroy,width,1);
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            //ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(centrox,0,1,height);
             ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.font = '15px Arial'
@@ -251,4 +252,4 @@ function Eixos(){
     console.log("Eixos desenhados");
 }
 
-export { Plotter, lista, Eixos};
+export { Plotter, lista as listaFuncoes, Eixos};

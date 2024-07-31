@@ -1,7 +1,7 @@
 import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
-import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
-import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
+import { PlotterGl, listaFuncoesGL } from '/js/gl/plotter_gl.js';
+import { Plotter, listaFuncoes, Eixos } from '/js/engine/plotter.js';
 import { GlAnimation } from '/js/gl/animation.js';
 import { getNumeroInteiro, getPixelPorInteiro } from '../engine/color.js';
 import { updateDelimiters } from '../gl/shaders.js';
@@ -63,10 +63,12 @@ function init(modoRapido = false) {
         }
         return;
     }
+    
     normalizeValues()
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
+        canvas.parentElement.parentElement.classList.add('full-screen');
         //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
     }
     else {
@@ -82,12 +84,14 @@ function init(modoRapido = false) {
     }
 
 
-    funcaoHover = guppy.func(lista.operations);
+    funcaoHover = guppy.func(listaFuncoes.operations);
 
     animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
     animation_variable_exists = false;
-    const result_gl = guppy.func(listaFuncoes.operations)();
+
+    const result_gl = guppy.func(listaFuncoesGL.operations)();
     variaveisGlobais.glFunction = result_gl;
+
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
 
@@ -143,11 +147,12 @@ function init(modoRapido = false) {
 
 
 function createEventListeners() {
-    document.addEventListener('keyup', function (event) {
+    //Função movida para index.html
+    /*document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             init();
         }
-    });
+    });*/
 
     //Não está funcionando (Não sei pq)
     //Eu sei porque
@@ -155,40 +160,41 @@ function createEventListeners() {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
+
     let isDragging = false;
 
-let startX,startY
-let zoomLevel = 1.0;
+    let startX,startY
+    let zoomLevel = 1.0;
 
-canvasGL.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.offsetX;
-    startY = e.offsetY;
-    //alert("ai****-*-")
-});
-const FPS_LIMIT = 70;
-const minInterval = 1000/FPS_LIMIT
-let lastCall = 0;
-canvasGL.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        const now = Date.now();
-        if(now-lastCall<minInterval) return;
-        lastCall = now;
-
-        const dx = startX - e.offsetX;
-        const dy = e.offsetY - startY;
-        const pixelPorInteiro = getPixelPorInteiro();
-        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro/2;
-        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro/2;
-        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro/2;
-        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
-        
-        //alert("oi")
-
-        init(true)
+    canvasGL.addEventListener('mousedown', (e) => {
+        isDragging = true;
         startX = e.offsetX;
         startY = e.offsetY;
-    }
+        //alert("ai****-*-")
+    });
+    const FPS_LIMIT = 70;
+    const minInterval = 1000/FPS_LIMIT
+    let lastCall = 0;
+    canvasGL.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const now = Date.now();
+            if(now-lastCall<minInterval) return;
+            lastCall = now;
+
+            const dx = startX - e.offsetX;
+            const dy = e.offsetY - startY;
+            const pixelPorInteiro = getPixelPorInteiro();
+            variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
+            
+            //alert("oi")
+
+            init(true)
+            startX = e.offsetX;
+            startY = e.offsetY;
+        }
 });
 
 canvasGL.addEventListener('mouseout',()=> {
@@ -228,8 +234,6 @@ canvasGL.addEventListener('wheel', (e) => {
     variaveisGlobais.delimitadores.inicio_imag = y - valX/2;
     variaveisGlobais.delimitadores.fim_imag = y + valX/2;
 
-    
- 
     // Redraw the graph with the new zoom level
     init(true);
 });

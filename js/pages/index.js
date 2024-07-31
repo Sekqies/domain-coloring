@@ -34,4 +34,3 @@ function download(){
 }
 
 document.getElementById("download").addEventListener("click", download);
-document.getElementById("draw").addEventListener("click", init);    

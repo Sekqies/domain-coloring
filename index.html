@@ -13,6 +13,23 @@
     <script type="module" src="js/pages/index.js"></script>
     <script type="module" src="js/setup/setup.js"></script>
 
+    <!--- Script que faz o botão e 'Enter' desenhem o gráfico -->
+    <script type="module">
+        import { init } from './js/setup/setup.js';
+
+        const btn = document.getElementById('btn-draw');
+        btn.addEventListener('click', () => {
+            init();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                init();
+            }
+        });
+
+    </script>
+
     <title>Funções complexas</title>
 </head>
 
@@ -32,7 +49,7 @@
 
             <div id="lateral-desenhar">
                 <div class="lateral-desenhar-botao">
-                    <button id="draw" class="btn" onclick="chegaValoresGlobais()">
+                    <button id="btn-draw" class="btn">
                         <p>Desenhar</p>
                         <img src="../assets/Pencil.svg" alt="Desenhar grafico">
                     </button>
