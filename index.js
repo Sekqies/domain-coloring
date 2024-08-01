@@ -15,10 +15,7 @@ function ocultaLateral() {
 }
 
 function ocultaNavbar() {
-    //Ocula opções se não estiver ocultada
-    if (!lateral.classList.contains('hidded')) {
-        ocultaLateral();
-    }
+    lateral.classList.toggle('nav-hidded')
 
     //Oculta navbar
     navbar.classList.toggle('hidded');
@@ -263,3 +260,69 @@ function pageInit(){
 
     chegaValoresGlobais();
 }
+
+
+const changeSize = document.getElementById('changeSize');
+
+let isDragging = false;
+let startX = 0;
+let initialWidth = 0;
+
+// Constantes para limitar a taxa de atualização
+const FPS_LIMIT = 70;
+const minInterval = 1000 / FPS_LIMIT;
+let lastCall = 0;
+
+changeSize.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX; // Use clientX para coordenadas globais
+    initialWidth = lateral.offsetWidth; // Capture a largura inicial de lateral
+    console.log("Drag started at:", startX, "with initial width:", initialWidth);
+});
+
+let supposedWidth = initialWidth;
+
+document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        const now = Date.now();
+        if (now - lastCall < minInterval) return;
+        lastCall = now;
+
+        const diffX = e.clientX - startX; // Use clientX para coordenadas globais
+        let newWidth = initialWidth + diffX; // Adicione diffX à largura inicial
+
+        supposedWidth = newWidth;
+
+        if (newWidth < 550) {
+            newWidth = 550; // Garantir tamanho mínimo de 550px
+        }
+
+        if(supposedWidth < 225){
+            lateral.classList.add('hidded');
+            domainColoring.classList.add('hidded');
+            setaLateral.style.rotate = '90deg';
+        }
+
+        if(!lateral.classList.contains('hidded')){
+            lateral.style.width = `${newWidth}px`;
+        }
+        else{
+            if(supposedWidth > 225){
+                lateral.classList.remove('hidded');
+                domainColoring.classList.remove('hidded');
+                setaLateral.style.rotate = '-90deg';
+                isDragging = false;
+            }
+        }
+        console.warn(supposedWidth);
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+    console.log("Drag ended");
+});
+
+document.addEventListener('click', () => {
+    isDragging = false;
+});

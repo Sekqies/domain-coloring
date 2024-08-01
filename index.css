@@ -42,6 +42,9 @@ h4 {
 input:focus {
     background-color: rgba(0, 0, 0, 0.025);
 }
+body{
+    display: flex;
+}
 
 .btn {
     width: 100%;
@@ -152,10 +155,9 @@ section#domainColoring {
     justify-content: center;
     align-items: flex-start;
     height: 100dvh;
-    width: 60dvw;
-    margin-left: 40dvw;
     background-color: transparent;
     transition: 0.5s;
+    flex: 1;
 }
 
 section#navbar #guppy1 {
@@ -185,28 +187,45 @@ section#navbar .navbar-arrow {
 }
 
 section#lateral.hidded {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% + var(--padding-large)));
 }
 
 section#lateral {
     background-color: #fff;
-    position: fixed;
-    transition: 0.5s;
+    position: relative;
     left: 0;
-    height: calc(100dvh - var(--navbar-size));
-    margin-top: var(--navbar-size);
-    width: 40dvw;
-    border-right: var(--border-large-size) solid black;
-    padding: var(--padding-large);
+    height: 100dvh;
+    width: 40vw;
     overflow-y: scroll;
     display: flex;
     z-index: 1;
+    transition: transform 1s;
+
+    & *{
+        user-select: none;
+    }
+
+    &.nav-hidded > .lateral-itens {
+        margin-top: var(--padding-large) !important;
+    }
 
     & .lateral-itens {
+        margin-top: calc(var(--navbar-size) + var(--padding-large)) !important;
         display: flex;
         flex-direction: column;
         gap: var(--gap);
         width: 100%;
+        margin: var(--padding-large);
+        transition: 1s;
+    }
+    & > #changeSize{
+        position: sticky;
+        height: 100%;
+        background-color: black;
+        width: var(--border-large-size);
+        cursor: ew-resize;
+        right: 0;
+        top: 0;
     }
 }
 
@@ -215,6 +234,7 @@ section#lateral #lateral-desenhar {
     display: flex;
     flex-direction: column;
     gap: var(--mini-gap);
+
 }
 
 section#lateral #lateral-desenhar .lateral-desenhar-botao h4 {
