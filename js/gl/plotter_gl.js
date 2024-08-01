@@ -1,8 +1,7 @@
 import { writeFragmentShader, updateDelimiters } from "./shaders.js";
 import { listaFuncoes } from "./funcoes_complexas_gl.js";
 
-
-
+ 
 function PlotterGl(funcao, tamanhoCanvas) {
     const vgd = variaveisGlobais.delimitadores;
     const delimiters = [vgd.inicio_real, vgd.fim_real, vgd.inicio_imag, vgd.fim_imag];

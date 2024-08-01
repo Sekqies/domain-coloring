@@ -49,20 +49,18 @@ function normalizeValues()
     }
 }
 
+function updateGraph()
+{
+    PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)   
+    if (variaveisGlobais.eixosCartesianos) {
+        Eixos();
+    }
+    return;
+}
 
 function init(modoRapido = false) {
 
     //alert(guppy)  
-    if(modoRapido)
-    {
-        normalizeValues()
-        PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)
-        
-        if (variaveisGlobais.eixosCartesianos) {
-            Eixos();
-        }
-        return;
-    }
     
     normalizeValues()
     let tamanhoCanvas;
@@ -191,7 +189,7 @@ function createEventListeners() {
             
             //alert("oi")
 
-            init(true)
+            updateGraph();
             startX = e.offsetX;
             startY = e.offsetY;
         }
@@ -235,7 +233,7 @@ canvasGL.addEventListener('wheel', (e) => {
     variaveisGlobais.delimitadores.fim_imag = y + valX/2;
 
     // Redraw the graph with the new zoom level
-    init(true);
+    updateGraph();
 });
 
 
