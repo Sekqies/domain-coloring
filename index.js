@@ -2,6 +2,27 @@ function handleActiveClick(element) {
     element.classList.toggle('active');
 }
 
+//Trocando de opções para docimentação
+const opOptions = document.getElementById('option-options');
+const opDocs = document.getElementById('option-docs');
+const options = document.getElementById('opcoes');
+const docs = document.getElementById('docs');
+
+opDocs.addEventListener('click', () => {
+    opOptions.classList.remove('active');
+    opDocs.classList.add('active');
+    options.style.display = 'none';
+    docs.style.display = 'flex';
+});
+
+opOptions.addEventListener('click', () => {
+    opDocs.classList.remove('active');
+    opOptions.classList.add('active');
+    options.style.display = 'flex';
+    docs.style.display = 'none';
+});
+
+
 //Função para ocultar as opções:
 const lateral = document.getElementById('lateral');
 const navbar = document.getElementById('navbar');
@@ -27,8 +48,13 @@ const carregamentoGrafico = document.getElementById('CarregamentoGrafico');
 const tipoGrafico = document.getElementById('TipoGrafico');
 const tamanhoGrafico = document.getElementById('TamanhoGrafico');
 const tipoAnimacao = document.getElementById('TipoAnimacao');
+
 const lateralOpcoes = document.getElementById('LateralOpcoes');
 const lateralAnimacao = document.getElementById('LateralAnimacao');
+const lateralFuncao = document.getElementById('LateralFuncao');
+const lateralAgradecimentos = document.getElementById('LateralAgradecimentos');
+const lateralAbout = document.getElementById('LateralAbout');
+
 const eixosCartesianos = document.getElementById('EixosCartesianos');
 
 const realMinimoInput = document.getElementById('real-minimo');
@@ -43,7 +69,8 @@ const fpsInput = document.getElementById('fps');
 
 //Guardando em um array:
 const elementos = [carregamentoGrafico, tipoGrafico, tamanhoGrafico,
-    tipoAnimacao, lateralOpcoes, lateralAnimacao];
+    tipoAnimacao, lateralOpcoes, lateralAnimacao, lateralFuncao,
+    lateralAgradecimentos, lateralAbout];
 
 
 //Chamando a função:
