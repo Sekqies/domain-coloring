@@ -173,35 +173,59 @@ function Eixos(){
             ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
             ctx.lineWidth = 1;
             const increasing = width - centrox >= width/2
-            const increasingY = height - centroy >= height/2
+            const increasingY = height - centroy >= height/2;
+            const normalizeDistance =  function(center,bound)
+            {
+                if(center < bound && center >= 0) return center;
+                if(center> bound) {
+                const centerDist = Math.abs(center-bound);
+                const teps = Math.floor(centerDist/dist);
+                return center - teps*dist;
+                }
+                if (center <0)
+                {
+                    const centerDist = Math.abs(center  );
+                    const teps = Math.floor(centerDist/dist);
+                    return center + teps*dist;
+                }
+                
+            }
             const sinal = - 1;
-            for (let real = centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+            let inicioX = normalizeDistance(centrox,width)
+            let inicioY = normalizeDistance(centroy,height)
+            let cont = 0;
+            //alert(centrox, width)
+            for (let real = inicioX; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
                 ctx.fillRect(real, 0, 1, height);
+                const revreal = 2*inicioX-real
+                ctx.fillRect(revreal,0,1,height);
+                //console.warn(real,inicioX)
                 let distancia = real-centrox;
-                ctx.fillRect(centrox-distancia,0,1,height);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
                 let texto2 = sinal*distancia/pixelPorInteiro
                 texto2 = texto2==0? 0 : texto2.toFixed(1);
-                ctx.fillText(texto, real+4, centroy-4);
-                ctx.strokeText(texto,real+4, centroy-4)
+                ctx.fillText(texto, real+4, inicioY-4);
+                ctx.strokeText(texto,real+4, inicioY-4)
                 if(texto == 0) continue;
-                ctx.fillText(texto2, centrox-distancia+4, centroy-4);
-                ctx.strokeText(texto2, centrox - distancia + 4, centroy - 4);
+                ctx.fillText(texto2, inicioX-distancia+4, inicioY-4);
+                ctx.strokeText(texto2, inicioX - distancia + 4, inicioY - 4);
+                cont++;
             }
-            for(let imag = centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+            for(let imag = inicioY;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
                 ctx.fillRect(0,imag,width,1);
                 const distancia = imag - centroy
-                ctx.fillRect(0,centroy-distancia,width,1);
+                const revimag = 2*inicioY-imag;
+                ctx.fillRect(0,revimag,width,1);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
                 let texto2 = -texto;
                 texto2 = texto2==0? 0 : texto2.toFixed(1);
                 if(texto == 0) continue;
-                ctx.fillText(texto, centrox+4, centroy-distancia+4);
-                ctx.strokeText(texto,centrox+4,centroy-distancia+4)
-                ctx.fillText(texto2, centrox + 4, imag+4);
-                ctx.strokeText(texto2, centrox + 4, imag+4);
+                ctx.fillText(texto, inicioX+4, inicioY-distancia+4);
+                ctx.strokeText(texto,inicioX+4,inicioY-distancia+4)
+                ctx.fillText(texto2, inicioX + 4, imag+4);
+                ctx.strokeText(texto2, inicioX + 4, imag+4);
             
             }
         }
