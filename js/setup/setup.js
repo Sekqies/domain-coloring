@@ -178,7 +178,7 @@ function createEventListeners() {
             const now = Date.now();
             if(now-lastCall<minInterval) return;
             lastCall = now;
-
+    
             const dx = startX - e.offsetX;
             const dy = e.offsetY - startY;
             const pixelPorInteiro = getPixelPorInteiro();
@@ -188,12 +188,13 @@ function createEventListeners() {
             variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
             
             //alert("oi")
-
+    
             updateGraph();
             startX = e.offsetX;
             startY = e.offsetY;
         }
-});
+    });
+        
 
 canvasGL.addEventListener('mouseout',()=> {
     isDragging = false;
@@ -239,6 +240,36 @@ canvasGL.addEventListener('wheel', (e) => {
 
     
 }
+function simulateMouseEvent(element, eventType, clientX, clientY) {
+    const event = new MouseEvent(eventType, {
+        bubbles: true,
+        cancelable: true,
+        clientX: clientX,
+        clientY: clientY
+    });
+    element.dispatchEvent(event);
+}
+
+
+  const testDragPerformance = function(steps)
+{
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const timeStart = performance.now();
+    for(let i=0;i<steps;i++){
+        const x = Math.floor(Math.random() * canvasWidth);
+        const y = Math.floor(Math.random() * canvasHeight);
+        const nx = Math.floor(Math.random() * canvasWidth);
+        const ny = Math.floor(Math.random() * canvasHeight);
+        simulateMouseEvent(canvasGL, 'mousedown', x, y);
+        simulateMouseEvent(canvasGL, 'mousemove', nx, ny);
+        simulateMouseEvent(canvasGL, 'mouseup', nx, ny);
+    }
+    const timeEnd = performance.now();
+    const timeElapsed = timeEnd - timeStart;
+    alert(`Tempo de execução: ${timeElapsed}ms`);
+}
+document.getElementById('test-drag-performance').addEventListener('click', ()=>{testDragPerformance(2000)});
 
 function load() {
     //console.log = function() {};

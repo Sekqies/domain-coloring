@@ -18,7 +18,7 @@ function PlotterGl(funcao, tamanhoCanvas) {
     // Set canvas size
     glCanvas.width = tamanhoCanvas;
     glCanvas.height = tamanhoCanvas;
-    const functionKey  = funcao + String(tamanhoCanvas);
+    const functionKey  = funcao + String(tamanhoCanvas) + String(variaveisGlobais.valorTipoGrafico);
     variaveisGlobais.sizeCache[tamanhoCanvas] = true;
     const cache = variaveisGlobais.functionCache[functionKey];
     if(variaveisGlobais.sizeCache[tamanhoCanvas])

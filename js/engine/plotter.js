@@ -155,13 +155,13 @@ function Eixos(){
         const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
         const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
         //diff consequentemente contém o número de inteiros na imagem
-        let centro = width/2;
         const fernandoMode = true;
         let pixelPorInteiro = getPixelPorInteiro();
         const numeroDeValores = 4;
         const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
         let centrox = width / 2 - somar*pixelPorInteiro;
         let centroy = height /2 + somai*pixelPorInteiro;
+        const {a,b,c,d} = variaveisGlobais.delimitadores;
         if (fernandoMode) {
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(0,centroy,width,1);
@@ -175,7 +175,7 @@ function Eixos(){
             const increasing = width - centrox >= width/2
             const increasingY = height - centroy >= height/2
             const sinal = - 1;
-            for (let real = centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+            for (let real = centrox>width?width:centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
                 ctx.fillRect(real, 0, 1, height);
                 let distancia = real-centrox;
                 ctx.fillRect(centrox-distancia,0,1,height);
@@ -189,7 +189,7 @@ function Eixos(){
                 ctx.fillText(texto2, centrox-distancia+4, centroy-4);
                 ctx.strokeText(texto2, centrox - distancia + 4, centroy - 4);
             }
-            for(let imag = centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+            for(let imag = centroy>height?height:centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
                 ctx.fillRect(0,imag,width,1);
                 const distancia = imag - centroy
                 ctx.fillRect(0,centroy-distancia,width,1);
