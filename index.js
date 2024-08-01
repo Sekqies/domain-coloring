@@ -281,6 +281,8 @@ changeSize.addEventListener('mousedown', (e) => {
 });
 
 let supposedWidth = initialWidth;
+const screenWidth = window.innerWidth;
+let minLateralSize = screenWidth * 0.3;
 
 document.addEventListener('mousemove', (e) => {
     if (isDragging) {
@@ -293,11 +295,11 @@ document.addEventListener('mousemove', (e) => {
 
         supposedWidth = newWidth;
 
-        if (newWidth < 550) {
-            newWidth = 550; // Garantir tamanho mínimo de 550px
+        if (newWidth < minLateralSize) {
+            newWidth = minLateralSize; // Garantir tamanho mínimo de 550px
         }
 
-        if(supposedWidth < 225){
+        if(supposedWidth < minLateralSize/2){
             lateral.classList.add('hidded');
             domainColoring.classList.add('hidded');
             setaLateral.style.rotate = '90deg';
@@ -307,20 +309,18 @@ document.addEventListener('mousemove', (e) => {
             lateral.style.width = `${newWidth}px`;
         }
         else{
-            if(supposedWidth > 225){
+            if(supposedWidth > minLateralSize/2){
                 lateral.classList.remove('hidded');
                 domainColoring.classList.remove('hidded');
                 setaLateral.style.rotate = '-90deg';
                 isDragging = false;
             }
         }
-        console.warn(supposedWidth);
     }
 });
 
 document.addEventListener('mouseup', () => {
     isDragging = false;
-    console.log("Drag ended");
 });
 
 document.addEventListener('click', () => {

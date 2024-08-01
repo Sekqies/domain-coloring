@@ -81,6 +81,17 @@ function init(modoRapido = false) {
         eixosCanvas[i].height = tamanhoCanvas;
     }
 
+    const windowWidth = window.innerWidth;
+    const minLateralSize2 = windowWidth * 0.7;
+    const lateral = document.getElementById('lateral');
+    if(tamanhoCanvas > minLateralSize2){
+        lateral.classList.add('fixed');
+        console.warn(windowWidth + ' ' + minLateralSize2 + ' ' + tamanhoCanvas);
+    }
+    else{
+        lateral.classList.remove('fixed');
+    }
+
 
     funcaoHover = guppy.func(listaFuncoes.operations);
 
