@@ -461,6 +461,7 @@ const c_Function_Declarations = [
     new c_Function(arccsch, "arccsch"),
     new c_Function(arcsech, "arcsech"),
     new c_Function(arccoth, "arccoth"),
+    new c_Function(senh,"senh"),
     new c_Function(exponencial, "exponential"),
     new c_Function(sqrt, "squareroot"),
     new c_Function(Re, "Re"),
