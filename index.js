@@ -36,10 +36,19 @@ function ocultaLateral() {
 }
 
 function ocultaNavbar() {
-    lateral.classList.toggle('nav-hidded')
+    
 
     //Oculta navbar
     navbar.classList.toggle('hidded');
+
+    let navbarOculta = navbar.classList.contains('hidded');
+    if(navbarOculta){
+        lateral.classList.add('hidded')
+    }
+    else{
+        lateral.classList.remove('hidded');
+    }
+
     setaNavbar.style.rotate = setaNavbar.style.rotate == '180deg' ? '0deg' : '180deg';
 }
 

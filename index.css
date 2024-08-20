@@ -121,19 +121,22 @@ section#navbar {
     transition: 1s;
     position: fixed;
     min-width: 100dvw;
-    background-color: #fff;
-    box-shadow: 0px 0px  var(--padding-small) 0px #000000;
+
+    /*box-shadow: 0px 0px  var(--padding-small) 0px #000000;*/
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 var(--padding-small);
 
     min-height: var(--navbar-size);
     z-index: 2;
 
     & .content {
+        background-color: #fff;
+        box-shadow: 0px 10px  var(--padding-small) 0px #00000020;
+        padding: 0 var(--padding-small);
+
         display: flex;
         width: 100%;
 
@@ -179,21 +182,34 @@ section#navbar #guppy1 {
 }
 
 section#navbar .navbar-arrow {
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.5s;
     flex: 1;
     margin-bottom: var(--padding-small);
     cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0px 10px  var(--padding-small) 0px #00000020;
+    padding-bottom: var(--padding-medium);
+    padding-top: var(--padding-small);
 
     & img {
         width: var(--arrow-medium-size);
         transition: 0.2s;
         width: calc(var(--padding-medium)*1.5);
     }
+
+    &:hover{
+        opacity: 1;
+    }
 }
 
+
 section#lateral.hidded {
-    transform: translateX(calc(-100% + var(--padding-large)));
+    transform: translateX(-100%);
 }
 
 section#lateral {
@@ -412,6 +428,7 @@ section#lateral .lateral-div .lateral-div-content {
 
     & .input-checkbox {
         height: 100%;
+        -moz-height: 100px;
         border: 1px solid #333333;
         border-radius: 5px;
         aspect-ratio: 1;
@@ -435,6 +452,12 @@ section#lateral .lateral-div .lateral-div-content {
             border: 1px solid #333333;
             font-size: var(--font-small);
         }
+    }
+}
+
+@-moz-document url-prefix() {
+    section#lateral .lateral-div .lateral-div-content .input-checkbox{
+        height: 20px;
     }
 }
 
