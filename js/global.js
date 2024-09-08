@@ -13,6 +13,8 @@ let descricaoFuncao;
 var funcaoBase = '<m v="1.2.0"><e></e><f type="z" group="functions"><b p="latex">z</b><b p="small_latex">z</b><b p="asciimath">z</b></f><e></e></m>';
 
 var funcoesComplexas = {
+    z: funcaoBase,
+    pi: '<m v="1.2.0"><e></e><f group="greek" type="pi"><b p="latex">\pi</b><b p="asciimath"> pi </b></f><e></e></m>',
     soma: '<m v="1.2.0"><e></e><f type="z" group="functions"><b p="latex">z</b><b p="small_latex">z</b><b p="asciimath">z</b></f><e>+2</e></m>',
     subtracao: '<m v="1.2.0"><e></e><f type="z" group="functions"><b p="latex">z</b><b p="small_latex">z</b><b p="asciimath">z</b></f><e>-2</e></m>',
     multiplicacao: '<m v="1.2.0"><e></e><f type="z" group="functions"><b p="latex">z</b><b p="small_latex">z</b><b p="asciimath">z</b></f><e></e><f group="operations" type="*" ast_type="operator"><b p="latex">\cdot</b><b p="asciimath">*</b></f><e>10</e></m>',
@@ -21,6 +23,8 @@ var funcoesComplexas = {
     log: '<m v="1.2.0"><e></e><f type="log" group="trigonometry"><b p="latex">\log\left(<r ref="1"/>\right)</b><b p="asciimath"> log(<r ref="1"/>)</b><c delete="1"><e>z</e></c></f><e></e></m>',
     radiciacao: '<m v="1.2.0"><e></e><f type="squareroot" group="functions"><b p="latex">\sqrt{<r ref="1"/>\phantom{\tiny{!}}}</b><b p="asciimath">sqrt(<r ref="1"/>)</b><c delete="1"><e>z</e></c></f><e></e></m>',
     conjugacao: '<m v="1.2.0"><e></e><f type="conj" group="function"><b p="latex">\overline{<r ref="1"/>}</b><b p="text">conj($1)($1)</b><c><e>z</e></c></f><e></e></m>',
+    n_real: '<m v="1.2.0"><e>2</e></m>',
+    n_imag: '<m v="1.2.0"><e>i</e></m>',
     real: '<m v="1.2.0"><e>a</e></m>',
     imag: '<m v="1.2.0"><e>b</e></m>',
     sen: '<m v="1.2.0"><e></e><f type="sin" group="function"><b p="latex">\text{sen}(<r ref="1"/>)</b><b p="text">sen($1)</b><c><e>z</e></c></f><e></e></m>',
@@ -44,7 +48,7 @@ var funcoesComplexas = {
     fatorial: '<m v="1.2.0"><e></e><f type="factorial" group="functions"><b p="latex"><r ref="1"/>!</b><b p="asciimath">(<r ref="1"/>)!</b><c bracket="yes" delete="1"><e>z</e></c></f><e></e></m>',
     zeta: '<m v="1.2.0"><e></e><f type="zeta" group="function"><b p="latex">\zeta(<r ref="1"/>)</b><b p="text">zeta($1)($1)</b><c><e>z</e></c></f><e></e></m>',
     gamma: '<m v="1.2.0"><e></e><f type="gamma" group="function"><b p="latex">\Gamma(<r ref="1"/>)</b><b p="text">gamma($1)($1)</b><c><e>z</e></c></f><e></e></m>',
-    
+
 }
 /*Animação
 let animationCheckbox;

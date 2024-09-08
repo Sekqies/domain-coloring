@@ -144,11 +144,13 @@ section#navbar {
     justify-content: center;
 
     z-index: 2;
+    background-color: #fff;
+
+    border-bottom: 3px solid black;
+    padding-bottom: var(--padding-small);
 
     & .content {
-        background-color: #fff;
         padding: 0 var(--padding-small);
-        border-bottom: 3px solid black;
         display: flex;
         width: 100%;
 
@@ -314,7 +316,10 @@ section#lateral .lateral-div .lateral-div-content {
     width: 100%;
     align-items: center;
     gap: 20px;
-
+    &.n2{
+        flex-direction: column;
+        align-items: flex-start;
+    }
     & .input-dropdown {
         position: relative;
         border-radius: 5px;
