@@ -103,7 +103,7 @@ iframe{
 }
 
 section#navbar.hidded {
-    transform: translateY(calc(-100% + calc(var(--padding-large) + var(--arrow-size))));
+    transform: translateY(-100%);
     opacity: 0;
     transition: 1s;
 
@@ -115,6 +115,20 @@ section#navbar.hidded {
 section#navbar.hidded:hover {
     opacity: 1;
     transition: 1s;
+}
+
+#setaOcultar2{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--padding-small);
+    background-color: white;
+    z-index: 1;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 5px;
+    rotate: 180deg;
+    cursor: pointer;
+    box-shadow: 0px 0px  var(--padding-small) 0px #0000004b;
 }
 
 section#navbar {
@@ -129,14 +143,12 @@ section#navbar {
     align-items: center;
     justify-content: center;
 
-    min-height: var(--navbar-size);
     z-index: 2;
 
     & .content {
         background-color: #fff;
-        box-shadow: 0px 10px  var(--padding-small) 0px #00000020;
         padding: 0 var(--padding-small);
-
+        border-bottom: 3px solid black;
         display: flex;
         width: 100%;
 
@@ -144,11 +156,17 @@ section#navbar {
             flex: 1;
         }
 
+        & > div{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            
+        }
         & img {
-            rotate: -90deg;
             width: var(--arrow-size);
             transition: 0.5s;
         }
+        
     }
 }
 
@@ -180,33 +198,6 @@ section#navbar #guppy1 {
 .guppy_help {
     z-index: 2;
 }
-
-section#navbar .navbar-arrow {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: 0.5s;
-    flex: 1;
-    margin-bottom: var(--padding-small);
-    cursor: pointer;
-    background-color: #fff;
-    box-shadow: 0px 10px  var(--padding-small) 0px #00000020;
-    padding-bottom: var(--padding-medium);
-    padding-top: var(--padding-small);
-
-    & img {
-        width: var(--arrow-medium-size);
-        transition: 0.2s;
-        width: calc(var(--padding-medium)*1.5);
-    }
-
-    &:hover{
-        opacity: 1;
-    }
-}
-
 
 section#lateral.hidded {
     transform: translateX(-100%);
@@ -473,7 +464,24 @@ section#lateral .lateral-div.active {
     }
 }
 
-
+#funcoesComplexas{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    & button{
+        outline: none;
+        border: none;
+        padding: var(--padding-small);
+        background-color: #d1d1d1;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.2s;
+        margin: 2px;
+    }
+    & button:hover{
+        background-color: #a1a1a1;
+    }
+}
 
 #grafico {
     position: relative;

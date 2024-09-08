@@ -154,6 +154,10 @@ function init(modoRapido = false) {
 
 }
 
+function placeFunctionInGraph(functionString) {
+    guppy.engine.set_content(funcoesComplexas[functionString]);
+    init();
+}
 
 function createEventListeners() {
     //Função movida para index.html
@@ -292,4 +296,4 @@ function load() {
 
 
 
-export { load, init };
+export { load, init, placeFunctionInGraph };

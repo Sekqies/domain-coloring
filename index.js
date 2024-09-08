@@ -32,7 +32,7 @@ const domainColoring = document.getElementById('domainColoring');
 function ocultaLateral() {
     lateral.classList.toggle('hidded');
     domainColoring.classList.toggle('hidded');
-    setaLateral.style.rotate = setaLateral.style.rotate == '90deg' ? '-90deg' : '90deg';
+    setaLateral.style.rotate = setaLateral.style.rotate == '180deg' ? '-180deg' : '180deg';
 }
 
 function ocultaNavbar() {

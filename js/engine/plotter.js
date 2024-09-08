@@ -163,14 +163,12 @@ function Eixos(){
         let centroy = height /2 + somai*pixelPorInteiro;
         const {a,b,c,d} = variaveisGlobais.delimitadores;
         if (fernandoMode) {
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
             ctx.fillRect(0,centroy,width,1);
             //ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(centrox,0,1,height);
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.font = '15px Arial'
-            ctx.fillStyle = 'rgba(255,255,255,0.5)'
-            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
+            ctx.font = 'bold 15px Arial'
+            ctx.strokeStyle = 'rgba(35,35,35,1)'; 
             ctx.lineWidth = 1;
             const increasing = width - centrox >= width/2
             const increasingY = height - centroy >= height/2;
@@ -196,6 +194,7 @@ function Eixos(){
             let cont = 0;
             //alert(centrox, width)
             for (let real = inicioX; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+                ctx.fillStyle = 'rgba(255,255,255,0.2)'
                 ctx.fillRect(real, 0, 1, height);
                 const revreal = 2*inicioX-real
                 ctx.fillRect(revreal,0,1,height);
@@ -205,6 +204,7 @@ function Eixos(){
                 texto = texto==0? 0 : texto.toFixed(1);
                 let texto2 = sinal*distancia/pixelPorInteiro
                 texto2 = texto2==0? 0 : texto2.toFixed(1);
+                ctx.fillStyle = 'rgba(255,255,255,1)'
                 ctx.fillText(texto, real+4, inicioY-4);
                 ctx.strokeText(texto,real+4, inicioY-4)
                 if(texto == 0) continue;
@@ -213,6 +213,7 @@ function Eixos(){
                 cont++;
             }
             for(let imag = inicioY;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+                ctx.fillStyle = 'rgba(255,255,255,0.2)'
                 ctx.fillRect(0,imag,width,1);
                 const distancia = imag - centroy
                 const revimag = 2*inicioY-imag;
@@ -222,10 +223,11 @@ function Eixos(){
                 let texto2 = -texto;
                 texto2 = texto2==0? 0 : texto2.toFixed(1);
                 if(texto == 0) continue;
-                ctx.fillText(texto, inicioX+4, inicioY-distancia+4);
-                ctx.strokeText(texto,inicioX+4,inicioY-distancia+4)
-                ctx.fillText(texto2, inicioX + 4, imag+4);
-                ctx.strokeText(texto2, inicioX + 4, imag+4);
+                ctx.fillStyle = 'rgba(255,255,255,1)'
+                ctx.fillText((texto  + 'i'), inicioX+4, inicioY-distancia+4);
+                ctx.strokeText((texto  + 'i'),inicioX+4,inicioY-distancia+4)
+                ctx.fillText((texto2  + 'i'), inicioX + 4, imag+4);
+                ctx.strokeText((texto2  + 'i'), inicioX + 4, imag+4);
             
             }
         }
