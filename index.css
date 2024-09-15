@@ -643,3 +643,24 @@ p {
         }
     }
 }
+
+@media screen and (max-width: 450px) {
+    :root{
+        --padding-small: 5px;
+        --padding-medium: 10px;
+        --padding-large: 20px;
+    }
+
+    .lateral-div-content{
+        flex-direction: column;
+        align-items: flex-start !important;
+        & .input-dropdown{
+            margin-left: 0 !important;
+        }
+    }
+
+    section#lateral{
+        width: 100vw;
+    }
+    
+}

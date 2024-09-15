@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
-    <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
+    <link rel="stylesheet" href="./guppy-master/build/guppy-default.min.css">
+    <link rel="icon" href="./assets/Fz_arctan.png" type="image/x-icon">
     <script src=".\js\lib\ccapture.min.js"></script>
-    <script src="guppy-master/build/guppy.min.js"></script>
-    <script src="js/global.js"></script>
-    <script type="module" src="js/pages/index.js"></script>
-    <script type="module" src="js/setup/setup.js"></script>
+    <script src="./guppy-master/build/guppy.min.js"></script>
+    <script src="./js/global.js"></script>
+    <script type="module" src="./js/pages/index.js"></script>
+    <script type="module" src="./js/setup/setup.js"></script>
 
     <!--- Script que faz o botão e 'Enter' desenhem o gráfico -->
     <script type="module">
@@ -19,6 +19,7 @@
     
         const textoFunc = document.getElementById('textoFunc');
         const btn = document.getElementById('btn-draw');
+
         btn.addEventListener('click', () => {
 
             console.error(guppy.xml());
@@ -96,7 +97,8 @@
                 <img src="../assets/Arrow.svg" alt="Seta ocultar" id="setaOcultar" onclick="ocultaNavbar()">
                 <img src="../assets/menu.png" alt="Seta mostrar" id="setaLateral" onclick="ocultaLateral()">
             </div>
-            <div id="guppy1"></div>
+            <div id="guppy1">
+            </div>
         </div>
         <p id="textoFunc"></p>
     </section>
@@ -466,7 +468,7 @@
 
                 <div class="lateral-div active">
                     <div class="lateral-div-header">
-                        <h3>Uso do site</h3>
+                        <h3>Uso do aplicativo</h3>
                         <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralAbout">
                     </div>
                     <div class="lateral-div-content n2">
