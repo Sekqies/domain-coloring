@@ -1,4 +1,4 @@
-import { getNumeroInteiro } from '/js/engine/color.js';
+import { getNumeroInteiro } from '../engine/color.js';
 
 function loadHover(funcaoHover, nomeStringCanvas) {
     let nomeCanvas = document.getElementById(nomeStringCanvas);

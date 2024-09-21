@@ -1,8 +1,8 @@
 import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
-import { PlotterGl, listaFuncoesGL } from '/js/gl/plotter_gl.js';
-import { Plotter, listaFuncoes, Eixos } from '/js/engine/plotter.js';
-import { GlAnimation } from '/js/gl/animation.js';
+import { PlotterGl, listaFuncoesGL } from '../gl/plotter_gl.js';
+import { Plotter, listaFuncoes, Eixos } from '../engine/plotter.js';
+import { GlAnimation } from '../gl/animation.js';
 import { getNumeroInteiro, getPixelPorInteiro } from '../engine/color.js';
 import { updateDelimiters } from '../gl/shaders.js';
 
