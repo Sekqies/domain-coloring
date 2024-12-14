@@ -1,9 +1,10 @@
 import { loadGuppy } from './guppy_setup.js';
 import { loadHover } from './hover_setup.js';
-import { PlotterGl, listaFuncoes } from '/js/gl/plotter_gl.js';
-import { Plotter, lista, Eixos } from '/js/engine/plotter.js';
-import { GlAnimation } from '/js/gl/animation.js';
-import { getPixelPorInteiro } from '../engine/color.js';
+import { PlotterGl, listaFuncoesGL } from '../gl/plotter_gl.js';
+import { Plotter, listaFuncoes, Eixos } from '../engine/plotter.js';
+import { GlAnimation } from '../gl/animation.js';
+import { getNumeroInteiro, getPixelPorInteiro } from '../engine/color.js';
+import { updateDelimiters } from '../gl/shaders.js';
 
 const testing = true;
 
@@ -13,8 +14,11 @@ if (!testing) {
 
 
 function initializeVariables() {
-    canvas = document.getElementById("domainColorCanvas");
-    canvasGL = document.getElementById("glCanvas");
+    variaveisGlobais.canvas = document.getElementById("domainColorCanvas");
+    variaveisGlobais.glCanvas = document.getElementById("glCanvas");
+    canvas = variaveisGlobais.canvas;
+    canvasGL = variaveisGlobais.glCanvas;   
+    variaveisGlobais.glContext = canvasGL.getContext('webgl');
     //animationCheckbox = document.getElementById("animation-checkbox");
     grafico = document.getElementById('grafico');
     eixosCanvas = document.getElementsByClassName('eixosCanvas');
@@ -45,24 +49,24 @@ function normalizeValues()
     }
 }
 
+function updateGraph()
+{
+    PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)   
+    if (variaveisGlobais.eixosCartesianos) {
+        Eixos();
+    }
+    return;
+}
 
 function init(modoRapido = false) {
 
     //alert(guppy)  
-    if(modoRapido && true)
-    {
-        normalizeValues()
-        PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)
-        
-        if (variaveisGlobais.eixosCartesianos) {
-            Eixos();
-        }
-        return;
-    }
+    
     normalizeValues()
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
+        canvas.parentElement.parentElement.classList.add('full-screen');
         //Move o scroll conforme o usuario move o mouse (enquanto pressionado)
     }
     else {
@@ -77,13 +81,26 @@ function init(modoRapido = false) {
         eixosCanvas[i].height = tamanhoCanvas;
     }
 
+    const windowWidth = window.innerWidth;
+    const minLateralSize2 = windowWidth * 0.7;
+    const lateral = document.getElementById('lateral');
+    if(tamanhoCanvas > minLateralSize2){
+        lateral.classList.add('fixed');
+        console.warn(windowWidth + ' ' + minLateralSize2 + ' ' + tamanhoCanvas);
+    }
+    else{
+        lateral.classList.remove('fixed');
+    }
 
-    funcaoHover = guppy.func(lista.operations);
+
+    funcaoHover = guppy.func(listaFuncoes.operations);
 
     animation = new GlAnimation(canvasGL, canvas.width, canvas.height);
     animation_variable_exists = false;
-    const result_gl = guppy.func(listaFuncoes.operations)();
+
+    const result_gl = guppy.func(listaFuncoesGL.operations)();
     variaveisGlobais.glFunction = result_gl;
+
     console.log(`Função a ser renderizada ${result_gl}`);
     console.log("Contexto do guppy:", guppy.engine.get_content("ast"));
 
@@ -102,7 +119,7 @@ function init(modoRapido = false) {
     }
     else {
         animation.stopAnimation();
-        //document.body.style.backgroundColor = "blue";
+        //document.body.style.backgroundColorc = "blue";
         if (variaveisGlobais.tipoCarregamento == 'preciso') {
             //alert("não web-gl")
             console.log("Tamanho do canvas:", variaveisGlobais.valorTamanhoGrafico);
@@ -137,13 +154,18 @@ function init(modoRapido = false) {
 
 }
 
+function placeFunctionInGraph(functionString) {
+    guppy.engine.set_content(funcoesComplexas[functionString]);
+    init();
+}
 
 function createEventListeners() {
-    document.addEventListener('keyup', function (event) {
+    //Função movida para index.html
+    /*document.addEventListener('keyup', function (event) {
         if (event.key == "Enter") {
             init();
         }
-    });
+    });*/
 
     //Não está funcionando (Não sei pq)
     //Eu sei porque
@@ -151,77 +173,118 @@ function createEventListeners() {
         let a = new GlAnimation(canvas, canvas.width, canvas.height);
         a.downloadAnimation();
     });
+
     let isDragging = false;
 
-let startX,startY
-let zoomLevel = 1.0;
+    let startX,startY
+    let zoomLevel = 1.0;
 
-canvasGL.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.offsetX;
-    startY = e.offsetY;
-    //alert("ai****-*-")
-});
-const FPS_LIMIT = 50;
-const minInterval = 1000/FPS_LIMIT
-let lastCall = 0;
-canvasGL.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        const now = Date.now();
-        if(now-lastCall<minInterval) return;
-        lastCall = now;
-
-        const dx = startX - e.offsetX;
-        const dy = e.offsetY - startY;
-        const pixelPorInteiro = getPixelPorInteiro();
-        variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro;
-        variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro;
-        variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro;
-        variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro;
-        //alert("oi")
-        init(true)
+    canvasGL.addEventListener('mousedown', (e) => {
+        isDragging = true;
         startX = e.offsetX;
         startY = e.offsetY;
-    }
-});
+        //alert("ai****-*-")
+    });
+    const FPS_LIMIT = 70;
+    const minInterval = 1000/FPS_LIMIT
+    let lastCall = 0;
+    canvasGL.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const now = Date.now();
+            if(now-lastCall<minInterval) return;
+            lastCall = now;
+    
+            const dx = startX - e.offsetX;
+            const dy = e.offsetY - startY;
+            const pixelPorInteiro = getPixelPorInteiro();
+            variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro/2;
+            variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
+            
+            //alert("oi")
+    
+            updateGraph();
+            startX = e.offsetX;
+            startY = e.offsetY;
+        }
+    });
+        
+
+canvasGL.addEventListener('mouseout',()=> {
+    isDragging = false;
+})
 
 canvasGL.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
 canvasGL.addEventListener('wheel', (e) => {
+    const now = Date.now();
+        if(now-lastCall<minInterval) return;
+        lastCall = now;
+    const fernandomode = true;
     e.preventDefault();
-    const zoomIntensity = 0.5;
+    const zoomPercentage = 1;
+    const zoomValue = zoomPercentage / 100;
     const direction = e.deltaY > 0 ? -1 : 1;
     const oldZoomLevel = zoomLevel;
-    zoomLevel += direction * zoomIntensity;
-    zoomLevel = Math.max(0.1, zoomLevel); // Prevent zooming out too much
+    const pixelPorInteiro = getPixelPorInteiro();
+    const screenCenter = { x: canvasGL.width / 2 / pixelPorInteiro, y: canvasGL.height / 2 / pixelPorInteiro };
 
     const rect = canvasGL.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    const graphWidth = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
-    const graphHeight = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
-    const graphX = variaveisGlobais.delimitadores.inicio_real + (mouseX / canvasGL.width) * graphWidth;
-    const graphY = variaveisGlobais.delimitadores.inicio_imag + (mouseY / canvasGL.height) * graphHeight;
-
-    const adjustFactor = oldZoomLevel / zoomLevel;
-    const width = graphWidth * adjustFactor;
-    const height = graphHeight * adjustFactor;
-
-    variaveisGlobais.delimitadores.inicio_real = graphX - (mouseX / canvasGL.width) * width;
-    variaveisGlobais.delimitadores.fim_real = variaveisGlobais.delimitadores.inicio_real + width;
-    variaveisGlobais.delimitadores.inicio_imag = graphY - (mouseY / canvasGL.height) * height;
-    variaveisGlobais.delimitadores.fim_imag = variaveisGlobais.delimitadores.inicio_imag + height;
+    const diffX = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const diffY = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
+    const valX  = diffX * (1 + direction * zoomValue);
+    const valY = diffY * (1 + direction * zoomValue);
+    const numInteiro = getNumeroInteiro(mouseX,mouseY);
+    const x = numInteiro[0];
+    const y = numInteiro[1];
+    variaveisGlobais.delimitadores.inicio_real = x - valX/2;
+    variaveisGlobais.delimitadores.fim_real = x + valX/2;
+    variaveisGlobais.delimitadores.inicio_imag = y - valX/2;
+    variaveisGlobais.delimitadores.fim_imag = y + valX/2;
 
     // Redraw the graph with the new zoom level
-    init(true);
+    updateGraph();
 });
 
 
     
 }
+function simulateMouseEvent(element, eventType, clientX, clientY) {
+    const event = new MouseEvent(eventType, {
+        bubbles: true,
+        cancelable: true,
+        clientX: clientX,
+        clientY: clientY
+    });
+    element.dispatchEvent(event);
+}
+
+
+  const testDragPerformance = function(steps)
+{
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const timeStart = performance.now();
+    for(let i=0;i<steps;i++){
+        const x = Math.floor(Math.random() * canvasWidth);
+        const y = Math.floor(Math.random() * canvasHeight);
+        const nx = Math.floor(Math.random() * canvasWidth);
+        const ny = Math.floor(Math.random() * canvasHeight);
+        simulateMouseEvent(canvasGL, 'mousedown', x, y);
+        simulateMouseEvent(canvasGL, 'mousemove', nx, ny);
+        simulateMouseEvent(canvasGL, 'mouseup', nx, ny);
+    }
+    const timeEnd = performance.now();
+    const timeElapsed = timeEnd - timeStart;
+    alert(`Tempo de execução: ${timeElapsed}ms`);
+}
+document.getElementById('test-drag-performance').addEventListener('click', ()=>{testDragPerformance(2000)});
 
 function load() {
     //console.log = function() {};
@@ -233,4 +296,4 @@ function load() {
 
 
 
-export { load, init };
+export { load, init, placeFunctionInGraph };

@@ -1,5 +1,5 @@
 import { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro} from './color.js';
-import {lista } from './funcoes_complexas.js';
+import { lista } from './funcoes_complexas.js';
 //Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
 function Domain_coloring(real, imag) {
@@ -12,12 +12,15 @@ function Domain_coloring(real, imag) {
 
 
     //NÃO MEXE NISSO
+
     let hue = (Math.atan2(imag, real)) / (2 * Math.PI);
+
     //PERIGO !!! PERIGO!!!!! NÃO MEXE!!!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 
 
     //Calcula a distancia do ponto até o centro (modulo)
+
     let dist = Math.sqrt(real * real + imag * imag);
 
     let modulo;
@@ -28,8 +31,6 @@ function Domain_coloring(real, imag) {
         //Modo 2 (com descontinuidade):
         dist = dist == "Infinity" ? 10e50 : dist;
         let expoente = Math.log2(dist);
-
-        //Isso faz com que numeros menores que aprox 1/2 fiquem sem desconitnuidade, porem é inperceptivel.
         let expoente_decimal = 1;
 
         if (dist != 0) {
@@ -94,11 +95,11 @@ function Plotter(funcaoHover) {
     const width = canvas.width;
 
     //define o scroll vertical e horizontal da tela para metade do total
-    window.scroll((document.documentElement.scrollWidth - window.innerWidth) / 2,
-        (document.documentElement.scrollHeight - window.innerHeight) / 2);
+    //window.scroll((document.documentElement.scrollWidth - window.innerWidth) / 2,
+    //(document.documentElement.scrollHeight - window.innerHeight) / 2);
 
     const height = canvas.height;
-    let INICIO = performance.now();
+    //let INICIO = performance.now();
     //Cria um array de pixels
     const canvasImageData = canvasContext2d.createImageData(width, height);
     const canvasData = canvasImageData.data;
@@ -113,7 +114,7 @@ function Plotter(funcaoHover) {
 
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = funcaoHover({ 'z': { real: realAntes, imag: -imagAntes } });
+            let z = funcaoHover({ 'z': { real: realAntes, imag: imagAntes } });
             real = z.real;
             imag = z.imag;
 
@@ -131,8 +132,8 @@ function Plotter(funcaoHover) {
         }
     }
 
-    let FIM = performance.now();
-    console.log("Tempo de Plotter com JS:", FIM - INICIO);
+    //let FIM = performance.now();
+    //console.log("Tempo de Plotter com JS:", FIM - INICIO);
     //Coloca a imagem no canvas 
     canvasContext2d.putImageData(canvasImageData, 0, 0);
     console.log("Imagem desenhada");
@@ -154,48 +155,79 @@ function Eixos(){
         const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
         const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
         //diff consequentemente contém o número de inteiros na imagem
-        let centro = width/2;
         const fernandoMode = true;
         let pixelPorInteiro = getPixelPorInteiro();
         const numeroDeValores = 4;
         const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
-        let centrox = width / 2 - somar*pixelPorInteiro/2;
-        let centroy = height /2 + somai*pixelPorInteiro/2;
+        let centrox = width / 2 - somar*pixelPorInteiro;
+        let centroy = height /2 + somai*pixelPorInteiro;
+        const {a,b,c,d} = variaveisGlobais.delimitadores;
         if (fernandoMode) {
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
             ctx.fillRect(0,centroy,width,1);
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            //ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.fillRect(centrox,0,1,height);
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.font = '15px Arial'
-            ctx.fillStyle = 'rgba(255,255,255,0.5)'
-            ctx.strokeStyle = 'rgba(0,0,0,0.5)'; 
+            ctx.font = 'bold 15px Arial'
+            ctx.strokeStyle = 'rgba(35,35,35,1)'; 
             ctx.lineWidth = 1;
-            const increasing = width - centrox > width/2
-            const increasingY = height - centroy > height/2
-            for (let real = centrox; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+            const increasing = width - centrox >= width/2
+            const increasingY = height - centroy >= height/2;
+            const normalizeDistance =  function(center,bound)
+            {
+                if(center < bound && center >= 0) return center;
+                if(center> bound) {
+                const centerDist = Math.abs(center-bound);
+                const teps = Math.floor(centerDist/dist);
+                return center - teps*dist;
+                }
+                if (center <0)
+                {
+                    const centerDist = Math.abs(center  );
+                    const teps = Math.floor(centerDist/dist);
+                    return center + teps*dist;
+                }
+                
+            }
+            const sinal = - 1;
+            let inicioX = normalizeDistance(centrox,width)
+            let inicioY = normalizeDistance(centroy,height)
+            let cont = 0;
+            //alert(centrox, width)
+            for (let real = inicioX; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
+                ctx.fillStyle = 'rgba(255,255,255,0.2)'
                 ctx.fillRect(real, 0, 1, height);
+                const revreal = 2*inicioX-real
+                ctx.fillRect(revreal,0,1,height);
+                //console.warn(real,inicioX)
                 let distancia = real-centrox;
-                ctx.fillRect(centrox-distancia,0,1,height);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
-                ctx.fillText(texto, real+4, centroy-4);
-                ctx.strokeText(texto,real+4, centroy-4)
+                let texto2 = sinal*distancia/pixelPorInteiro
+                texto2 = texto2==0? 0 : texto2.toFixed(1);
+                ctx.fillStyle = 'rgba(255,255,255,1)'
+                ctx.fillText(texto, real+4, inicioY-4);
+                ctx.strokeText(texto,real+4, inicioY-4)
                 if(texto == 0) continue;
-                ctx.fillText("-" + String(texto), centrox-distancia+4, centroy-4);
-                ctx.strokeText("-" + String(texto), centrox - distancia + 4, centroy - 4);
+                ctx.fillText(texto2, inicioX-distancia+4, inicioY-4);
+                ctx.strokeText(texto2, inicioX - distancia + 4, inicioY - 4);
+                cont++;
             }
-            for(let imag = centroy;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+            for(let imag = inicioY;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
+                ctx.fillStyle = 'rgba(255,255,255,0.2)'
                 ctx.fillRect(0,imag,width,1);
                 const distancia = imag - centroy
-                ctx.fillRect(0,centroy-distancia,width,1);
+                const revimag = 2*inicioY-imag;
+                ctx.fillRect(0,revimag,width,1);
                 let texto = distancia/pixelPorInteiro;
                 texto = texto==0? 0 : texto.toFixed(1);
+                let texto2 = -texto;
+                texto2 = texto2==0? 0 : texto2.toFixed(1);
                 if(texto == 0) continue;
-                ctx.fillText(texto, centrox+4, centroy-distancia+4);
-                ctx.strokeText(texto,centrox+4,centroy-distancia+4)
-                ctx.fillText("-" + String(texto), centrox + 4, imag+4);
-                ctx.strokeText("-" + String(texto), centrox + 4, imag+4);
+                ctx.fillStyle = 'rgba(255,255,255,1)'
+                ctx.fillText((texto  + 'i'), inicioX+4, inicioY-distancia+4);
+                ctx.strokeText((texto  + 'i'),inicioX+4,inicioY-distancia+4)
+                ctx.fillText((texto2  + 'i'), inicioX + 4, imag+4);
+                ctx.strokeText((texto2  + 'i'), inicioX + 4, imag+4);
             
             }
         }
@@ -246,4 +278,4 @@ function Eixos(){
     console.log("Eixos desenhados");
 }
 
-export { Plotter, lista, Eixos};
+export { Plotter, lista as listaFuncoes, Eixos};

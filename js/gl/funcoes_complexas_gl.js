@@ -129,7 +129,7 @@ const GSGL_function_declarations = [
     }`),
     new c_GSGLFunction("czeta","zeta",`vec2 czeta(vec2 s){
             vec2 resul = vec2(1.0,0.0);
-            for (int i=2; i<=10; i++)
+            for (int i=1; i<=20; i++)
             {
                 resul = cadd(resul, cpow(vec2(i,0.0),cneg(s)));
             }

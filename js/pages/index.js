@@ -1,4 +1,4 @@
-import { load, init } from '/js/setup/setup.js';
+import { load, init } from '../setup/setup.js';
 
 function changeActiveClass() {
     const radioDivs = document.querySelectorAll("#options .tipo div input");
@@ -34,4 +34,3 @@ function download(){
 }
 
 document.getElementById("download").addEventListener("click", download);
-document.getElementById("draw").addEventListener("click", init);    

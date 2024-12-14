@@ -2,6 +2,27 @@ function handleActiveClick(element) {
     element.classList.toggle('active');
 }
 
+//Trocando de opções para docimentação
+const opOptions = document.getElementById('option-options');
+const opDocs = document.getElementById('option-docs');
+const options = document.getElementById('opcoes');
+const docs = document.getElementById('docs');
+
+opDocs.addEventListener('click', () => {
+    opOptions.classList.remove('active');
+    opDocs.classList.add('active');
+    options.style.display = 'none';
+    docs.style.display = 'flex';
+});
+
+opOptions.addEventListener('click', () => {
+    opDocs.classList.remove('active');
+    opOptions.classList.add('active');
+    options.style.display = 'flex';
+    docs.style.display = 'none';
+});
+
+
 //Função para ocultar as opções:
 const lateral = document.getElementById('lateral');
 const navbar = document.getElementById('navbar');
@@ -11,17 +32,23 @@ const domainColoring = document.getElementById('domainColoring');
 function ocultaLateral() {
     lateral.classList.toggle('hidded');
     domainColoring.classList.toggle('hidded');
-    setaLateral.style.rotate = setaLateral.style.rotate == '90deg' ? '-90deg' : '90deg';
+    setaLateral.style.rotate = setaLateral.style.rotate == '180deg' ? '-180deg' : '180deg';
 }
 
 function ocultaNavbar() {
-    //Ocula opções se não estiver ocultada
-    if (!lateral.classList.contains('hidded')) {
-        ocultaLateral();
-    }
+    
 
     //Oculta navbar
     navbar.classList.toggle('hidded');
+
+    let navbarOculta = navbar.classList.contains('hidded');
+    if(navbarOculta){
+        lateral.classList.add('hidded')
+    }
+    else{
+        lateral.classList.remove('hidded');
+    }
+
     setaNavbar.style.rotate = setaNavbar.style.rotate == '180deg' ? '0deg' : '180deg';
 }
 
@@ -30,8 +57,13 @@ const carregamentoGrafico = document.getElementById('CarregamentoGrafico');
 const tipoGrafico = document.getElementById('TipoGrafico');
 const tamanhoGrafico = document.getElementById('TamanhoGrafico');
 const tipoAnimacao = document.getElementById('TipoAnimacao');
+
 const lateralOpcoes = document.getElementById('LateralOpcoes');
 const lateralAnimacao = document.getElementById('LateralAnimacao');
+const lateralFuncao = document.getElementById('LateralFuncao');
+const lateralAgradecimentos = document.getElementById('LateralAgradecimentos');
+const lateralAbout = document.getElementById('LateralAbout');
+
 const eixosCartesianos = document.getElementById('EixosCartesianos');
 
 const realMinimoInput = document.getElementById('real-minimo');
@@ -46,7 +78,8 @@ const fpsInput = document.getElementById('fps');
 
 //Guardando em um array:
 const elementos = [carregamentoGrafico, tipoGrafico, tamanhoGrafico,
-    tipoAnimacao, lateralOpcoes, lateralAnimacao];
+    tipoAnimacao, lateralOpcoes, lateralAnimacao, lateralFuncao,
+    lateralAgradecimentos, lateralAbout];
 
 
 //Chamando a função:
@@ -263,3 +296,69 @@ function pageInit(){
 
     chegaValoresGlobais();
 }
+
+
+const changeSize = document.getElementById('changeSize');
+
+let isDragging = false;
+let startX = 0;
+let initialWidth = 0;
+
+// Constantes para limitar a taxa de atualização
+const FPS_LIMIT = 70;
+const minInterval = 1000 / FPS_LIMIT;
+let lastCall = 0;
+
+changeSize.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX; // Use clientX para coordenadas globais
+    initialWidth = lateral.offsetWidth; // Capture a largura inicial de lateral
+    console.log("Drag started at:", startX, "with initial width:", initialWidth);
+});
+
+let supposedWidth = initialWidth;
+const screenWidth = window.innerWidth;
+let minLateralSize = screenWidth * 0.3;
+
+document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        const now = Date.now();
+        if (now - lastCall < minInterval) return;
+        lastCall = now;
+
+        const diffX = e.clientX - startX; // Use clientX para coordenadas globais
+        let newWidth = initialWidth + diffX; // Adicione diffX à largura inicial
+
+        supposedWidth = newWidth;
+
+        if (newWidth < minLateralSize) {
+            newWidth = minLateralSize; // Garantir tamanho mínimo de 550px
+        }
+
+        if(supposedWidth < minLateralSize/2){
+            lateral.classList.add('hidded');
+            domainColoring.classList.add('hidded');
+            setaLateral.style.rotate = '90deg';
+        }
+
+        if(!lateral.classList.contains('hidded')){
+            lateral.style.width = `${newWidth}px`;
+        }
+        else{
+            if(supposedWidth > minLateralSize/2){
+                lateral.classList.remove('hidded');
+                domainColoring.classList.remove('hidded');
+                setaLateral.style.rotate = '-90deg';
+                isDragging = false;
+            }
+        }
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+document.addEventListener('click', () => {
+    isDragging = false;
+});

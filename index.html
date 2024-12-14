@@ -4,219 +4,521 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="./teste_front/index.css">
-    <link rel="stylesheet" href="guppy-master/build/guppy-default.min.css">
-    <link rel="icon" href="assets/Fz_arctan.png" type="image/x-icon">
-    <script src=".\js\lib\ccapture.min.js"></script>
-    <script src="guppy-master/build/guppy.min.js"></script>
-    <script src="js/global.js"></script>
-    <script type="module" src="js/pages/index.js"></script>
-    <script type="module" src="js/setup/setup.js"></script>
+    <link type="text/css" rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./guppy-master/build/guppy-default.min.css">
+    <link rel="icon" href="./assets/Fz_arctan.png" type="image/x-icon">
+    <script src="./js/lib/ccapture.min.js"></script>
+    <script src="./guppy-master/build/guppy.min.js"></script>
+    <script src="./js/global.js"></script>
+    <script type="module" src="./js/pages/index.js"></script>
+    <script type="module" src="./js/setup/setup.js"></script>
+
+    <!--- Script que faz o botão e 'Enter' desenhem o gráfico -->
+    <script type="module">
+        import { init, placeFunctionInGraph } from './js/setup/setup.js';
+    
+        const textoFunc = document.getElementById('textoFunc');
+        const btn = document.getElementById('btn-draw');
+
+        btn.addEventListener('click', () => {
+
+            console.error(guppy.xml());
+            textoFunc.innerHTML = '';
+            init();
+            
+        });
+    
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                textoFunc.innerHTML = '';
+                init();
+            }
+        });
+
+        const functions = [
+            { id: 'btn-real', name: 'real', txt: 'Re(z)' },
+            { id: 'btn-imag', name: 'imag', txt: 'Im(z)' },
+            { id: 'btn-z', name: 'z', txt: 'a+bi | x+yi | z' },
+            { id: 'btn-pi', name: 'pi', txt: 'pi' },
+            { id: 'btn-real2', name: 'n_real', txt: '2' },
+            { id: 'btn-imag2', name: 'n_imag', txt: 'i' },
+            { id: 'btn-soma', name: 'soma', txt: 'z+2' },
+            { id: 'btn-subtracao', name: 'subtracao', txt: 'z-2' },
+            { id: 'btn-multiplicacao', name: 'multiplicacao', txt: 'z*10' },
+            { id: 'btn-divisao', name: 'divisao', txt: 'z/10' },
+            { id: 'btn-potencia', name: 'exponenciacao', txt: 'z^2' },
+            { id: 'btn-raiz', name: 'radiciacao', txt: 'sqrt(z)' },
+            { id: 'btn-logaritmo', name: 'log', txt: 'log(z)' },
+            { id: 'btn-sen', name: 'sen', txt: 'sen(z) | sin(z)' },
+            { id: 'btn-cos', name: 'cos', txt: 'cos(z)' },
+            { id: 'btn-tg', name: 'tg', txt: 'tg(z) | tan(z)' },
+            { id: 'btn-sec', name: 'sec', txt: 'sec(z)' },
+            { id: 'btn-csc', name: 'csc', txt: 'csc(z)' },
+            { id: 'btn-cot', name: 'cot', txt: 'cot(z)' },
+            { id: 'btn-arcsen', name: 'arcsen', txt: 'arcsen(z)' },
+            { id: 'btn-arccos', name: 'arccos', txt: 'arccos(z)' },
+            { id: 'btn-arctan', name: 'arctan', txt: 'arctan(z)' },
+            { id: 'btn-arcsec', name: 'arcsec', txt: 'arcsec(z)' },
+            { id: 'btn-arccsc', name: 'arccsc', txt: 'arccsc(z)' },
+            { id: 'btn-arccot', name: 'arccot', txt: 'arccot(z)' },
+            { id: 'btn-hsen', name: 'hsen', txt: 'hsen(z)' },
+            { id: 'btn-hcos', name: 'hcos', txt: 'hcos(z)' },
+            { id: 'btn-htg', name: 'htg', txt: 'htg(z)' },
+            { id: 'btn-hsec', name: 'hsec', txt: 'hsec(z)' },
+            { id: 'btn-hcsc', name: 'hcsc', txt: 'hcsc(z)' },
+            { id: 'btn-hcot', name: 'hcot', txt: 'hcot(z)' },
+            { id: 'btn-fatorial', name: 'fatorial', txt: 'z!' },
+            { id: 'btn-zeta', name: 'zeta', txt: 'zeta(z)' },
+            { id: 'btn-gamma', name: 'gamma', txt: 'gamma(z)' },
+
+        ];
+
+        functions.forEach((func) => {
+            const btn = document.getElementById(func.id);
+            btn.addEventListener('click', () => {
+                textoFunc.innerHTML = 'Função: ' + func.txt;
+                placeFunctionInGraph(func.name);
+            });
+        });
+
+    </script>
+
 
     <title>Funções complexas</title>
+
 </head>
 
 <body onload="pageInit()">
+    <img src="./assets/arrow.svg" alt="Seta ocultar" id="setaOcultar2" onclick="ocultaNavbar()">
 
     <section id="navbar">
         <div class="content">
-            <img src="../assets/Arrow.svg" alt="Seta mostrar" id="setaLateral" onclick="ocultaLateral()">
-            <div id="guppy1"></div>
+            <div>
+                <img src="./assets/arrow.svg" alt="Seta ocultar" id="setaOcultar" onclick="ocultaNavbar()">
+                <img src="./assets/menu.png" alt="Seta mostrar" id="setaLateral" onclick="ocultaLateral()">
+            </div>
+            <div id="guppy1">
+            </div>
         </div>
-        <div class="navbar-arrow">
-            <img src="../assets/Arrow.svg" id="setaNavbar" alt="Seta ocultar" onclick="ocultaNavbar()">
-        </div>
+        <p id="textoFunc"></p>
     </section>
     <section id="lateral">
         <div class="lateral-itens">
 
             <div id="lateral-desenhar">
                 <div class="lateral-desenhar-botao">
-                    <button id="draw" class="btn" onclick="chegaValoresGlobais()">
+                    <button id="btn-draw" class="btn">
                         <p>Desenhar</p>
-                        <img src="../assets/Pencil.svg" alt="Desenhar grafico">
+                        <img src="./assets/Pencil.svg" alt="Desenhar grafico">
                     </button>
                     <h4>Ou pressione 'Enter' dentro da caixa de função.</h4>
                 </div>
                 <div class="lateral-desenhar-botao">
                     <button id="download" class="btn secondary">
                         <p>Baixar gráfico</p>
-                        <img src="../assets/download.svg" alt="Baixar gráfico">
+                        <img src="./assets/download.svg" alt="Baixar gráfico">
                     </button>
                 </div>
             </div>
 
-            <div id="lateral-opcoes" class="lateral-div active">
-
-
-                <div class="lateral-div-header">
-                    <h2>Opções: </h2>
-                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralOpcoes">
-                </div>
-
-
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Carregamento do gráfico: </p>
-                    </div>
-                    <div class="input-dropdown">
-                        <div class="input-dropdown-fixed">
-                            <p>Grafico normal</p>
-                            <div id="CarregamentoGrafico">
-                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
-                            </div>
-                        </div>
-                        <div class="input-dropdown-options">
-                            <h4>Renderização precisa (menor velocidade)</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Tipo do gráfico: </p>
-                    </div>
-                    <div class="input-dropdown">
-                        <div class="input-dropdown-fixed">
-                            <p>Continuo</p>
-                            <div id="TipoGrafico">
-                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
-                            </div>
-                        </div>
-                        <div class="input-dropdown-options">
-                            <h4>Descontinuo</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lateral-div-content" style="display:hidden">
-                    <div class="lateral-div-content-option">
-                        <p>Numero de inteiros: </p>
-                    </div>
-                    <div class="input-number">
-                        <input id="real-maximos" value='2' step='1' type="number">
-                    </div>
-                </div>
-
-                <div class="lateral-div-content" style="display: block;">
-                    <div class="input-interval">
-                        <input id="real-minimo" type="number" value='-2'>
-                        <p> &lt; Re &lt; </p>
-                        <input id='real-maximo' type="number" value="2">
-                    </div>
-                </div>
-
-                <div class="lateral-div-content" style="display: block;">
-                    <div class="input-interval">
-                        <input id="imag-minimo" type="number" value="-2" >
-                        <p> &lt; Im &lt; </p>
-                        <input id="imag-maximo" type="number" value="2" >
-                    </div>
-                </div>
-
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Tamanho do gráfico</p>
-                    </div>
-                    <div class="input-dropdown" id="">
-                        <div class="input-dropdown-fixed">
-                            <input id="tamanho-grafico" type="number" value='500'>
-                            <p style="display: none;">Grafico que ocupa a tela inteira</p>
-                            <div id="TamanhoGrafico">
-                                <p>px</p>
-                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
-                            </div>
-                        </div>
-                        <div class="input-dropdown-options">
-                            <h4 onclick="alteraOpcaoTamanhoGrafico()">Grafico ocupa a tela inteira</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lateral-div-content" id="donotchange">
-                    <div class="lateral-div-content-option">
-                        <p>Eixos cartesianos</p>
-                    </div>
-                    <div class="input-checkbox" id="EixosCartesianos">
-                    </div>
-                </div>
-
+            <div id="lateral-navbar">
+                <p class="active" id="option-options">Opções</p>
+                <p id="option-docs">Documentação</p>
             </div>
 
-            <div id="lateral-animacao" class="lateral-div active">
-                <div class="lateral-div-header">
-                    <h2>Animação</h2>
-                    <img src="../assets/Arrow.svg" alt="Seta ocultar" id="LateralAnimacao">
-                </div>
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Animação ligada</p>
-                    </div>
-                    <div class="input-checkbox active" onclick="changeAnimacaoActive(this)">
-                    </div>
-                </div>
-                <div class="lateral-div-content">
-                    <h3>Utilize a letra 'k' na função para criar uma animação.</h3>
-                </div>
+            <div id="opcoes">
+                <div id="lateral-opcoes" class="lateral-div active">
 
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Variação:</p>
-                    </div>
-                    <div class="input-interval">
-                        <input id="variacao-minimo" value='0' type="number">
-                        <p>a</p>
-                        <input id="variacao-maximo" value='10' type="number">
-                    </div>
-                </div>
 
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Incremento: </p>
+                    <div class="lateral-div-header">
+                        <h3>Opções: </h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralOpcoes">
                     </div>
-                    <div class="input-number">
-                        <input id="incremento" value='0.5' type="number" step="0.1">
-                    </div>
-                </div>
+    
+    
 
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>FPS: </p>
-                    </div>
-                    <div class="input-number">
-                        <input id="fps" value='30' step='10' type="number">
-                    </div>
-                </div>
-
-                <div class="lateral-div-content">
-                    <div class="lateral-div-content-option">
-                        <p>Tipo de animação: </p>
-                    </div>
-                    <div class="input-dropdown">
-                        <div class="input-dropdown-fixed">
-                            <p>Normal</p>
-                            <div id='TipoAnimacao'>
-                                <img src="../assets/Arrow.svg" alt="Seta ocultar">
+    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Tipo do gráfico: </p>
+                        </div>
+                        <div class="input-dropdown">
+                            <div class="input-dropdown-fixed">
+                                <p>Continuo</p>
+                                <div id="TipoGrafico">
+                                    <img src="./assets/arrow.svg" alt="Seta ocultar">
+                                </div>
+                            </div>
+                            <div class="input-dropdown-options">
+                                <h4>Descontinuo</h4>
                             </div>
                         </div>
-                        <div class="input-dropdown-options">
-                            <h4>Bouncy</h4>
-                            <h4>Repeat</h4>
+                    </div>
+    
+                    <div class="lateral-div-content" style="display:none !important">
+                        <div class="lateral-div-content-option">
+                            <p>Numero de inteiros: </p>
                         </div>
+                        <div class="input-number">
+                            <input id="real-maximos" value='2' step='1' type="number">
+                        </div>
+                        <button id="test-drag-performance">Testar velocidade</button>
+                    </div>
+
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Tamanho do gráfico</p>
+                        </div>
+                        <div class="input-dropdown" id="">
+                            <div class="input-dropdown-fixed">
+                                <input id="tamanho-grafico" type="number" value='500'>
+                                <p style="display: none;">Grafico que ocupa a tela inteira</p>
+                                <div id="TamanhoGrafico">
+                                    <p>px</p>
+                                    <img src="./assets/arrow.svg" alt="Seta ocultar">
+                                </div>
+                            </div>
+                            <div class="input-dropdown-options">
+                                <h4 onclick="alteraOpcaoTamanhoGrafico()">Grafico ocupa a tela inteira</h4>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="input-interval">
+                            <input id="real-minimo" type="number" value='-2'>
+                            <p> &lt; Re &lt; </p>
+                            <input id='real-maximo' type="number" value="2">
+                        </div>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="input-interval">
+                            <input id="imag-minimo" type="number" value="-2" >
+                            <p> &lt; Im &lt; </p>
+                            <input id="imag-maximo" type="number" value="2" >
+                        </div>
+                    </div>
+
+    
+                    <div class="lateral-div-content" id="donotchange">
+                        <div class="lateral-div-content-option">
+                            <p>Eixos cartesianos</p>
+                        </div>
+                        <div class="input-checkbox" id="EixosCartesianos">
+                        </div>
+                    </div>
+                    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Carregamento do gráfico: </p>
+                        </div>
+                        <div class="input-dropdown">
+                            <div class="input-dropdown-fixed">
+                                <p>Grafico normal</p>
+                                <div id="CarregamentoGrafico">
+                                    <img src="./assets/arrow.svg" alt="Seta ocultar">
+                                </div>
+                            </div>
+                            <div class="input-dropdown-options">
+                                <h4>Renderização precisa (menor velocidade)</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    
+                <div id="lateral-animacao" class="lateral-div active">
+                    <div class="lateral-div-header">
+                        <h3>Animação</h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralAnimacao">
+                    </div>
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Animação ligada</p>
+                        </div>
+                        <div class="input-checkbox active" onclick="changeAnimacaoActive(this)">
+                        </div>
+                    </div>
+                    <div class="lateral-div-content">
+                        <p>Utilize a letra 'k' na função para criar uma animação.</p>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Variação:</p>
+                        </div>
+                        <div class="input-interval">
+                            <input id="variacao-minimo" value='0' type="number">
+                            <p>a</p>
+                            <input id="variacao-maximo" value='10' type="number">
+                        </div>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Incremento: </p>
+                        </div>
+                        <div class="input-number">
+                            <input id="incremento" value='0.5' type="number" step="0.1">
+                        </div>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>FPS: </p>
+                        </div>
+                        <div class="input-number">
+                            <input id="fps" value='30' step='10' type="number">
+                        </div>
+                    </div>
+    
+                    <div class="lateral-div-content">
+                        <div class="lateral-div-content-option">
+                            <p>Tipo de animação: </p>
+                        </div>
+                        <div class="input-dropdown">
+                            <div class="input-dropdown-fixed">
+                                <p>Normal</p>
+                                <div id='TipoAnimacao'>
+                                    <img src="./assets/arrow.svg" alt="Seta ocultar">
+                                </div>
+                            </div>
+                            <div class="input-dropdown-options">
+                                <h4>Bouncy</h4>
+                                <h4>Repeat</h4>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!---<div class="lateral-div-content">
+                        <button class="btn secondary" id="animation-download">
+                            <p>Baixar animação</p>
+                            <img src="./assets/download.svg" alt="Baixar gráfico">
+                        </button>
+                    </div>-->
+    
+                </div>
+            </div>
+            
+            <div id="docs" style="display: none;">
+                <h4>*mudar dps* Esse foi um projeto de IC criado para uso nos cursos de números complexos da Faculdade de Ciencias Unesp Bauru.</h4>
+                <div class="lateral-div active">
+                    <div class="lateral-div-header">
+                        <h3>Funções</h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralFuncao">
+                    </div>
+                    <div class="lateral-div-content" id="funcoesComplexas">
+                        <p>Constantes</p>
+                        <div>
+                            <button id="btn-real2">
+                                Número real
+                            </button>
+                            <button id="btn-imag2">
+                                Número imaginário
+                            </button>
+                            <button id="btn-z">
+                                Número complexo
+                            </button>
+                            <button id="btn-pi">
+                                pi
+                            </button>
+                        </div>
+                        <p>Operações básicas</p>
+                        <div>
+                            <button id="btn-real">
+                                Função real
+                            </button>
+                            <button id="btn-imag">
+                                Função imaginário
+                            </button>
+                            <button id="btn-soma">
+                                Soma
+                            </button>
+                            
+                            <button id="btn-subtracao">
+                                Subtração
+                            </button>
+    
+                            <button id="btn-multiplicacao">
+                                Multiplicação
+                            </button>
+    
+                            <button id="btn-divisao">
+                                Divisão
+                            </button>
+    
+                            <button id="btn-potencia">
+                                Potência
+                            </button>
+    
+                            <button id="btn-raiz">
+                                Raiz
+                            </button>
+    
+                            <button id="btn-logaritmo">
+                                Logaritmo
+                            </button>
+                        </div>
+                        
+                        <p>Funções trigonométricas</p>
+
+                        <div>
+                            <button id="btn-sen">
+                                Seno
+                            </button>
+    
+                            <button id="btn-cos">
+                                Cosseno
+                            </button>
+    
+                            <button id="btn-tg">
+                                Tangente
+                            </button>
+    
+                            <button id="btn-sec">
+                                Secante
+                            </button>
+    
+                            <button id="btn-csc">
+                                Cossecante
+                            </button>
+    
+                            <button id="btn-cot">
+                                Cotangente
+                            </button>
+                        </div>
+
+                        <p>Funções trigonométricas inversas</p>
+
+                        <div>
+                            <button id="btn-arcsen">
+                                Arcoseno
+                            </button>
+    
+                            <button id="btn-arccos">
+                                Arcocosseno
+                            </button>
+    
+                            <button id="btn-arctan">
+                                Arcotangente
+                            </button>
+    
+                            <button id="btn-arcsec">
+                                Arcosecante
+                            </button>
+    
+                            <button id="btn-arccsc">
+                                Arcocossecante
+                            </button>
+    
+                            <button id="btn-arccot">
+                                Arcocotangente
+                            </button>
+                        </div>
+
+                        <p>Funções trigonométricas hiperbólicas</p>
+
+                        <div>
+                            <button id="btn-hsen">
+                                Seno hiperbólico
+                            </button>
+    
+                            <button id="btn-hcos">
+                                Cosseno hiperbólico
+                            </button>
+    
+                            <button id="btn-htg">
+                                Tangente hiperbólica
+                            </button>
+    
+                            <button id="btn-hsec">
+                                Secante hiperbólica
+                            </button>
+    
+                            <button id="btn-hcsc">
+                                Cossecante hiperbólica
+                            </button>
+    
+                            <button id="btn-hcot">
+                                Cotangente hiperbólica
+                            </button>
+                        </div>
+
+                        <p>Funções especiais</p>
+
+                        <div>
+                            <button id="btn-fatorial">
+                                Fatorial
+                            </button>
+    
+                            <button id="btn-zeta">
+                                Função zeta
+                            </button>
+    
+                            <button id="btn-gamma">
+                                Função gama
+                            </button>
+                        </div>
+
+                        <!--- <iframe src="https://www.youtube.com/embed/EbanExb75mc?si=PS48yZNxJEgDSv2d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        !--->
                     </div>
                 </div>
 
-                <!---<div class="lateral-div-content">
-                    <button class="btn secondary" id="animation-download">
-                        <p>Baixar animação</p>
-                        <img src="../assets/download.svg" alt="Baixar gráfico">
-                    </button>
-                </div>-->
+                <div class="lateral-div active">
+                    <div class="lateral-div-header">
+                        <h3>Uso do aplicativo</h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralAbout">
+                    </div>
+                    <div class="lateral-div-content n2">
+                        <h3>Opções</h3>
+                        <h4><strong>Tipo do gráfico:</strong> Define se o grafico será contínuo ou descontínuo.</h4>
+                        <h4><strong>Tamanho do gráfico:</strong> Define o tamanho, em pixels, do gráfico, podendo ser alterado para um modo que ocupa a tela inteira.</h4>
+                        <h4><stronbg>Intervalo de real e imaginario ( < Re < ):</stronbg> Define o intervalo que será apresentado. Entretanto não é possivel definir um intervalo maior em valores Reais que Imaginarios, em uma caso como esse o valor será convertido.</h4>
+                        <h4><strong>Eixos cartesianos:</strong> Define se os eixos cartesianos serão apresentados.</h4>
+                        <h4><strong>Carregamento do gráfico:</strong> Define se o grafico será carregado de maneira rápida, porem menos precisa ou lenta e mais precisa.</h4>
+                        <br>
+                        <h3>Animação</h3>
+                        <h4><strong>Animação ligada:</strong> Define se a animação será ligada ou desligada. Se estiver ligada, basta usar a letra<strong>k</strong>na função e definir a variação de 'k' abaixo.</h4>
+                        <h4><strong>Variação:</strong> Define o intervalo de variação do valor da variavel 'k'.</h4>
+                        <h4><strong>Incremento:</strong> Define o incremento ao valor de 'k' por frame.</h4>
+                        <h4><strong>FPS:</strong> Define a quantidade de frames por segundo.</h4>
+                        <h4><strong>Tipo de animação:</strong> Define o tipo de animação, podendo ser normal (vai uma vez e para),
+                        bouncy (inicia a animação normal e depois faz ela ao contrario, infinitamente) ou repeat (inicia a animação infinitas vezes)</h4>
+                    </div>
+                </div>
 
+                <div class="lateral-div active">
+                    <div class="lateral-div-header">
+                        <h3>Sobre domain coloring</h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralAbout">
+                    </div>
+                    <div class="lateral-div-content">
+                        <h4>Domain coloring é um dos métodos para vizualizar funções complexas. Como os números complexos
+                            exigem duas dimensões (X e Y) para serem representados, um suposto gráfico deles exigiria 4 dimensões.
+                            A solução encontrada foi utilizar de cores e saturação como as duas dimensões restantes.
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="lateral-div active">
+                    <div class="lateral-div-header">
+                        <h3>Agradecimentos</h3>
+                        <img src="./assets/arrow.svg" alt="Seta ocultar" id="LateralAgradecimentos">
+                    </div>
+                    <div class="lateral-div-content">
+                        <a href='https://www2.fc.unesp.br/matematicaearte/'>Matematica, arte e Tecnolocia - FC Unesp Bauru</a>
+                        <a href="https://samuelj.li/complex-function-plotter/#z%5E">Samuel Li Complex function Plotter</a>
+                    </div>
+                </div>
+
+                
             </div>
 
             <div style="min-height: 1px;"></div>
         </div>
+        <div id="changeSize"></div>
     </section>
 
 
@@ -238,8 +540,9 @@
         </div>
     </section>
 
+    <script src="./index.js" defer></script>
 
-    <script src="./teste_front/index.js" defer></script>
+    
 </body>
 
 
