@@ -24,13 +24,15 @@ function PlotterGl(funcao, tamanhoCanvas) {
     if(variaveisGlobais.sizeCache[tamanhoCanvas])
         gl.viewport(0, 0, glCanvas.width, glCanvas.height);
     if (cache) { 
+        
         const {shaderProgram, vao, vertexBuffer, indexBuffer} = cache;
+        updateDelimiters(gl, delimiters, shaderProgram);
+
         vaoExt.bindVertexArrayOES(vao);
         gl.useProgram(shaderProgram);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
         const positionAttributeLocation = gl.getAttribLocation(shaderProgram, "a_position");
-        updateDelimiters(gl, delimiters, shaderProgram);
         gl.enableVertexAttribArray(positionAttributeLocation);
         gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
         gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT,0);

@@ -1,4 +1,4 @@
-import { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro} from './color.js';
+import { HSLtoRGB, getCoordinate, getPixelPorInteiro} from './color.js';
 import { lista } from './funcoes_complexas.js';
 //Receber um pooperacoesnto e converte-lo para uma cor
 //O cauculo do ponto é feito em outra função.
@@ -109,8 +109,8 @@ function Plotter(funcaoHover) {
         for (let y = 0; y < height; y++) {
 
             //antes de passar pela função
-            let realAntes = getNumeroInteiro(x, y)[0];
-            let imagAntes = getNumeroInteiro(x, y)[1];
+            let realAntes = getCoordinate(x, y)[0];
+            let imagAntes = getCoordinate(x, y)[1];
 
             //Passamos os valores real e imag pela função
             //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
@@ -141,6 +141,10 @@ function Plotter(funcaoHover) {
 }
 
 function Eixos(){
+    const getOrderOfMagnitude = (num)=> {
+        if (num === 0) return 0; // handle zero case
+        return Math.floor(Math.log10(Math.abs(num)));
+      }
     const eixosCanvas = document.getElementsByClassName('eixosCanvas');
     for(let i = 0; i < eixosCanvas.length ; i++) {
         const canvas = eixosCanvas[i];
@@ -159,6 +163,8 @@ function Eixos(){
         let pixelPorInteiro = getPixelPorInteiro();
         const numeroDeValores = 4;
         const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
+        let precision = getOrderOfMagnitude(diff) <0? -getOrderOfMagnitude(diff): getOrderOfMagnitude(diff)===0?1:0;
+        console.warn(precision);
         let centrox = width / 2 - somar*pixelPorInteiro;
         let centroy = height /2 + somai*pixelPorInteiro;
         const {a,b,c,d} = variaveisGlobais.delimitadores;
@@ -201,9 +207,9 @@ function Eixos(){
                 //console.warn(real,inicioX)
                 let distancia = real-centrox;
                 let texto = distancia/pixelPorInteiro;
-                texto = texto==0? 0 : texto.toFixed(1);
+                texto = texto==0? 0 : texto.toFixed(precision);
                 let texto2 = sinal*distancia/pixelPorInteiro
-                texto2 = texto2==0? 0 : texto2.toFixed(1);
+                texto2 = texto2==0? 0 : texto2.toFixed(precision);
                 ctx.fillStyle = 'rgba(255,255,255,1)'
                 ctx.fillText(texto, real+4, inicioY-4);
                 ctx.strokeText(texto,real+4, inicioY-4)
@@ -219,9 +225,9 @@ function Eixos(){
                 const revimag = 2*inicioY-imag;
                 ctx.fillRect(0,revimag,width,1);
                 let texto = distancia/pixelPorInteiro;
-                texto = texto==0? 0 : texto.toFixed(1);
+                texto = texto==0? 0 : texto.toFixed(precision);
                 let texto2 = -texto;
-                texto2 = texto2==0? 0 : texto2.toFixed(1);
+                texto2 = texto2==0? 0 : texto2.toFixed(precision);
                 if(texto == 0) continue;
                 ctx.fillStyle = 'rgba(255,255,255,1)'
                 ctx.fillText((texto  + 'i'), inicioX+4, inicioY-distancia+4);

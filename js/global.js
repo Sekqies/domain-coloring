@@ -84,4 +84,9 @@ let variaveisGlobais = {
     sizeCache: {}
 };
 
-console.log = function(){}
+
+const testing = true;
+
+if (!testing) {
+    console.log = function () { }
+}

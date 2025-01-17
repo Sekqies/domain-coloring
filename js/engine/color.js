@@ -33,7 +33,7 @@ function HSLtoRGB(h, s, l) {
 }
 
 //Recebe um pixel (real e imag) e retorna o valor real e imag em numeros inteiros.
-function getNumeroInteiro(x, y) {
+function getCoordinate(x, y) {
     let width = canvas.width;
     const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
     const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
@@ -47,6 +47,7 @@ function getNumeroInteiro(x, y) {
     return [real, -imag];
 }
 
+
 function getPixelPorInteiro() {
     let width = canvas.width;
     let centro = width / 2;
@@ -56,4 +57,4 @@ function getPixelPorInteiro() {
     return pixelPorInteiro;
 }
 
-export { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro};
+export { HSLtoRGB, getCoordinate, getPixelPorInteiro};

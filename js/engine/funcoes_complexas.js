@@ -374,7 +374,6 @@ function neg (z){
 
 //Não elementares
 
-
 function gamma(z) {
     return z;
 
@@ -392,6 +391,13 @@ function zeta(s)
         resul = soma(resul,exponencial({real:i,imag:0},neg(s)));
     }
     return resul;
+}
+
+// Utilidade interna
+
+function empty(z)
+{
+    return z;
 }
 
 class c_Function {
@@ -467,9 +473,10 @@ const c_Function_Declarations = [
     new c_Function(Re, "Re"),
     new c_Function(Im, "Im"),
     new c_Function(modulo, "absolutevalue"),
-    new c_Function(fatorial, "factorial"),
-    new c_Function(gamma, "gamma"),
-    new c_Function(zeta,"zeta"),
+    new c_Function(empty, "factorial"),
+    new c_Function(empty, "gamma"),
+    new c_Function(empty,"zeta"),
+    new c_Function(empty,"derivative"),
     new c_Function(neg,"neg")
 ];
 
