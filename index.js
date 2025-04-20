@@ -66,10 +66,9 @@ const lateralAbout = document.getElementById('LateralAbout');
 
 const eixosCartesianos = document.getElementById('EixosCartesianos');
 
-const realMinimoInput = document.getElementById('real-minimo');
-const realMaximoInput = document.getElementById('real-maximo');
-const imagMinimoInput = document.getElementById('imag-minimo');
-const imagMaximoInput = document.getElementById('imag-maximo');
+const centrox = document.getElementById('centrox');
+const centroy = document.getElementById('centroy');
+const raio = document.getElementById('raio');
 const tamanhoGraficoInput = document.getElementById('tamanho-grafico');
 const variacaoMinimoInput = document.getElementById('variacao-minimo');
 const variacaoMaximoInput = document.getElementById('variacao-maximo');
@@ -95,28 +94,28 @@ function handleValueChange(element, type) {
     const value = element.value;
     switch (type) {
         case 1:
-            variaveisGlobais.delimitadores.inicio_real = Number(value);
+            variaveisGlobais.centro.x = Number(value);
             /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
             variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
             imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
             imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
             break;
         case 2:
-            variaveisGlobais.delimitadores.fim_real = Number(value);
+            variaveisGlobais.centro.y = Number(value)
             /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
             variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
             imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
             imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
             break;
         case 3:
-            variaveisGlobais.delimitadores.inicio_imag = Number(value);
+            variaveisGlobais.raio = Number(value)
             /*variaveisGlobais.delimitadores.fim_real += diffimag/2;
             variaveisGlobais.delimitadores.inicio_real -=diffimag/2
             realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
             realMinimoInput.value = variaveisGlobais.delimitadores.fim_imag;*/
             break;
         case 4:
-            variaveisGlobais.delimitadores.fim_imag = Number(value);
+            console.warn("4 foi removido.")
            /* const diff4 = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
             variaveisGlobais.delimitadores.fim_real += diffimag/2;
             variaveisGlobais.delimitadores.inicio_real -=diffimag/2
@@ -142,17 +141,14 @@ function handleValueChange(element, type) {
 }
 
 //Adicionando os eventos de mudança de valor:
-realMinimoInput.addEventListener('change', () => {
-    handleValueChange(realMinimoInput, 1);
+centrox.addEventListener('change', () => {
+    handleValueChange(centrox, 1);
 });
-realMaximoInput.addEventListener('change', () => {
-    handleValueChange(realMaximoInput, 2);
+centroy.addEventListener('change', () => {
+    handleValueChange(centroy, 2);
 });
-imagMinimoInput.addEventListener('change', () => {
-    handleValueChange(imagMinimoInput, 3);
-});
-imagMaximoInput.addEventListener('change', () => {
-    handleValueChange(imagMaximoInput, 4);
+raio.addEventListener('change', () => {
+    handleValueChange(raio, 3);
 });
 tamanhoGraficoInput.addEventListener('change', () => {
     handleValueChange(tamanhoGraficoInput, 5);
@@ -277,10 +273,10 @@ function pageInit(){
     opcoesTipoAnimacao['ativo'] = variaveisGlobais.valorTipoAnimacao;
     opcoesTipoGrafico['ativo'] = variaveisGlobais.valorTipoGrafico;
     
-    realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
-    realMinimoInput.value = variaveisGlobais.delimitadores.inicio_real;
-    imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
-    imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;
+    centrox.value = variaveisGlobais.centro.x;
+    centroy.value = variaveisGlobais.centro.y;
+    raio.value = variaveisGlobais.raio;
+    
 
     tamanhoGraficoInput.value = variaveisGlobais.valorTamanhoGrafico;
     variacaoMinimoInput.value = variaveisGlobais.variacaoInicio;
