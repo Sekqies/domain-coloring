@@ -87,6 +87,8 @@ function loadGuppy() {
     adicionarFuncao(guppy,"W","W","lambertw");
     adicionarFuncao(guppy,"w","W","lambertw");
     adicionarFuncao(guppy,"lambert","W","lambertw");
+    //Funções de ordem maior
+    adicionarFuncao(guppy,"deri","derivative","derivative");
     guppy.activate();
 }
 

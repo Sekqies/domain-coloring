@@ -1,10 +1,8 @@
-import { writeFragmentShader, updateDelimiters } from "./shaders.js";
+import { writeFragmentShader, updateCenter } from "./shaders.js";
 import { listaFuncoes } from "./funcoes_complexas_gl.js";
 
  
 function PlotterGl(funcao, tamanhoCanvas) {
-    const vgd = variaveisGlobais.delimitadores;
-    const delimiters = [vgd.inicio_real, vgd.fim_real, vgd.inicio_imag, vgd.fim_imag];
     let start = performance.now();
     const gl = variaveisGlobais.glContext;
     const glCanvas = variaveisGlobais.glCanvas;
@@ -24,13 +22,17 @@ function PlotterGl(funcao, tamanhoCanvas) {
     if(variaveisGlobais.sizeCache[tamanhoCanvas])
         gl.viewport(0, 0, glCanvas.width, glCanvas.height);
     if (cache) { 
+        if (!(gl instanceof WebGLRenderingContext)) {
+            alert(typeof gl)
+        }
         const {shaderProgram, vao, vertexBuffer, indexBuffer} = cache;
+        updateCenter(gl, variaveisGlobais.centro, variaveisGlobais.raio, shaderProgram);
+
         vaoExt.bindVertexArrayOES(vao);
         gl.useProgram(shaderProgram);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
         const positionAttributeLocation = gl.getAttribLocation(shaderProgram, "a_position");
-        updateDelimiters(gl, delimiters, shaderProgram);
         gl.enableVertexAttribArray(positionAttributeLocation);
         gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
         gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT,0);
@@ -50,7 +52,8 @@ function PlotterGl(funcao, tamanhoCanvas) {
         gl.shaderSource(vertexShader, vertexShaderSource);
         gl.compileShader(vertexShader);
 
-        const fragmentShaderSource = writeFragmentShader(funcao, glCanvas.width, glCanvas.height, variaveisGlobais.delimitadores, listaFuncoes.declarations);
+        const fragmentShaderSource = writeFragmentShader(funcao, listaFuncoes.declarations);
+         
 
         const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, fragmentShaderSource);
@@ -90,13 +93,16 @@ function PlotterGl(funcao, tamanhoCanvas) {
         gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
 
-
+        const resolutionLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
+        gl.uniform2f(resolutionLocation, tamanhoCanvas, tamanhoCanvas);  
         const positionAttributeLocation = gl.getAttribLocation(shaderProgram, "a_position");
         gl.enableVertexAttribArray(positionAttributeLocation);
+        const centerLocation = gl.getUniformLocation(shaderProgram, "u_center_radius");
+        gl.uniform3f(centerLocation, variaveisGlobais.centro.x, variaveisGlobais.centro.y, variaveisGlobais.raio);
         gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
         vaoExt.bindVertexArrayOES(null);
-        updateDelimiters(gl, delimiters, shaderProgram);
+        
         vaoExt.bindVertexArrayOES(vao);
         gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
         vaoExt.bindVertexArrayOES(null);
@@ -112,4 +118,5 @@ function PlotterGl(funcao, tamanhoCanvas) {
     let end = performance.now();
     console.log(`Rendering time: ${end - start} ms`);
 }
+
 export { PlotterGl, listaFuncoes as listaFuncoesGL }

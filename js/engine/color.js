@@ -32,12 +32,12 @@ function HSLtoRGB(h, s, l) {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-//Recebe um pixel (real e imag) e retorna o valor real e imag em numeros inteiros.
-function getNumeroInteiro(x, y) {
+//Recebe um pixel (real e imag) e retorna as coordenadas cartesianas de um ponto no plano complexo
+function getCoordinate(x, y) {
     let width = canvas.width;
-    const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
-    const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
-    const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
+    const diff = variaveisGlobais.raio*2;
+    const somar = variaveisGlobais.centro.x;
+    const somai = variaveisGlobais.centro.y;
     let centrox = width / 2 + somar;
     let centroy = width/2 - somai;
     let pixelPorInteiro = (centrox) / Number(diff/2);
@@ -47,13 +47,30 @@ function getNumeroInteiro(x, y) {
     return [real, -imag];
 }
 
+//Recebe coordenadas e retorna o pixel correspondente
+function getPixel(real, imag) {
+    let width = canvas.width;
+    const diff = variaveisGlobais.raio*2;
+    const somar = variaveisGlobais.centro.x;
+    const somai = variaveisGlobais.centro.y;
+    let centrox = width / 2 + somar;
+    let centroy = width / 2 - somai;
+    let pixelPorInteiro = (centrox) / Number(diff/2);
+    let x = (real - somar) * pixelPorInteiro + centrox;
+    let y = (imag + somai) * pixelPorInteiro + centroy;
+
+    return [x, y];
+}
+
+
+
 function getPixelPorInteiro() {
     let width = canvas.width;
     let centro = width / 2;
-    const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
+    const diff = variaveisGlobais.raio*2
     let pixelPorInteiro = (centro) / Number(diff/2);
 
     return pixelPorInteiro;
 }
 
-export { HSLtoRGB, getNumeroInteiro, getPixelPorInteiro};
+export { HSLtoRGB, getCoordinate, getPixelPorInteiro, getPixel};

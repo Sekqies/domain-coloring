@@ -66,8 +66,8 @@ const lateralAbout = document.getElementById('LateralAbout');
 
 const eixosCartesianos = document.getElementById('EixosCartesianos');
 
-const centrox = document.getElementById('centrox');
-const centroy = document.getElementById('centroy');
+const centrox = document.getElementById('centro-x');
+const centroy = document.getElementById('centro-y');
 const raio = document.getElementById('raio');
 const tamanhoGraficoInput = document.getElementById('tamanho-grafico');
 const variacaoMinimoInput = document.getElementById('variacao-minimo');
@@ -95,32 +95,16 @@ function handleValueChange(element, type) {
     switch (type) {
         case 1:
             variaveisGlobais.centro.x = Number(value);
-            /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
-            variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
-            imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
-            imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
             break;
         case 2:
             variaveisGlobais.centro.y = Number(value)
-            /*variaveisGlobais.delimitadores.fim_imag += diffreal/2;
-            variaveisGlobais.delimitadores.inicio_imag -=diffreal/2
-            imagMaximoInput.value = variaveisGlobais.delimitadores.fim_imag;
-            imagMinimoInput.value = variaveisGlobais.delimitadores.inicio_imag;*/
+
             break;
         case 3:
             variaveisGlobais.raio = Number(value)
-            /*variaveisGlobais.delimitadores.fim_real += diffimag/2;
-            variaveisGlobais.delimitadores.inicio_real -=diffimag/2
-            realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
-            realMinimoInput.value = variaveisGlobais.delimitadores.fim_imag;*/
             break;
         case 4:
             console.warn("4 foi removido.")
-           /* const diff4 = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
-            variaveisGlobais.delimitadores.fim_real += diffimag/2;
-            variaveisGlobais.delimitadores.inicio_real -=diffimag/2
-            realMaximoInput.value = variaveisGlobais.delimitadores.fim_real;
-            realMinimoInput.value = variaveisGlobais.delimitadores.fim_imag;*/
             break;
         case 5:
             variaveisGlobais.valorTamanhoGrafico = value;
@@ -276,7 +260,7 @@ function pageInit(){
     centrox.value = variaveisGlobais.centro.x;
     centroy.value = variaveisGlobais.centro.y;
     raio.value = variaveisGlobais.raio;
-    
+
 
     tamanhoGraficoInput.value = variaveisGlobais.valorTamanhoGrafico;
     variacaoMinimoInput.value = variaveisGlobais.variacaoInicio;

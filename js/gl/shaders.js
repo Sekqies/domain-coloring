@@ -10,26 +10,95 @@ function formatToGLSL(value){
 }
 
 
-function writeFragmentShader(funcao, centrox,centroy, raio, declarations) {
-    console.log("Proporções gráfico:", width,height)
+function catchFunction(str, functionName)
+{
+    const indexes = [...str.matchAll(new RegExp(functionName, 'gi'))].map(a => a.index);
+    const matches = [];
+    for(const index of indexes)
+    {
+        let open = 0;
+        let close = 0;
+        let foundParentheses = false;
+        let inside = '';
+        let full = '';
+        for(let i = index; i<str.length; i++)
+        {
+            full += str[i];
+            if(foundParentheses)
+            {
+                inside += str[i];
+            }
+            if(str[i] === '(')
+            {
+                foundParentheses = true;
+                open++;
+            }
+            if(str[i] === ')')
+            {
+                close++;
+            }
+            if(close===open && open)
+            {
+                matches.push([full, inside.slice(0, -1)]);
+                break;
+            }
+        }
+    }
+    return matches;
+}
+
+
+function writeFragmentShader(funcao, declarations) {
+
+    const matches = catchFunction(funcao, 'derivative');
+
+    if(matches !== null)
+    for(const match of matches)
+    {
+        const regex = /vec2\s*\(\s*a\s*,\s*b\s*\)/gm;
+        const innerFunction = match[1];
+        //método 1:
+        /*const derivativeFunction = `(
+            cneg(${innerFunction.replace(regex , 'vec2(a+2.0*DERIVATIVE_W, b)')})
+            + cmult(vec2(8.0,0.0), ${innerFunction.replace(regex, 'vec2(a+DERIVATIVE_W, b)')})
+            + cmult(vec2(-8.0,0.0), ${innerFunction.replace(regex, 'vec2(a-DERIVATIVE_W, b)')})
+            + ${innerFunction.replace(regex, 'vec2(a-2.0*DERIVATIVE_W, b)')}
+          ) / (12.0 * DERIVATIVE_W)`;    */    
+           
+        //método 2: aproximação pela frente real
+        //const derivativeFunction = `(${innerFunction.replace(regex,'vec2(a+DERIVATIVE_W,b)')} - ${innerFunction})/(DERIVATIVE_W)`;
+        //método 3: adição pela frente complexa
+        //const derivativeFunction = `cdiv(${innerFunction.replace(regex,'vec2(a,b+DERIVATIVE_W)')} - ${innerFunction}, vec2(0.0,DERIVATIVE_W))`; 
+        //método 4: aproximação pelo centro real
+        //const derivativeFunction = `cdiv(csub(${innerFunction.replace(regex,'vec2(a+DERIVATIVE_W,b)')} , ${innerFunction.replace(regex,'vec2(a-DERIVATIVE_W,b)')}), vec2(DERIVATIVE_W+DERIVATIVE_W,0.0))`;
+        //método 5: aproximação pelo centro complexo
+        //const derivativeFunction = `cdiv(csub(${innerFunction.replace(regex,'vec2(a,b+DERIVATIVE_W)')} , ${innerFunction.replace(regex,'vec2(a,b-DERIVATIVE_W)')}), vec2(0.0,DERIVATIVE_W+DERIVATIVE_W))`;
+        //método 6: aproximação duppla pela frente
+        const derivativeFunction = `cdiv(${innerFunction.replace(regex,'vec2(a,b)+COMPLEX_H')} - ${innerFunction},COMPLEX_H)`;
+        // método 7: aproximação dupla pelo centro
+        //const derivativeFunction = `cdiv(csub(${innerFunction.replace(regex,'vec2(a,b)+COMPLEX_H')} , ${innerFunction.replace(regex,'vec2(a,b)-COMPLEX_H')}), vec2(DOUBLE_DERIVATIVE_W,DOUBLE_DERIVATIVE_W))`;
+        funcao = funcao.replace(match[0], derivativeFunction);
+    }
+    console.log("Após modificações: ", funcao)
     const continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
-    console.log(delimitador)
-    const vazio = funcao === '';
-    centrox = formatToGLSL(centrox);
-    centroy = formatToGLSL(centroy);
-    raio = formatToGLSL(raio);
-    
+    const vazio = funcao === '';    
     return `
+    #version 100
     #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;
     #else
     precision mediump float;
     #endif
+    uniform vec3 u_center_radius;
     uniform vec2 u_resolution;
     uniform vec2 u_mouse;
     uniform float u_time;
     const float PI = 3.141592653589793238462643383279502884197169393751;
     const float E = 2.7182818284590452353602874713526624977572470936995;
+    const float DERIVATIVE_W = 1e-5;
+    const float DOUBLE_DERIVATIVE_W = DERIVATIVE_W + DERIVATIVE_W;
+    const vec2 COMPLEX_H = vec2(DERIVATIVE_W,DERIVATIVE_W);
+
 
 
     float cosh(float x)
@@ -67,10 +136,6 @@ void initalizeArrays()
 }
 
     vec3 hsl2rgb(vec3 hsl) {
-        vec3 rgb = clamp( abs(mod(hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
-        return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
-    }
-        vec3 hsl2rgb(vec3 hsl) {
         vec3 rgb = clamp( abs(mod(hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
         return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
@@ -117,12 +182,12 @@ void initalizeArrays()
         }
     }
     const float MAX_SAFE_VALUE = 1.7e+38;
-    uniform vec4 u_delimiters;
     void main() {
         vec2 canvasSize = u_resolution;    
         float t = u_time;
-        vec2 center = vec2(${centrox},${centroy});
-        float radius = ${raio};
+        float ANIMATION_VARIABLE = bounce(t, 10.0);
+        vec2 center = u_center_radius.xy;
+        float radius = u_center_radius.z;
         float x = center.x + radius * (2.0 * gl_FragCoord.x / canvasSize.x - 1.0);
         float y = center.y + radius * (2.0 * gl_FragCoord.y / canvasSize.y - 1.0);
         float a = x;
@@ -138,11 +203,11 @@ void initalizeArrays()
     `
 }
 
-function updateDelimiters(gl,delimiters,shaderProgram)
+function updateCenter(gl,center,radius,shaderProgram)
 {
-    let uDelimitersLocation = gl.getUniformLocation(shaderProgram, "u_delimiters");
-    gl.uniform4f(uDelimitersLocation,delimiters[0],delimiters[1],delimiters[2],delimiters[3]);
+    let uCenterLocation = gl.getUniformLocation(shaderProgram, "u_center_radius");
+    gl.uniform3f(uCenterLocation,center.x,center.y,radius);
 }
 
 
-export { writeFragmentShader, updateDelimiters }
+export { writeFragmentShader, updateCenter }

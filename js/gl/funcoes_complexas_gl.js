@@ -135,7 +135,8 @@ const GSGL_function_declarations = [
             }
             return resul;
         }`),
-    new c_GSGLFunction("cfactorial", "factorial", "vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z)); }")
+    new c_GSGLFunction("cfactorial", "factorial", "vec2 cfactorial(vec2 z) { return cgamma(cadd(vec2(1.0,0.0),z)); }"),
+    new c_GSGLFunction("derivative","derivative", "")
 ];
 
 for (let i = 0; i < GSGL_function_declarations.length; i++) {

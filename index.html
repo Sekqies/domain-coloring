@@ -186,19 +186,12 @@
     
                     <div class="lateral-div-content">
                         <div class="input-interval">
-                            <input id="real-minimo" type="number" value='-2'>
-                            <p> &lt; Re &lt; </p>
-                            <input id='real-maximo' type="number" value="2">
+                            <input id="centro-x" type="number" value='0'>
+                            <input id="centro-y" type="number" value='0'>
+                            <input id='raio' type="number" value="2">
                         </div>
                     </div>
     
-                    <div class="lateral-div-content">
-                        <div class="input-interval">
-                            <input id="imag-minimo" type="number" value="-2" >
-                            <p> &lt; Im &lt; </p>
-                            <input id="imag-maximo" type="number" value="2" >
-                        </div>
-                    </div>
 
     
                     <div class="lateral-div-content" id="donotchange">
@@ -475,7 +468,7 @@
                         <h3>Opções</h3>
                         <h4><strong>Tipo do gráfico:</strong> Define se o grafico será contínuo ou descontínuo.</h4>
                         <h4><strong>Tamanho do gráfico:</strong> Define o tamanho, em pixels, do gráfico, podendo ser alterado para um modo que ocupa a tela inteira.</h4>
-                        <h4><stronbg>Intervalo de real e imaginario ( < Re < ):</stronbg> Define o intervalo que será apresentado. Entretanto não é possivel definir um intervalo maior em valores Reais que Imaginarios, em uma caso como esse o valor será convertido.</h4>
+                        <h4><strong>Centro e raio</strong> Define o centro de onde o gráfico será renderizado e o tamanho em volta dele</h4>
                         <h4><strong>Eixos cartesianos:</strong> Define se os eixos cartesianos serão apresentados.</h4>
                         <h4><strong>Carregamento do gráfico:</strong> Define se o grafico será carregado de maneira rápida, porem menos precisa ou lenta e mais precisa.</h4>
                         <br>

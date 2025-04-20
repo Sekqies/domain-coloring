@@ -1,4 +1,4 @@
-import { getNumeroInteiro } from '../engine/color.js';
+import { getCoordinate } from '../engine/color.js';
 
 function loadHover(funcaoHover, nomeStringCanvas) {
     let nomeCanvas = document.getElementById(nomeStringCanvas);
@@ -7,14 +7,16 @@ function loadHover(funcaoHover, nomeStringCanvas) {
     //let nomeCanvasContainerStyle = window.getComputedStyle(nomeCanvas.parentElement);
     //let nomeCanvasContainerStylePaddingLeft = Number(nomeCanvasContainerStyle.getPropertyValue('padding-left').split('px')[0]);
     nomeCanvas.addEventListener('mousemove', function (event) {
+
         const x = event.offsetX;
         const y = event.offsetY;
+        const rect = nomeCanvas.getBoundingClientRect();
 
         descricaoFuncao.style.top = y + 'px';
         descricaoFuncao.style.left = x + 'px';
 
-        let realAntes = getNumeroInteiro(x, y)[0];
-        let imagAntes = getNumeroInteiro(x, y)[1];
+        let realAntes = getCoordinate(x , y)[0];
+        let imagAntes = getCoordinate(x, y)[1];
 
         let z = funcaoHover({ 'z': { real: realAntes, imag: imagAntes } });
         real = z.real;
@@ -63,7 +65,7 @@ function loadHover(funcaoHover, nomeStringCanvas) {
         }
         //da split em e+ na string e pega o primeiro valor
 
-        descricaoFuncao.innerHTML = (`<i>f( ${Number(realAntes).toFixed(2)} + ${Number(imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
+        descricaoFuncao.innerHTML = (`<i>f( ${Number(realAntes).toFixed(2)} + ${Number(-imagAntes).toFixed(2) * (-1)}i ) = ${real} + ${imag}i</i>`);
     });
 
 }
