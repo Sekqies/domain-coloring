@@ -1,3 +1,15 @@
+function formatToGLSL(value){
+    if (typeof value === 'number') {
+        return value.toFixed(5);
+    } else if (Array.isArray(value)) {
+        return value.map(formatToGLSL).join(', ');
+    } else if (typeof value === 'object') {
+        return Object.values(value).map(formatToGLSL).join(', ');
+    }
+    return value;
+}
+
+
 function catchFunction(str, functionName)
 {
     const indexes = [...str.matchAll(new RegExp(functionName, 'gi'))].map(a => a.index);
@@ -36,7 +48,7 @@ function catchFunction(str, functionName)
 }
 
 
-function writeFragmentShader(funcao, width, height, delimitador, declarations) {
+function writeFragmentShader(funcao, declarations) {
 
     const matches = catchFunction(funcao, 'derivative');
 
@@ -68,17 +80,19 @@ function writeFragmentShader(funcao, width, height, delimitador, declarations) {
         funcao = funcao.replace(match[0], derivativeFunction);
     }
     console.log("Após modificações: ", funcao)
-    console.log("Proporções gráfico:", width,height)
     const continuo = variaveisGlobais.valorTipoGrafico === 'continuo';
-    console.log(delimitador)
-    const vazio = funcao === '';
-    
+    const vazio = funcao === '';    
     return `
+    #version 100
     #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;
     #else
     precision mediump float;
     #endif
+    uniform vec3 u_center_radius;
+    uniform vec2 u_resolution;
+    uniform vec2 u_mouse;
+    uniform float u_time;
     const float PI = 3.141592653589793238462643383279502884197169393751;
     const float E = 2.7182818284590452353602874713526624977572470936995;
     const float DERIVATIVE_W = 1e-5;
@@ -121,53 +135,79 @@ void initalizeArrays()
     GAMMA_COEFF[8] = 1.5056327351493116e-7;
 }
 
-    vec2 canvasSize = vec2(${width},${height});
     vec3 hsl2rgb(vec3 hsl) {
         vec3 rgb = clamp( abs(mod(hsl.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
         return hsl.z + hsl.y * (rgb-0.5)*(1.0-abs(2.0*hsl.z-1.0));
     }
-    const float MAX_SAFE_VALUE = 1.7e+38;
-    uniform vec4 u_delimiters;
-    void main() {
-        initalizeArrays();
-        float a = abs(u_delimiters.y - u_delimiters.x) * ((gl_FragCoord.x)/canvasSize.x - 0.5) + (u_delimiters.y + u_delimiters.x);
-        float b = abs(u_delimiters.w - u_delimiters.z) * ((gl_FragCoord.y)/canvasSize.y - 0.5) + (u_delimiters.w + u_delimiters.z);
-        float x = a;
-        float y = b;
-        vec2 z = ${vazio ? "vec2(a,b)" : funcao};
-        vec2 f = z; 
-        float hue =  atan(f.y, f.x) / (2.0 * PI);
-        float sat = 1.0;
-        ${!continuo ? ` 
-        float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e+10 : length(f); 
-        float logaritmo = mod(log2(dist), 1.0); 
-        float expoente_decimal = 1.0;
-        if (length(f) != 0.0) 
+    float fmod(float n, float m) 
+    {
+        return n - floor(n/m) * m;
+    }
+    int ifloor(float n)
+    {
+        return int(floor(n));
+    }
+    int mod(int n, int m)
+    {
+        return n - ifloor(float(n/m)) *m;
+    }
+    float bounce(float n, float m)
+    {
+        if(n == fmod(n,m)) return n;
+        if(fmod(floor(n/m),2.0)==1.0)
         {
-            expoente_decimal =  -(logaritmo - floor(logaritmo) - 1.0);
+            return m - fmod(n,m);
         }
-        float light = 1.0/(pow(expoente_decimal,0.2) + 1.0) - 0.1;
-        light = mod(light,1.0);
-
-` : `   float light = pow(length(f),0.4) / (pow(length(f),0.4) + 1.0);
-        if (abs(f.x) > 9e+10 || abs(f.y) > 9e+10 || abs(f.x) < 0.0 || abs(f.y) < 0.0)
+        else {
+            return fmod(n,m);
+        }
+        
+    }
+    float calculateLight(vec2 f, bool isContinuous)
+    {
+        float dist = abs(f.x) > 9e+10 || abs(f.y) > 9e+10 ? 9e+10 : length(f); 
+        if(isContinuous)
         {
-            sat = 1.0;
-            light = 1.0;
-        }        
-`}
-
-        vec3 rgb = hsl2rgb(vec3(hue,sat,light));
-        gl_FragColor = vec4(rgb, 1);
+            return pow(dist,0.4) / (pow(dist,0.4) + 1.0);
+        }
+        else {
+            float logval = mod(log2(dist),1.0);
+            float decimal_exp = 1.0;
+            if(length(f) != 0.0)
+            {
+                decimal_exp = -(logval - floor(logval) - 1.0);
+            }
+    
+            return mod(1.0/(pow(decimal_exp,0.2) + 1.0) - 0.15,1.0);
+        }
+    }
+    const float MAX_SAFE_VALUE = 1.7e+38;
+    void main() {
+        vec2 canvasSize = u_resolution;    
+        float t = u_time;
+        float ANIMATION_VARIABLE = bounce(t, 10.0);
+        vec2 center = u_center_radius.xy;
+        float radius = u_center_radius.z;
+        float x = center.x + radius * (2.0 * gl_FragCoord.x / canvasSize.x - 1.0);
+        float y = center.y + radius * (2.0 * gl_FragCoord.y / canvasSize.y - 1.0);
+        float a = x;
+        float b = y;
+        vec2 f = ${vazio?'vec2(x,y)': funcao};
+        float hue = atan(f.y,f.x) / (2.0 * PI);
+        float sat = 1.0;
+        float light = calculateLight(f,${continuo});
+        vec3 hsl = vec3(hue,sat,light);
+        vec3 rgb = hsl2rgb(hsl);
+        gl_FragColor = vec4(rgb,1.0);
     }
     `
 }
 
-function updateDelimiters(gl,delimiters,shaderProgram)
+function updateCenter(gl,center,radius,shaderProgram)
 {
-    let uDelimitersLocation = gl.getUniformLocation(shaderProgram, "u_delimiters");
-    gl.uniform4f(uDelimitersLocation,delimiters[0],delimiters[1],delimiters[2],delimiters[3]);
+    let uCenterLocation = gl.getUniformLocation(shaderProgram, "u_center_radius");
+    gl.uniform3f(uCenterLocation,center.x,center.y,radius);
 }
 
 
-export { writeFragmentShader, updateDelimiters }
+export { writeFragmentShader, updateCenter }

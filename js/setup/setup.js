@@ -4,7 +4,7 @@ import { PlotterGl, listaFuncoesGL } from '../gl/plotter_gl.js';
 import { Plotter, listaFuncoes, Eixos } from '../engine/plotter.js';
 import { GlAnimation } from '../gl/animation.js';
 import { getCoordinate, getPixelPorInteiro } from '../engine/color.js';
-import { updateDelimiters } from '../gl/shaders.js';
+import { updateCenter } from '../gl/shaders.js';
 
 const testing = true;
 
@@ -30,25 +30,7 @@ function initializeVariables() {
 
 }
 
-function normalizeValues()
-{
-    const diffreal = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
-    const diffimag = variaveisGlobais.delimitadores.fim_imag - variaveisGlobais.delimitadores.inicio_imag;
-    const diff = Math.abs(diffreal - diffimag);
-    if(diff===0) {}
-    else if (diffreal > diffimag) {
-    variaveisGlobais.delimitadores.inicio_imag -= diff/2;
-    variaveisGlobais.delimitadores.fim_imag += diff/2;
-    document.getElementById('imag-minimo').value = variaveisGlobais.delimitadores.inicio_imag;
-    document.getElementById('imag-maximo').value = variaveisGlobais.delimitadores.fim_imag;
-    }
-    else {
-    variaveisGlobais.delimitadores.inicio_real -= diff/2;
-    variaveisGlobais.delimitadores.fim_real += diff/2;
-    document.getElementById('real-minimo').value = variaveisGlobais.delimitadores.inicio_real;
-    document.getElementById('real-maximo').value = variaveisGlobais.delimitadores.fim_real;
-    }
-}
+
 
 function updateGraph()
 {
@@ -63,7 +45,6 @@ function init(modoRapido = false) {
 
     //alert(guppy)  
     
-    normalizeValues()
     let tamanhoCanvas;
     if (variaveisGlobais.graficoOcupaTelaInteiraActive) {
         tamanhoCanvas = window.innerWidth;
@@ -197,21 +178,14 @@ function createEventListeners() {
             const dx = startX - e.offsetX;
             const dy = e.offsetY - startY;
             const pixelPorInteiro = getPixelPorInteiro();
-            variaveisGlobais.delimitadores.inicio_real += dx/pixelPorInteiro/2;
-            variaveisGlobais.delimitadores.fim_real += dx/pixelPorInteiro/2;
-            variaveisGlobais.delimitadores.inicio_imag += dy/pixelPorInteiro/2;
-            variaveisGlobais.delimitadores.fim_imag += dy/pixelPorInteiro/2;
+            variaveisGlobais.centro.x += dx/pixelPorInteiro;
+            variaveisGlobais.centro.y += dy/pixelPorInteiro;
             
             //alert("oi")
     
             updateGraph();
             startX = e.offsetX;
             startY = e.offsetY;
-            const a = variaveisGlobais.delimitadores.inicio_real
-            const b = variaveisGlobais.delimitadores.fim_real
-            const c = variaveisGlobais.delimitadores.inicio_imag
-            const d = variaveisGlobais.delimitadores.fim_imag
-            console.warn(`inicio_real: ${a}, fim_real: ${b}, inicio_imag: ${c}, fim_imag: ${d}`) 
         }
     });
         
@@ -230,8 +204,8 @@ canvasGL.addEventListener('wheel', (e) => {
     lastCall = now;
 
     e.preventDefault();
-
-    const zoomPercentage = e.deltaY > 0 ? 110 : 90; // Increase zoom when scrolling down, decrease when scrolling up
+    const zoomValue = 10
+    const zoomPercentage = e.deltaY > 0 ? 100+zoomValue : 100-zoomValue; // Increase zoom when scrolling down, decrease when scrolling up
     const zoomFactor = zoomPercentage / 100;
     const n = zoomFactor;
 
@@ -242,29 +216,17 @@ canvasGL.addEventListener('wheel', (e) => {
     const mouseY = e.clientY - rect.top;
 
     // Convert mouse position to real/imaginary coordinates
-    const [x, y] = getCoordinate(mouseX, mouseY);
-
-    // Current bounds of the real and imaginary ranges
-    const A = variaveisGlobais.delimitadores.inicio_real; // Real start
-    const B = variaveisGlobais.delimitadores.fim_real;   // Real end
-    const C = variaveisGlobais.delimitadores.inicio_imag; // Imaginary start
-    const D = variaveisGlobais.delimitadores.fim_imag;   // Imaginary end
-    //alert(`A: ${A}, B: ${B}, C: ${C}, D: ${D}, x: ${x}, y: ${y}`)
-    variaveisGlobais.delimitadores.inicio_real = x - (x - A) * n;
-    variaveisGlobais.delimitadores.fim_real = x + (B - x) * n;
-    variaveisGlobais.delimitadores.inicio_imag = y - (y - C) * n;
-    variaveisGlobais.delimitadores.fim_imag = y + (D - y) * n;
-
-
-    console.log(
-        `inicio_real: ${variaveisGlobais.delimitadores.inicio_real}, ` +
-        `fim_real: ${variaveisGlobais.delimitadores.fim_real}, ` +
-        `inicio_imag: ${variaveisGlobais.delimitadores.inicio_imag}, ` +
-        `fim_imag: ${variaveisGlobais.delimitadores.fim_imag}`
-    )
-    // Redraw the graph with the new zoom level
-    updateGraph();
-    PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)   
+    const p = getCoordinate(mouseX, mouseY);
+    const c = variaveisGlobais.centro;
+    
+    const new_c = {
+        x: c.x + (p[0] - c.x) * (1 - n),
+        y: c.y + (p[1] - c.y ) * (1 - n)
+    };
+    variaveisGlobais.raio *= n;
+    variaveisGlobais.centro = new_c;
+    updateGraph()
+    //PlotterGl(variaveisGlobais.glFunction,variaveisGlobais.tamanhoCanvas)   
 
 });
 

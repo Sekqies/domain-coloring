@@ -1,287 +1,171 @@
-import { HSLtoRGB, getCoordinate, getPixelPorInteiro} from './color.js';
+import { HSLtoRGB, getCoordinate, getPixelPorInteiro, getPixel } from './color.js';
 import { lista } from './funcoes_complexas.js';
-//Receber um pooperacoesnto e converte-lo para uma cor
-//O cauculo do ponto é feito em outra função.
+
+/**
+ * Map a complex value to an RGB color for domain coloring.
+ */
 function Domain_coloring(real, imag) {
+    const hue = Math.atan2(imag, real) / (2 * Math.PI);
+    const dist = Math.hypot(real, imag);
+    let light;
 
-    //Checa se explodiu para o infinito. 
-
-
-    //Angulo
-
-
-
-    //NÃO MEXE NISSO
-
-    let hue = (Math.atan2(imag, real)) / (2 * Math.PI);
-
-    //PERIGO !!! PERIGO!!!!! NÃO MEXE!!!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-
-
-    //Calcula a distancia do ponto até o centro (modulo)
-
-    let dist = Math.sqrt(real * real + imag * imag);
-
-    let modulo;
-
-
-
-    if (variaveisGlobais.valorTipoGrafico != 'continuo') {
-        //Modo 2 (com descontinuidade):
-        dist = dist == "Infinity" ? 10e50 : dist;
-        let expoente = Math.log2(dist);
-        let expoente_decimal = 1;
-
-        if (dist != 0) {
-            expoente_decimal = -(expoente - Math.floor(expoente) - 1);
-        }
-        modulo = 1 / ((expoente_decimal ** 0.2) + 1) - 0.1;
-        modulo = modulo % 1;
-
-        //Formula do algorithm archivce:
-        //modulo = 0.5 + 0.5 * (dist - Math.floor(dist));
-    }
-    else {
-        if (real >= 9e+10 || real <= -9e+10 || imag >= 9e+10 || imag <= -9e+10) {
-            return [255, 255, 255];
-        }
-
-        //Modo 1 (sem descontinuidade):
-        //modulo = (2/Math.PI) * Math.atan(dist);
-        let a = 0.4;
-        modulo = (dist ** a) / ((dist ** a) + 1);
+    if (variaveisGlobais.valorTipoGrafico !== 'continuo') {
+        // Discontinuous coloring
+        const safeDist = dist === Infinity ? 1e50 : dist;
+        const expo = Math.log2(safeDist);
+        const frac = safeDist === 0 ? 0 : -(expo - Math.floor(expo) - 1);
+        light = 1 / ((Math.pow(frac, 0.2)) + 1) - 0.1;
+        light %= 1;
+    } else {
+        // Continuous coloring
+        if (!isFinite(real) || !isFinite(imag)) return [255, 255, 255];
+        const a = 0.4;
+        light = Math.pow(dist, a) / (Math.pow(dist, a) + 1);
     }
 
-
-
-
-    //let theta = (Math.atan(imag/real)) + (2*Math.PI);
-    //if (real < 0)
-    //{
-    //    theta = theta + Math.PI;
-    //}
-    //theta *= 180/Math.PI;
-    //const hue = theta % 360;
-
-    //canvas.fillStyle = "hsl(" + hue + ", 100%, " + modulo*100 + "%)";
-    //canvas.fillRect(x,y, 1,1);
-
-
-    if (real == 'Infinity' || real == '-Infinity' && imag == 'Infinity' || imag == '-Infinity') {
-        modulo = 1;
-    }
-
-    let color = HSLtoRGB(hue, 1, modulo);
-    return color;
-    //Array de cores r[0] g[1] b[2]
+    return HSLtoRGB(hue, 1, light);
 }
 
-
-
-//Receber o canvas, rodar por todos os pixels e colocar a cor
+/**
+ * Render the domain colored function onto the canvas.
+ */
 function Plotter(funcaoHover) {
-    //alert('Plotter');
-    /*alert('Guppy: ' + guppy)
-    const f = guppy.func(operacoes);
-    alert(guppy.engine.get_content('ast'));
-    alert('f: ' + f)
-    f({z: {real: 1, imag: 1}});
-    alert('f({z: {real: 1, imag: 1}}): ' + f({z: {real: 1, imag: 1}}))*/
+    const ctx = canvas.getContext('2d');
+    const { width, height } = canvas;
+    const image = ctx.createImageData(width, height);
+    const data = image.data;
 
-
-    console.log("Funcao: ", funcaoHover({ z: { real: 1, imag: 1 } }))
-    const canvasContext2d = canvas.getContext("2d");
-    const width = canvas.width;
-
-    //define o scroll vertical e horizontal da tela para metade do total
-    //window.scroll((document.documentElement.scrollWidth - window.innerWidth) / 2,
-    //(document.documentElement.scrollHeight - window.innerHeight) / 2);
-
-    const height = canvas.height;
-    //let INICIO = performance.now();
-    //Cria um array de pixels
-    const canvasImageData = canvasContext2d.createImageData(width, height);
-    const canvasData = canvasImageData.data;
-    
-    //Percorre todos os pixels
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
-
-            //antes de passar pela função
-            let realAntes = getCoordinate(x, y)[0];
-            let imagAntes = getCoordinate(x, y)[1];
-
-            //Passamos os valores real e imag pela função
-            //let z = getZvalue(realAntes, imagAntes, guppy.func(operacoes));
-            let z = funcaoHover({ 'z': { real: realAntes, imag: imagAntes } });
-            real = z.real;
-            imag = z.imag;
-
-            //Pega a cor do pixel
-            const color = Domain_coloring(real, imag);
-
-            //Pega a posição do pixel
-            const px = (x + y * width) * 4;
-
-            //Coloca a cor no pixel
-            canvasData[px] = color[0];
-            canvasData[px + 1] = color[1];
-            canvasData[px + 2] = color[2];
-            canvasData[px + 3] = 255;
+            const [re, im] = getCoordinate(x, y);
+            const { real, imag } = funcaoHover({ z: { real: re, imag: im } });
+            const [r, g, b] = Domain_coloring(real, imag);
+            const idx = (y * width + x) * 4;
+            data[idx] = r;
+            data[idx + 1] = g;
+            data[idx + 2] = b;
+            data[idx + 3] = 255;
         }
     }
 
-    //let FIM = performance.now();
-    //console.log("Tempo de Plotter com JS:", FIM - INICIO);
-    //Coloca a imagem no canvas 
-    canvasContext2d.putImageData(canvasImageData, 0, 0);
-    console.log("Imagem desenhada");
-
+    ctx.putImageData(image, 0, 0);
+}
+function getContrastingTextColor(r, g, b) {
+    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+    return luminance >=220 ? 'black' : 'white';
 }
 
-function Eixos(){
-    const getOrderOfMagnitude = (num)=> {
-        if (num === 0) return 0; // handle zero case
-        return Math.floor(Math.log10(Math.abs(num)));
-      }
-    const eixosCanvas = document.getElementsByClassName('eixosCanvas');
-    for(let i = 0; i < eixosCanvas.length ; i++) {
-        const canvas = eixosCanvas[i];
+
+/**
+ * Draw axes, ticks, and labels on canvases with class 'eixosCanvas'.
+ */
+function Eixos() {
+    const canvases = document.getElementsByClassName('eixosCanvas');
+    const { x: cx, y: cy } = variaveisGlobais.centro;
+    const radius = variaveisGlobais.raio;
+    const pixelPerUnit = getPixelPorInteiro();
+
+    Array.from(canvases).forEach(canvas => {
         const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
-        ctx.clearRect(0,0,canvas.width,canvas.height)
-        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.font = "bold 15px Arial";
+        const { width, height } = canvas;
+        ctx.clearRect(0, 0, width, height);
 
-        const somar = variaveisGlobais.delimitadores.inicio_real + variaveisGlobais.delimitadores.fim_real;
-        const somai = variaveisGlobais.delimitadores.inicio_imag + variaveisGlobais.delimitadores.fim_imag;
-        const diff = variaveisGlobais.delimitadores.fim_real - variaveisGlobais.delimitadores.inicio_real;
-        //diff consequentemente contém o número de inteiros na imagem
-        const fernandoMode = true;
-        let pixelPorInteiro = getPixelPorInteiro();
-        const numeroDeValores = 4;
-        const dist = diff/(numeroDeValores*2) * pixelPorInteiro;
-        let precision = getOrderOfMagnitude(diff) <0? -getOrderOfMagnitude(diff): getOrderOfMagnitude(diff)===0?1:0;
-        console.warn(precision);
-        let centrox = width / 2 - somar*pixelPorInteiro;
-        let centroy = height /2 + somai*pixelPorInteiro;
-        const {a,b,c,d} = variaveisGlobais.delimitadores;
-        if (fernandoMode) {
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
-            ctx.fillRect(0,centroy,width,1);
-            //ctx.fillStyle = 'rgba(255,255,255,0.5)';
-            ctx.fillRect(centrox,0,1,height);
-            ctx.font = 'bold 15px Arial'
-            ctx.strokeStyle = 'rgba(35,35,35,1)'; 
-            ctx.lineWidth = 1;
-            const increasing = width - centrox >= width/2
-            const increasingY = height - centroy >= height/2;
-            const normalizeDistance =  function(center,bound)
-            {
-                if(center < bound && center >= 0) return center;
-                if(center> bound) {
-                const centerDist = Math.abs(center-bound);
-                const teps = Math.floor(centerDist/dist);
-                return center - teps*dist;
-                }
-                if (center <0)
-                {
-                    const centerDist = Math.abs(center  );
-                    const teps = Math.floor(centerDist/dist);
-                    return center + teps*dist;
-                }
-                
-            }
-            const sinal = - 1;
-            let inicioX = normalizeDistance(centrox,width)
-            let inicioY = normalizeDistance(centroy,height)
-            let cont = 0;
-            //alert(centrox, width)
-            for (let real = inicioX; increasing?real < width:real>0 ; increasing?real += dist:real-=dist) {
-                ctx.fillStyle = 'rgba(255,255,255,0.2)'
-                ctx.fillRect(real, 0, 1, height);
-                const revreal = 2*inicioX-real
-                ctx.fillRect(revreal,0,1,height);
-                //console.warn(real,inicioX)
-                let distancia = real-centrox;
-                let texto = distancia/pixelPorInteiro;
-                texto = texto==0? 0 : texto.toFixed(precision);
-                let texto2 = sinal*distancia/pixelPorInteiro
-                texto2 = texto2==0? 0 : texto2.toFixed(precision);
-                ctx.fillStyle = 'rgba(255,255,255,1)'
-                ctx.fillText(texto, real+4, inicioY-4);
-                ctx.strokeText(texto,real+4, inicioY-4)
-                if(texto == 0) continue;
-                ctx.fillText(texto2, inicioX-distancia+4, inicioY-4);
-                ctx.strokeText(texto2, inicioX - distancia + 4, inicioY - 4);
-                cont++;
-            }
-            for(let imag = inicioY;increasingY?imag < height:imag>0 ; increasingY?imag += dist:imag-=dist){
-                ctx.fillStyle = 'rgba(255,255,255,0.2)'
-                ctx.fillRect(0,imag,width,1);
-                const distancia = imag - centroy
-                const revimag = 2*inicioY-imag;
-                ctx.fillRect(0,revimag,width,1);
-                let texto = distancia/pixelPorInteiro;
-                texto = texto==0? 0 : texto.toFixed(precision);
-                let texto2 = -texto;
-                texto2 = texto2==0? 0 : texto2.toFixed(precision);
-                if(texto == 0) continue;
-                ctx.fillStyle = 'rgba(255,255,255,1)'
-                ctx.fillText((texto  + 'i'), inicioX+4, inicioY-distancia+4);
-                ctx.strokeText((texto  + 'i'),inicioX+4,inicioY-distancia+4)
-                ctx.fillText((texto2  + 'i'), inicioX + 4, imag+4);
-                ctx.strokeText((texto2  + 'i'), inicioX + 4, imag+4);
-            
-            }
-        }
-        for (let real = pixelPorInteiro; real < width && false; real += pixelPorInteiro) {
-            let x = real;
-            let y = centroy-3;
+        const centerX = width / 2 - cx * pixelPerUnit;
+        const centerY = height / 2 + cy * pixelPerUnit;
 
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-            ctx.fillRect(x, y, 1, 6);
+        // Estilo base
+        ctx.lineWidth = 1;
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
 
-            ctx.fillStyle = 'rgba(255,255,255,1)';
-            let texto = Math.round((real - centrox) / pixelPorInteiro);
-            ctx.fillText(texto, x+4, y - 4);
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.strokeText(texto, x+4, y - 4);
+        // Eixos principais
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        ctx.lineTo(width, centerY);
+        ctx.moveTo(centerX, 0);
+        ctx.lineTo(centerX, height);
+        ctx.stroke();
 
-            //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.fillRect(x, 0, 1, height);
+        const tickLen = 6;
+        const labelOffset = 12;
 
+        // Cálculo de stepUnit com base no zoom
+        const idealSpacing = 50;
+        let stepUnit;
+        if (radius === 1) {
+            stepUnit = 0.5;
+        } else {
+            const rawStep = idealSpacing / pixelPerUnit;
+            const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+            const candidates = [1, 2, 5, 10];
+            stepUnit = candidates.find(c => c * magnitude >= rawStep) * magnitude;
         }
 
-
-        for (let imag = pixelPorInteiro; imag < height && false; imag += pixelPorInteiro) {
-            let x = centrox-3;
-            let y = imag;
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-            ctx.fillRect(x, y, 6, 1);
-
-            ctx.fillStyle = 'rgba(255,255,255,1)';
-            let texto = Math.round((imag-centroy) / pixelPorInteiro);
-            if(Math.round((imag - centroy) / pixelPorInteiro) != 0)
-            {
-                ctx.fillText(texto, x + 4, y - 4);
-                ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                ctx.strokeText(texto, x + 4, y - 4);
-
-            }
-                
-
-            //Colocar uma cor mais transparente por toda a linha
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.fillRect(0, y, width, 1);
+        // Grades verticais (X)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        let minX = Math.ceil(-(centerX) / pixelPerUnit / stepUnit) * stepUnit;
+        let maxX = Math.floor((width - centerX) / pixelPerUnit / stepUnit) * stepUnit;
+        for (let u = minX; u <= maxX; u += stepUnit) {
+            const xPos = centerX + u * pixelPerUnit;
+            ctx.beginPath();
+            ctx.moveTo(xPos, 0);
+            ctx.lineTo(xPos, height);
+            ctx.stroke();
         }
 
+        // Grades horizontais (Y)
+        let minY = Math.ceil(-(height - centerY) / pixelPerUnit / stepUnit) * stepUnit;
+        let maxY = Math.floor((centerY) / pixelPerUnit / stepUnit) * stepUnit;
+        for (let v = minY; v <= maxY; v += stepUnit) {
+            const yPos = centerY - v * pixelPerUnit;
+            ctx.beginPath();
+            ctx.moveTo(0, yPos);
+            ctx.lineTo(width, yPos);
+            ctx.stroke();
+        }
 
-    }
-    console.log("Eixos desenhados");
+        // Volta para cor dos eixos
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+
+        // Ticks X
+        for (let u = minX; u <= maxX; u += stepUnit) {  
+            if (Math.abs(u) < 1e-8) continue;
+            const xPos = centerX + u * pixelPerUnit;
+        
+            // Cor adaptativa
+            const [r,g,b] = Domain_coloring(u + variaveisGlobais.centro.x, variaveisGlobais.centro.y);
+            ctx.fillStyle = getContrastingTextColor(r, g, b);   
+
+        
+            ctx.beginPath();
+            ctx.moveTo(xPos, centerY - tickLen);
+            ctx.lineTo(xPos, centerY + tickLen);
+            ctx.stroke();
+            ctx.fillText(u.toFixed(2).replace(/\.?0+$/, ''), xPos, centerY + labelOffset);
+        }
+        
+
+        // Ticks Y
+        for (let v = minY; v <= maxY; v += stepUnit) {
+            if (Math.abs(v) < 1e-8) continue;
+            const yPos = centerY - v * pixelPerUnit;
+        
+            const [r,g,b] = Domain_coloring(variaveisGlobais.centro.x, v + variaveisGlobais.centro.y);
+            ctx.fillStyle = getContrastingTextColor(r, g, b);   
+        
+            ctx.beginPath();
+            ctx.moveTo(centerX - tickLen, yPos);
+            ctx.lineTo(centerX + tickLen, yPos);
+            ctx.stroke();
+            ctx.fillText(v.toFixed(2).replace(/\.?0+$/, '') + 'i', centerX - labelOffset, yPos);
+        }
+        
+    });
 }
 
-export { Plotter, lista as listaFuncoes, Eixos};
+
+
+export { Plotter, lista as listaFuncoes, Eixos };
